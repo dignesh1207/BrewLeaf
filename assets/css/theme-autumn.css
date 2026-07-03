@@ -1,0 +1,23 @@
+/* =============================================================================
+   theme-autumn.css -- Seasonal "Harvest" theme.
+   Deep pumpkin/rust tones for fall. Adds a subtle textured hero background
+   in addition to the token overrides.
+   ============================================================================= */
+:root {
+  --color-bg: #fbf1e6;
+  --color-surface: #fffaf4;
+  --color-text: #3a2416;
+  --color-text-muted: #7a5b41;
+  --color-primary: #c1521f;
+  --color-primary-dark: #7a3210;
+  --color-accent: #e0a52b;
+  --color-border: #f0d9bd;
+  --font-heading: 'Poppins', 'Georgia', serif;
+}
+
+.hero {
+  background: radial-gradient(circle at 20% 20%, #e0a52b 0%, transparent 45%),
+              linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+}
+
+.badge { background: var(--color-primary); }

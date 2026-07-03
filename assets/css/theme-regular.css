@@ -1,0 +1,19 @@
+/* =============================================================================
+   theme-regular.css -- Default "Roastery" theme.
+   Warm coffee browns and cream. Only overrides tokens from style.css; no
+   layout rules belong in here.
+   ============================================================================= */
+:root {
+  --color-bg: #faf7f2;
+  --color-surface: #ffffff;
+  --color-text: #2b2320;
+  --color-text-muted: #6b5f57;
+  --color-primary: #6f4e37;
+  --color-primary-dark: #4a3225;
+  --color-accent: #c98a3b;
+  --color-border: #e7ddd2;
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+}
