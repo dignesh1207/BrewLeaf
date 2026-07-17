@@ -1,0 +1,93 @@
+/* =============================================================================
+   assets/css/buttons.css
+   -----------------------------------------------------------------------------
+   Every button/link styled to look like a button (class="btn") lives here.
+   .btn is the base look; the other classes (.btn-outline, .btn-accent, etc.)
+   are added ON TOP of .btn to change its color, e.g.:
+     <a class="btn btn-accent">Shop Now</a>
+   ============================================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .8rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--color-primary-dark);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .01em;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background var(--transition);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Outlined button: just a border, no fill, used for secondary actions. */
+.btn-outline {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-primary);
+  box-shadow: none;
+}
+
+.btn-outline:hover {
+  border-color: var(--color-primary);
+  background: rgba(0, 0, 0, .05);
+}
+
+/* Accent button: uses the darker accent shade (--color-accent-dark), for
+   the main call-to-action. Plain --color-accent is too light in some
+   themes for white button text to stay readable -- see variables.css. */
+.btn-accent {
+  background: var(--color-accent-dark);
+}
+
+.btn-accent:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Danger button: red, for destructive actions like "Delete" or "Remove". */
+.btn-danger {
+  background: var(--color-danger);
+}
+
+/* Smaller button, e.g. inside a product card. */
+.btn-sm {
+  padding: .45rem 1rem;
+  font-size: .85rem;
+}
+
+/* Button used in the top navigation bar ("Sign up").
+   border-radius: 999px is what makes this a "pill" shape -- it rounds the
+   corners as much as the button's own height allows. That trick only looks
+   right if the padding stays small/compact, like the plain text links next
+   to it in the nav bar; a big padding value here makes the button grow much
+   taller than the nav bar, and the pill shape turns into an oversized blob
+   instead of a normal rounded button. Keep padding small (under ~1rem
+   vertically) for anything using border-radius: 999px in a nav bar. */
+/* Uses --color-accent-dark (not the plain accent) so the white text stays
+   readable -- same reason as .btn-accent above. */
+.btn-nav {
+  background: var(--color-accent-dark);
+  color: #fff;
+  padding: .5rem 1.1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: .92rem;
+}
+
+/* Makes a button/link fill the full width of its parent -- handy for the
+   submit button under a narrow login/register form. */
+.btn-block {
+  width: 100%;
+  justify-content: center;
+}

@@ -1,0 +1,60 @@
+/* =============================================================================
+   assets/css/utilities.css
+   -----------------------------------------------------------------------------
+   Small, generic "do one thing" helper classes used here and there across
+   different pages, instead of writing style="margin-top:1rem" directly in
+   the HTML. Load this file LAST so these can fine-tune spacing on top of a
+   component's own CSS file.
+   ============================================================================= */
+
+/* Margin-top helpers, from smallest to largest gap. */
+.mt-sm  { margin-top: .5rem; }
+.mt-md  { margin-top: 1rem; }
+.mt-lg  { margin-top: 1.5rem; }
+.mt-xl  { margin-top: 2rem; }
+.mt-xxl { margin-top: 2.5rem; }
+
+/* Margin-bottom helpers. */
+.mb-md { margin-bottom: 1rem; }
+.mb-lg { margin-bottom: 1.5rem; }
+
+/* Small grey text, e.g. a date or email next to someone's name. */
+.text-muted-sm {
+  color: var(--color-text-muted);
+  font-size: .8rem;
+}
+
+/* Let an element size itself instead of stretching full-width (inputs and
+   buttons default to 100% width -- this switches a single one back to
+   "normal size", e.g. a checkbox next to its label). */
+.w-auto {
+  width: auto;
+}
+
+/* Visually hide an element (used for radio buttons where we show a styled
+   card instead, but keep the real input in the page for accessibility). */
+.radio-hidden {
+  display: none;
+}
+
+/* ---- Toast (small pop-up message, see assets/js/cart.js) ------------------- */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--color-primary-dark);
+  color: #fff;
+  padding: .8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  z-index: 9999;
+  font-family: inherit;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+/* assets/js/cart.js adds this class a moment after the toast is added to
+   the page, which fades it in (see the "transition" above). */
+.toast-visible {
+  opacity: 1;
+}

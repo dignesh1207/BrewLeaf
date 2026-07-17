@@ -1,0 +1,60 @@
+/* =============================================================================
+   assets/css/variables.css
+   -----------------------------------------------------------------------------
+   This file only stores "variables" (CSS calls them custom properties).
+   Think of each one as a labeled box holding a color or a number, so we
+   don't have to retype the same value in 50 places.
+
+   Example: --color-primary holds our main brown color. Anywhere else in the
+   CSS you'll see var(--color-primary) -- that just means "go get the value
+   from that box". Change the value here once and it updates everywhere.
+
+   The theme files (theme-white.css, theme-regular.css, theme-autumn.css,
+   theme-winter.css) reuse these SAME variable names but give them different
+   colors. Whichever theme.css is loaded last on the page "wins", which is
+   how the theme picker in admin/theme.php can change the whole site's look.
+   ============================================================================= */
+:root {
+  /* Page colors */
+  --color-bg: #faf7f2;
+  --color-surface: #ffffff;
+  --color-text: #2b2320;
+  --color-text-muted: #6b5f57;
+
+  /* Brand colors (buttons, links, headings) */
+  --color-primary: #6f4e37;
+  --color-primary-dark: #4a3225;
+  --color-accent: #c98a3b;
+  /* A darker shade of --color-accent, used for buttons with white text on
+     them (plain --color-accent is sometimes too light for white text to
+     stay readable). Each theme sets its own matching shade. */
+  --color-accent-dark: #966732;
+  --color-border: #e7ddd2;
+
+  /* Alert colors (success / error messages) */
+  --color-success: #3a7a4e;
+  --color-success-bg: #e6f4ea;
+  --color-success-border: #bfe3c9;
+  --color-danger: #b3402a;
+  --color-danger-bg: #fbe9e5;
+  --color-danger-border: #f0c3b8;
+
+  /* Fonts */
+  --font-heading: 'Poppins', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+
+  /* Rounded corners: small, normal, large */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+
+  /* Drop shadows: plain black at different levels of transparency (the
+     last number, e.g. .12 = 12% opaque) for a small/medium/large shadow. */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .1);
+  --shadow-md: 0 10px 28px -8px rgba(0, 0, 0, .22);
+  --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, .28);
+
+  /* How fast hover/focus effects animate */
+  --transition: 180ms ease;
+  --transition-slow: 320ms ease-out;
+}

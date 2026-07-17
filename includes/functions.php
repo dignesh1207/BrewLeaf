@@ -38,19 +38,19 @@ function get_product_options(mysqli $conn, int $productId): array
     return $grouped;
 }
 
-/** Return the currently active site template name ('regular'|'autumn'|'winter'). */
+/** Return the currently active site template name ('regular'|'autumn'|'winter'|'white'). */
 function get_active_theme(mysqli $conn): string
 {
     // Allow a per-visitor preview override via ?preview_theme= without
     // changing the site-wide default (useful for the admin theme picker).
-    if (isset($_GET['preview_theme']) && in_array($_GET['preview_theme'], ['regular', 'autumn', 'winter'], true)) {
+    if (isset($_GET['preview_theme']) && in_array($_GET['preview_theme'], ['regular', 'autumn', 'winter', 'white'], true)) {
         return $_GET['preview_theme'];
     }
 
     $result = $conn->query("SELECT setting_value FROM site_settings WHERE setting_key = 'active_theme' LIMIT 1");
     $row = $result ? $result->fetch_assoc() : null;
-    $theme = $row['setting_value'] ?? 'regular';
-    return in_array($theme, ['regular', 'autumn', 'winter'], true) ? $theme : 'regular';
+    $theme = $row['setting_value'] ?? 'white';
+    return in_array($theme, ['regular', 'autumn', 'winter', 'white'], true) ? $theme : 'white';
 }
 
 /** Simple star rating renderer (returns HTML). */
@@ -81,7 +81,17 @@ function get_guest_session_id(): string
  */
 function resolve_selected_options(mysqli $conn, array $optionIds): array
 {
-    $optionIds = array_values(array_unique(array_filter(array_map('intval', $optionIds))));
+    // Turn each posted value into a whole number, then drop zeros and
+    // duplicates so we don't look up the same option twice.
+    $cleanIds = [];
+    foreach ($optionIds as $id) {
+        $id = (int) $id;
+        if ($id > 0 && !in_array($id, $cleanIds, true)) {
+            $cleanIds[] = $id;
+        }
+    }
+    $optionIds = $cleanIds;
+
     if (!$optionIds) {
         return ['options' => [], 'modifierTotal' => 0.0];
     }
@@ -113,6 +123,9 @@ function resolve_selected_options(mysqli $conn, array $optionIds): array
 function format_selected_options(?string $json): string
 {
     $options = json_decode($json ?? '[]', true) ?: [];
-    $parts = array_map(fn($o) => $o['group'] . ': ' . $o['value'], $options);
+    $parts = [];
+    foreach ($options as $option) {
+        $parts[] = $option['group'] . ': ' . $option['value'];
+    }
     return implode(', ', $parts);
 }

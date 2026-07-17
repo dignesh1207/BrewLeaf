@@ -55,18 +55,18 @@ require_once __DIR__ . '/includes/header.php';
       <tbody>
         <?php foreach ($rows as $row): ?>
           <tr>
-            <td style="display:flex;align-items:center;gap:.6rem;">
-              <img src="<?= h($row['image']) ?>" alt="" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
+            <td class="table-cell-flex">
+              <img src="<?= h($row['image']) ?>" alt="" class="table-thumb">
               <a href="product.php?slug=<?= h($row['slug']) ?>"><?= h($row['name']) ?></a>
             </td>
             <td><?= h(format_selected_options($row['selected_options'])) ?: '&mdash;' ?></td>
             <td><?= money((float) $row['unit_price']) ?></td>
             <td>
-              <form method="post" action="cart_update.php" class="qty-stepper" style="display:flex;align-items:center;gap:.4rem;">
+              <form method="post" action="cart_update.php" class="qty-stepper">
                 <input type="hidden" name="item_id" value="<?= (int) $row['id'] ?>">
                 <input type="hidden" name="action" value="update">
                 <button type="button" class="btn btn-sm btn-outline qty-minus" aria-label="Decrease quantity">-</button>
-                <input type="number" name="quantity" value="<?= (int) $row['quantity'] ?>" min="1" style="width:60px;text-align:center;" onchange="this.form.submit()">
+                <input type="number" name="quantity" value="<?= (int) $row['quantity'] ?>" min="1" class="qty-input">
                 <button type="button" class="btn btn-sm btn-outline qty-plus" aria-label="Increase quantity">+</button>
               </form>
             </td>
@@ -83,15 +83,15 @@ require_once __DIR__ . '/includes/header.php';
       </tbody>
     </table>
 
-    <div style="max-width:320px;margin-left:auto;margin-top:1.5rem;">
+    <div class="cart-summary">
       <table>
         <tbody>
-          <tr><td>Subtotal</td><td style="text-align:right;"><?= money($subtotal) ?></td></tr>
-          <tr><td>Shipping</td><td style="text-align:right;"><?= $shipping > 0 ? money($shipping) : 'Free' ?></td></tr>
-          <tr><td><strong>Total</strong></td><td style="text-align:right;"><strong><?= money($total) ?></strong></td></tr>
+          <tr><td>Subtotal</td><td class="text-right"><?= money($subtotal) ?></td></tr>
+          <tr><td>Shipping</td><td class="text-right"><?= $shipping > 0 ? money($shipping) : 'Free' ?></td></tr>
+          <tr><td><strong>Total</strong></td><td class="text-right"><strong><?= money($total) ?></strong></td></tr>
         </tbody>
       </table>
-      <a href="checkout.php" class="btn btn-accent" style="width:100%;text-align:center;margin-top:1rem;">Proceed to Checkout</a>
+      <a href="checkout.php" class="btn btn-accent btn-block mt-md">Proceed to Checkout</a>
     </div>
   <?php endif; ?>
 </section>

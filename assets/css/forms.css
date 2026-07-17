@@ -1,0 +1,121 @@
+/* =============================================================================
+   assets/css/forms.css
+   -----------------------------------------------------------------------------
+   Styling for form elements: labels, text inputs, dropdowns, layout helpers
+   for form rows, hint/error text, and the colored "alert" boxes used for
+   success/error messages (e.g. after login or checkout).
+   ============================================================================= */
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: .35rem;
+  font-size: .92rem;
+  color: var(--color-primary-dark);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: .7rem .9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, .12);
+}
+
+/* Wraps one label + input pair, with spacing below it. */
+.form-row {
+  margin-bottom: 1.1rem;
+}
+
+/* Two form-rows side by side (e.g. first name / last name). */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Small grey helper text under a field. */
+.form-hint {
+  font-size: .8rem;
+  color: var(--color-text-muted);
+  margin-top: .25rem;
+}
+
+/* Small red validation message under a field. */
+.form-error {
+  color: var(--color-danger);
+  font-size: .85rem;
+  margin-top: .25rem;
+}
+
+/* Added by assets/js/form-validation.js to a field that failed validation. */
+.field-invalid {
+  border-color: var(--color-danger);
+}
+
+/* Colored banner for page-level messages, e.g. "Order placed!" */
+.alert {
+  padding: .9rem 1.1rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.2rem;
+  font-size: .95rem;
+  border-left: 3px solid transparent;
+}
+
+.alert-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border-left-color: var(--color-success);
+}
+
+.alert-error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border-left-color: var(--color-danger);
+}
+
+/* Quantity +/- stepper next to a number input (used on the cart page). */
+.qty-stepper {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.qty-input {
+  width: 60px;
+  text-align: center;
+}
+
+/* A checkbox sitting next to its label instead of the label above it
+   (labels are "display: block" by default -- this overrides that). */
+.checkbox-row {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+/* Lines up a .form-grid's fields along their bottom edge, e.g. when one
+   field has a hint line under it and the other doesn't. */
+.form-grid-end {
+  align-items: end;
+}
+
+@media (max-width: 760px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

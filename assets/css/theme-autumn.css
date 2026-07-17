@@ -11,13 +11,20 @@
   --color-primary: #c1521f;
   --color-primary-dark: #7a3210;
   --color-accent: #e0a52b;
+  --color-accent-dark: #a3601b;
   --color-border: #f0d9bd;
   --font-heading: 'Poppins', 'Georgia', serif;
 }
 
 .hero {
-  background: radial-gradient(circle at 20% 20%, #e0a52b 0%, transparent 45%),
-              linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background:
+    radial-gradient(circle at 20% 20%, #e0a52b 0%, transparent 45%),
+    linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
 }
 
-.badge { background: var(--color-primary); }
+/* Theme already has its own radial texture above -- hide the generic blobs
+   from style.css so the two don't compete. */
+.hero::before,
+.hero::after {
+  display: none;
+}

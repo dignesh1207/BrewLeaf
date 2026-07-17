@@ -28,7 +28,7 @@ $articles = [
 <section class="section container">
   <div class="feature-grid">
     <?php foreach ($articles as [$file, $title, $desc]): ?>
-      <a class="feature-box" href="<?= h($file) ?>" style="color:inherit;">
+      <a class="feature-box card-link" href="<?= h($file) ?>">
         <h3><?= h($title) ?></h3>
         <p><?= h($desc) ?></p>
       </a>

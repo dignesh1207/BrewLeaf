@@ -1,0 +1,96 @@
+/* =============================================================================
+   assets/css/footer.css
+   -----------------------------------------------------------------------------
+   The dark footer at the bottom of every page (see includes/footer.php):
+   the column layout, links, and the embedded map.
+   ============================================================================= */
+
+.site-footer {
+  background: var(--color-primary-dark);
+  color: rgba(255, 255, 255, .85);
+  margin-top: 4rem;
+}
+
+/* 5 columns on a wide screen, 3 per row on a tablet, and stacked in
+   1 column on a phone. */
+.footer-inner {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+  padding: 3.5rem 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .footer-inner {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-col h3 {
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: .8rem;
+}
+
+.footer-col a {
+  color: rgba(255, 255, 255, .75);
+  transition: color var(--transition);
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+.footer-col ul li {
+  margin-bottom: .5rem;
+}
+
+.map-embed {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .12);
+}
+
+.map-embed iframe {
+  width: 100%;
+  height: 130px;
+  border: 0;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 1.2rem;
+  font-size: .8rem;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+/* ---- Public theme switcher (any visitor, not just admins -- see
+   includes/footer.php and set-theme.php) ------------------------------- */
+.theme-switcher {
+  display: flex;
+  gap: .6rem;
+}
+
+.theme-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .3);
+  padding: 0;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.theme-dot:hover {
+  transform: translateY(-2px);
+}
+
+/* The theme currently live on the site gets a solid white ring. */
+.theme-dot.active {
+  border-color: #fff;
+}

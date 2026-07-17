@@ -9,10 +9,35 @@ require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
 require_admin();
 
+// Each theme's colors, copied from that theme's own assets/css/theme-*.css
+// file (the ":root" block at the top). Used below to draw a tiny mock-up
+// of the page for each theme card -- if you change a theme's colors in its
+// CSS file, update the matching colors here too so the preview stays accurate.
 $themes = [
-    'regular' => ['Regular Roastery', 'Warm coffee browns & cream -- the year-round default.', '#6f4e37', '#4a3225'],
-    'autumn'  => ['Harvest (Autumn)', 'Deep pumpkin & rust tones for fall.', '#c1521f', '#7a3210'],
-    'winter'  => ['Frost (Winter)', 'Cool slate blues, crisp and minimal.', '#2b5a72', '#163647'],
+    'white' => [
+        'label' => 'Clean White',
+        'desc'  => 'Bright white surfaces, near-black text, and a full-bleed photo hero -- the year-round default.',
+        'bg' => '#fafaf8', 'surface' => '#ffffff', 'border' => '#eaeae6',
+        'primary' => '#2a2a27', 'primary_dark' => '#141412', 'accent' => '#ffffff',
+    ],
+    'regular' => [
+        'label' => 'Regular Roastery',
+        'desc'  => 'Warm coffee browns & cream.',
+        'bg' => '#faf7f2', 'surface' => '#ffffff', 'border' => '#e7ddd2',
+        'primary' => '#6f4e37', 'primary_dark' => '#4a3225', 'accent' => '#c98a3b',
+    ],
+    'autumn' => [
+        'label' => 'Harvest (Autumn)',
+        'desc'  => 'Deep pumpkin & rust tones for fall.',
+        'bg' => '#fbf1e6', 'surface' => '#fffaf4', 'border' => '#f0d9bd',
+        'primary' => '#c1521f', 'primary_dark' => '#7a3210', 'accent' => '#e0a52b',
+    ],
+    'winter' => [
+        'label' => 'Frost (Winter)',
+        'desc'  => 'Cool slate blues, crisp and minimal.',
+        'bg' => '#f3f6f8', 'surface' => '#ffffff', 'border' => '#dbe6ec',
+        'primary' => '#2b5a72', 'primary_dark' => '#163647', 'accent' => '#7fb3c9',
+    ],
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
@@ -43,17 +68,38 @@ $active = get_active_theme($conn);
 
   <form method="post" action="theme.php">
     <div class="theme-options">
-      <?php foreach ($themes as $key => [$label, $desc, $c1, $c2]): ?>
+      <?php foreach ($themes as $key => $t): ?>
         <label class="theme-card <?= $active === $key ? 'active' : '' ?>">
-          <input type="radio" name="theme" value="<?= $key ?>" style="display:none;" <?= $active === $key ? 'checked' : '' ?> onchange="this.form.submit()">
-          <div class="theme-swatch" style="background:linear-gradient(135deg, <?= $c1 ?>, <?= $c2 ?>);"></div>
-          <div class="theme-label"><?= h($label) ?><br><small style="font-weight:normal;color:var(--color-text-muted);"><?= h($desc) ?></small></div>
+          <input type="radio" name="theme" value="<?= $key ?>" class="radio-hidden auto-submit" <?= $active === $key ? 'checked' : '' ?>>
+          <!-- This whole swatch is a tiny fake page (header bar, hero,
+               3 cards) instead of a real screenshot. Every color below
+               comes from the $themes array above (PHP data, not user
+               input), so inline styles are the simplest way to color each
+               piece -- a static CSS class can't know these colors ahead
+               of time since they're different for every theme. -->
+          <div class="theme-swatch" style="background:<?= $t['bg'] ?>;">
+            <div class="mock-header" style="background:<?= $t['surface'] ?>;border-bottom:1px solid <?= $t['border'] ?>;">
+              <span class="mock-dot" style="background:<?= $t['primary'] ?>;"></span>
+              <span class="mock-line" style="background:<?= $t['border'] ?>;"></span>
+              <span class="mock-line" style="background:<?= $t['border'] ?>;"></span>
+            </div>
+            <div class="mock-hero" style="background:linear-gradient(135deg, <?= $t['primary'] ?>, <?= $t['primary_dark'] ?>);">
+              <span class="mock-btn" style="background:<?= $t['accent'] ?>;"></span>
+            </div>
+            <div class="mock-body">
+              <span class="mock-card" style="background:<?= $t['surface'] ?>;border:1px solid <?= $t['border'] ?>;"></span>
+              <span class="mock-card" style="background:<?= $t['surface'] ?>;border:1px solid <?= $t['border'] ?>;"></span>
+              <span class="mock-card" style="background:<?= $t['surface'] ?>;border:1px solid <?= $t['border'] ?>;"></span>
+            </div>
+          </div>
+          <div class="theme-label"><?= h($t['label']) ?><br><small class="theme-desc"><?= h($t['desc']) ?></small></div>
         </label>
       <?php endforeach; ?>
     </div>
   </form>
 
-  <p style="margin-top:1.5rem;">
+  <p class="mt-lg">
+    <a href="<?= h(SITE_BASE_URL) ?>/index.php?preview_theme=white" target="_blank" class="btn btn-sm btn-outline">Preview White</a>
     <a href="<?= h(SITE_BASE_URL) ?>/index.php?preview_theme=regular" target="_blank" class="btn btn-sm btn-outline">Preview Regular</a>
     <a href="<?= h(SITE_BASE_URL) ?>/index.php?preview_theme=autumn" target="_blank" class="btn btn-sm btn-outline">Preview Autumn</a>
     <a href="<?= h(SITE_BASE_URL) ?>/index.php?preview_theme=winter" target="_blank" class="btn btn-sm btn-outline">Preview Winter</a>

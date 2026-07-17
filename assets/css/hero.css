@@ -1,0 +1,81 @@
+/* =============================================================================
+   assets/css/hero.css
+   -----------------------------------------------------------------------------
+   The big banner section at the top of the Home, About, and Help pages
+   (<section class="hero">). The background image/gradient itself is set
+   per-theme (see the .hero rule inside each theme-*.css file) -- this file
+   only holds the layout that stays the same no matter which theme is active.
+   ============================================================================= */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  padding: 5.5rem 0;
+  text-align: center;
+}
+
+/* Soft blurred circles used as background decoration by some themes.
+   A theme can hide these with "display: none" if it uses a photo instead
+   (see theme-white.css). "opacity" makes each circle see-through instead
+   of a solid color -- simpler than mixing transparency into the color
+   itself, since these have no text/content to worry about fading too. */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  background: var(--color-accent);
+  opacity: .55;
+  pointer-events: none;
+}
+
+.hero::before {
+  width: 320px;
+  height: 320px;
+  top: -140px;
+  left: -80px;
+}
+
+.hero::after {
+  width: 260px;
+  height: 260px;
+  bottom: -120px;
+  right: -60px;
+  background: #fff;
+  opacity: .25;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+  animation: hero-rise var(--transition-slow) both;
+}
+
+.hero h1 {
+  color: #fff;
+}
+
+.hero p {
+  color: rgba(255, 255, 255, .88);
+  max-width: 620px;
+  margin-inline: auto;
+  font-size: 1.15rem;
+}
+
+.hero .btn {
+  margin-top: 1.2rem;
+  background: #fff;
+  color: var(--color-primary-dark);
+}
+
+.hero .btn:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Small fade-and-rise animation the hero text plays once, on page load. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}

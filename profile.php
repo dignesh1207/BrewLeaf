@@ -87,7 +87,7 @@ require_once __DIR__ . '/includes/header.php';
               <tr>
                 <td>#<?= (int) $o['id'] ?></td>
                 <td><?= h(date('M j, Y', strtotime($o['created_at']))) ?></td>
-                <td><span class="badge" style="background:var(--color-accent);text-transform:capitalize;"><?= h($o['status']) ?></span></td>
+                <td><span class="badge badge-capitalize"><?= h($o['status']) ?></span></td>
                 <td><?= money((float) $o['total']) ?></td>
               </tr>
             <?php endwhile; ?>

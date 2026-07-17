@@ -6,7 +6,7 @@ $pageTitle = 'Ordering & Checkout | BrewLeaf Help';
 $pageDescription = 'How product options, the shopping cart, and checkout work on BrewLeaf.';
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<section class="section container" style="max-width:760px;">
+<section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Ordering &amp; Checkout</h1>
 

@@ -1,6 +1,6 @@
 /* =============================================================================
    theme-winter.css -- Seasonal "Frost" theme.
-   Cool slate blues with a crisp, minimal feel.
+   Cool slate blues with a crisp, minimal feel: tighter corners.
    ============================================================================= */
 :root {
   --color-bg: #f3f6f8;
@@ -10,12 +10,20 @@
   --color-primary: #2b5a72;
   --color-primary-dark: #163647;
   --color-accent: #7fb3c9;
+  --color-accent-dark: #4a7488;
   --color-border: #dbe6ec;
-  --radius: 6px;
+
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 10px;
 }
 
 .hero {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
 }
 
-.product-card, .feature-box, .dash-card, .chart-card { border-radius: 6px; }
+.hero::before,
+.hero::after {
+  filter: blur(70px);
+  opacity: .5;
+}

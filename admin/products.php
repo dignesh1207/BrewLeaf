@@ -29,7 +29,7 @@ require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
 
 <section class="section container">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <div class="header-row">
     <h1>Manage Products</h1>
     <a href="product-edit.php" class="btn btn-accent">+ Add New Product</a>
   </div>
@@ -42,15 +42,15 @@ require_once __DIR__ . '/../includes/admin-nav.php';
     <tbody>
       <?php while ($p = $products->fetch_assoc()): ?>
         <tr>
-          <td><img src="<?= h($p['image']) ?>" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:6px;"></td>
+          <td><img src="<?= h($p['image']) ?>" alt="" class="table-thumb"></td>
           <td><?= h($p['name']) ?></td>
           <td><?= h(ucfirst($p['category'])) ?></td>
           <td><?= money((float) $p['base_price']) ?></td>
           <td><?= h($p['rating_avg']) ?> &#9733;</td>
           <td><span class="status-pill status-<?= $p['is_active'] ? 'online' : 'offline' ?>"><?= $p['is_active'] ? 'Active' : 'Hidden' ?></span></td>
-          <td style="display:flex;gap:.4rem;">
+          <td class="table-actions">
             <a class="btn btn-sm btn-outline" href="product-edit.php?id=<?= (int) $p['id'] ?>">Edit</a>
-            <form method="post" action="products.php" onsubmit="return confirm('Delete this product permanently?');">
+            <form method="post" action="products.php" data-confirm="Delete this product permanently?">
               <input type="hidden" name="delete_id" value="<?= (int) $p['id'] ?>">
               <button type="submit" class="btn btn-sm btn-danger">Delete</button>
             </form>

@@ -82,7 +82,7 @@ require_once __DIR__ . '/includes/header.php';
         <option value="name" <?= $sort === 'name' ? 'selected' : '' ?>>Name (A-Z)</option>
       </select>
     </div>
-    <div class="form-row" style="flex:0;">
+    <div class="form-row form-row-auto">
       <button type="submit" class="btn">Apply</button>
     </div>
   </form>
@@ -92,7 +92,7 @@ require_once __DIR__ . '/includes/header.php';
   <?php else: ?>
     <div class="product-grid">
       <?php while ($p = $products->fetch_assoc()): ?>
-        <a class="product-card" href="product.php?slug=<?= h($p['slug']) ?>" style="color:inherit;">
+        <a class="product-card card-link" href="product.php?slug=<?= h($p['slug']) ?>">
           <img src="<?= h($p['image']) ?>" alt="<?= h($p['name']) ?>" loading="lazy">
           <div class="body">
             <span class="badge"><?= h(ucfirst($p['category'])) ?></span>

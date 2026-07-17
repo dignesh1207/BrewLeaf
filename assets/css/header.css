@@ -1,0 +1,185 @@
+/* =============================================================================
+   assets/css/header.css
+   -----------------------------------------------------------------------------
+   The top navigation bar that appears on every page (see includes/header.php):
+   the logo, the menu links, the cart icon, and the hamburger button that
+   shows up on small/mobile screens. The matching click behaviour (opening
+   the mobile menu) lives in assets/js/nav.js.
+
+   Look: a plain, solid bar (no blur/glass effect) that sits on top of the
+   page with just a thin bottom border and a soft shadow -- keeps it simple
+   and readable on any theme, since it doesn't depend on what's behind it.
+   The current page's link gets a filled "pill" background instead of an
+   underline (see .primary-nav a.active below); includes/header.php decides
+   which link that is.
+   ============================================================================= */
+
+.site-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .85rem 1.25rem;
+  gap: 1rem;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--color-primary-dark);
+}
+
+.primary-nav {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  flex-wrap: wrap;
+}
+
+.primary-nav ul {
+  display: flex;
+  gap: .2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Nav links: a neutral grey pill-shaped highlight appears on hover. The
+   link matching the page you're on (class="active", added by
+   includes/header.php) gets a solid filled pill instead -- kept
+   black/white/grey (not the accent color) so it reads as "you are here"
+   rather than competing with the accent-colored buttons for attention. */
+.primary-nav a {
+  display: inline-block;
+  padding: .5rem .9rem;
+  border-radius: 999px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: background var(--transition), color var(--transition);
+}
+
+.primary-nav a:hover {
+  background: rgba(0, 0, 0, .05);
+  color: var(--color-primary-dark);
+}
+
+.primary-nav a.active {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* The "Sign up" button (.btn-nav, from buttons.css) sits inside .primary-nav
+   too, so the hover/text-color rules above would otherwise leak onto it:
+   ".primary-nav a:hover" would swap its solid copper background for a
+   near-white tint (making the white text disappear into the bar), and
+   ".primary-nav a" would grey out its text. Both selectors below match
+   with the SAME specificity as those rules, so putting this block AFTER
+   them in the file is what makes it win. */
+.primary-nav a.btn-nav,
+.primary-nav a.btn-nav:hover {
+  color: #fff;
+  background: var(--color-accent-dark);
+}
+
+.primary-nav a.btn-nav:hover {
+  background: var(--color-primary-dark);
+}
+
+.nav-utility {
+  border-left: 1px solid var(--color-border);
+  padding-left: 1rem;
+  margin-left: .5rem;
+}
+
+.cart-link {
+  position: relative;
+}
+
+/* The little number bubble on the cart icon showing how many items are in it. */
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -14px;
+  background: var(--color-accent);
+  color: #fff;
+  border-radius: 999px;
+  font-size: .7rem;
+  padding: 1px 6px;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Hamburger (3-line) menu button -- hidden until the screen gets narrow,
+   see the @media rule below. */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: .4rem;
+}
+
+.nav-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--color-primary-dark);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+/* ---- Small screens: turn the nav into a dropdown list ---------------------- */
+@media (max-width: 760px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .primary-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* assets/js/nav.js adds/removes this "open" class when the button is clicked. */
+  .primary-nav.open {
+    display: flex;
+  }
+
+  .primary-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .3rem;
+    width: 100%;
+  }
+
+  .primary-nav a {
+    display: block;
+    width: 100%;
+  }
+
+  .nav-utility {
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+    border-top: 1px solid var(--color-border);
+    padding-top: .8rem;
+  }
+}

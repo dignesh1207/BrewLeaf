@@ -19,7 +19,7 @@ $pageDescription = 'Get in touch with BrewLeaf Artisan Coffee & Tea Co.';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<section class="section container" style="max-width:600px;">
+<section class="section container page-narrow-md">
   <h1>Contact Us</h1>
   <p>Questions about an order, wholesale inquiries, or just want to say hi? Reach out below.</p>
 
@@ -43,7 +43,7 @@ require_once __DIR__ . '/includes/header.php';
     <button type="submit" class="btn btn-accent">Send Message</button>
   </form>
 
-  <div style="margin-top:2rem;">
+  <div class="mt-xl">
     <h2>Roastery Address</h2>
     <p>401 Sunset Ave, Windsor, ON, Canada</p>
     <p>Email: hello@brewleaf.test &middot; Phone: (519) 555-0142</p>

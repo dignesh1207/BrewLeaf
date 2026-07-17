@@ -32,7 +32,7 @@ $pageDescription = 'Log in to your BrewLeaf account.';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<section class="section container" style="max-width:420px;">
+<section class="section container page-narrow-sm">
   <h1>Log In</h1>
   <?php if ($error): ?><div class="alert alert-error"><?= h($error) ?></div><?php endif; ?>
 
@@ -45,9 +45,9 @@ require_once __DIR__ . '/includes/header.php';
       <label for="password">Password</label>
       <input type="password" id="password" name="password" required>
     </div>
-    <button type="submit" class="btn btn-accent" style="width:100%;">Log In</button>
+    <button type="submit" class="btn btn-accent btn-block">Log In</button>
   </form>
-  <p style="margin-top:1rem;">New here? <a href="register.php">Create an account</a>.</p>
+  <p class="mt-md">New here? <a href="register.php">Create an account</a>.</p>
   <p class="form-hint">Demo admin: <code>admin</code> / <code>Admin123!</code> &middot; Demo customer: <code>jsmith</code> / <code>Admin123!</code></p>
 </section>
 

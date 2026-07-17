@@ -23,7 +23,10 @@ $stmt->execute();
 $cartRows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-$subtotal = array_sum(array_map(fn($r) => $r['unit_price'] * $r['quantity'], $cartRows));
+$subtotal = 0.0;
+foreach ($cartRows as $row) {
+    $subtotal += $row['unit_price'] * $row['quantity'];
+}
 $shipping = $subtotal > 0 && $subtotal < 40 ? 5.99 : 0.0;
 $total = $subtotal + $shipping;
 
@@ -124,7 +127,7 @@ require_once __DIR__ . '/includes/header.php';
           <tbody>
             <?php foreach ($cartRows as $row): ?>
               <tr>
-                <td><?= h($row['name']) ?><br><small style="color:var(--color-text-muted);"><?= h(format_selected_options($row['selected_options'])) ?></small></td>
+                <td><?= h($row['name']) ?><br><small class="text-muted-sm"><?= h(format_selected_options($row['selected_options'])) ?></small></td>
                 <td><?= (int) $row['quantity'] ?></td>
                 <td><?= money($row['unit_price'] * $row['quantity']) ?></td>
               </tr>

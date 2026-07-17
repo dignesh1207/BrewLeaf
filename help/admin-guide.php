@@ -6,7 +6,7 @@ $pageTitle = 'Admin Guide | BrewLeaf Help';
 $pageDescription = 'How BrewLeaf site administrators manage products, orders, users, and the site template.';
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<section class="section container" style="max-width:760px;">
+<section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Admin Guide</h1>
   <p>This guide is for site administrators (role = <code>admin</code>). Log in at <code>login.php</code>

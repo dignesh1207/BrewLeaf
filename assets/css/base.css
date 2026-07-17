@@ -1,0 +1,133 @@
+/* =============================================================================
+   assets/css/base.css
+   -----------------------------------------------------------------------------
+   The most basic, page-wide rules: the CSS "reset", default body/heading/
+   paragraph styling, the .container that centers page content, and the
+   skip-link for keyboard users. Edit this file for anything that applies
+   to EVERY page (fonts, base text color, page width).
+
+   Needs variables.css loaded first (it uses var(--color-...) everywhere).
+   ============================================================================= */
+
+/* ---- Reset: remove the browser's built-in default spacing/styles -------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* Shows a visible outline around whatever is focused (e.g. tabbing through
+   links with the keyboard), so keyboard users can always see where they are. */
+:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ---- Page defaults -------------------------------------------------------- */
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--color-primary-dark);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  margin: 0 0 .5em;
+}
+
+h1 { font-size: 2.6rem; }
+h2 { font-size: 1.9rem; }
+h3 { font-size: 1.2rem; }
+
+/* On small phone screens, the big headings above are too wide to read
+   comfortably, so make them a little smaller. */
+@media (max-width: 480px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+/* .container centers page content and stops it from stretching too wide on
+   big screens. Almost every section on the site wraps its content in this. */
+.container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* "Skip to main content" link -- hidden off-screen until a keyboard user
+   tabs to it, then it jumps into view so they can skip the nav menu. */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--color-primary);
+  color: #fff;
+  padding: .6rem 1rem;
+  border-radius: 0 0 var(--radius-sm) 0;
+  z-index: 999;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Respect "reduce motion" accessibility setting ------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

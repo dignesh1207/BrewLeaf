@@ -16,7 +16,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container"><h1>About BrewLeaf</h1></div>
 </section>
 
-<section class="section container" style="max-width:800px;">
+<section class="section container page-narrow-lg">
   <h2>Our Business</h2>
   <p>
     BrewLeaf Artisan Coffee &amp; Tea Co. is an online catalogue and storefront for small-batch,
@@ -31,7 +31,7 @@ require_once __DIR__ . '/includes/header.php';
     fulfillment, and customer accounts from an administrative dashboard.
   </p>
 
-  <img src="assets/images/about-roastery.jpg" alt="BrewLeaf roastery" style="border-radius:10px;margin:1.5rem 0;box-shadow:var(--shadow-md);">
+  <img src="assets/images/about-roastery.jpg" alt="BrewLeaf roastery" class="content-image">
 
   <h2>Our Story</h2>
   <p>BrewLeaf started as a single roasting drum in a garage and grew into a small team obsessed with

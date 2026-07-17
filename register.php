@@ -53,7 +53,7 @@ $pageDescription = 'Create a free BrewLeaf account to track orders, save favorit
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<section class="section container" style="max-width:480px;">
+<section class="section container page-narrow-sm">
   <h1>Create Your Account</h1>
   <?php if ($error): ?><div class="alert alert-error"><?= h($error) ?></div><?php endif; ?>
 
@@ -79,9 +79,9 @@ require_once __DIR__ . '/includes/header.php';
       <label for="password_confirm">Confirm Password</label>
       <input type="password" id="password_confirm" name="password_confirm" required minlength="8">
     </div>
-    <button type="submit" class="btn btn-accent" style="width:100%;">Create Account</button>
+    <button type="submit" class="btn btn-accent btn-block">Create Account</button>
   </form>
-  <p style="margin-top:1rem;">Already have an account? <a href="login.php">Log in</a>.</p>
+  <p class="mt-md">Already have an account? <a href="login.php">Log in</a>.</p>
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

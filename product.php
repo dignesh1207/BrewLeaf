@@ -74,7 +74,7 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="section container">
-  <nav aria-label="Breadcrumb" style="font-size:.85rem;color:var(--color-text-muted);margin-bottom:1rem;">
+  <nav aria-label="Breadcrumb" class="breadcrumb">
     <a href="products.php">Shop</a> &rsaquo;
     <a href="products.php?category=<?= h($product['category']) ?>"><?= h(ucfirst($product['category'])) ?></a> &rsaquo;
     <?= h($product['name']) ?>
@@ -90,7 +90,7 @@ require_once __DIR__ . '/includes/header.php';
       <div class="stars" aria-label="Rating <?= h($product['rating_avg']) ?> out of 5"><?= render_stars((float) $product['rating_avg']) ?> <?= h($product['rating_avg']) ?> (<?= (int) $product['rating_count'] ?> reviews)</div>
       <p><?= nl2br(h($product['description'])) ?></p>
 
-      <p id="livePrice" data-base-price="<?= h($product['base_price']) ?>" style="font-size:1.6rem;font-weight:700;color:var(--color-primary);">
+      <p id="livePrice" data-base-price="<?= h($product['base_price']) ?>" class="price-live">
         <?= money((float) $product['base_price']) ?>
       </p>
 
@@ -114,7 +114,7 @@ require_once __DIR__ . '/includes/header.php';
           </div>
         <?php endforeach; ?>
 
-        <div class="form-row" style="max-width:140px;">
+        <div class="form-row qty-field">
           <label for="quantity">Quantity</label>
           <input type="number" id="quantity" name="quantity" value="1" min="1" required>
         </div>
@@ -136,10 +136,10 @@ require_once __DIR__ . '/includes/header.php';
     <p>No reviews yet. Be the first to review this product!</p>
   <?php else: ?>
     <?php while ($r = $reviews->fetch_assoc()): ?>
-      <div class="feature-box" style="margin-bottom:1rem;">
+      <div class="feature-box review-item">
         <div class="stars"><?= render_stars((float) $r['rating']) ?></div>
-        <strong><?= h($r['full_name']) ?></strong> <span style="color:var(--color-text-muted);font-size:.8rem;">&middot; <?= h(date('M j, Y', strtotime($r['created_at']))) ?></span>
-        <p style="margin-top:.4rem;"><?= h($r['comment']) ?></p>
+        <strong><?= h($r['full_name']) ?></strong> <span class="text-muted-sm">&middot; <?= h(date('M j, Y', strtotime($r['created_at']))) ?></span>
+        <p class="review-text"><?= h($r['comment']) ?></p>
       </div>
     <?php endwhile; ?>
   <?php endif; ?>

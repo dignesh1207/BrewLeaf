@@ -1,0 +1,122 @@
+/* =============================================================================
+   assets/css/sections.css
+   -----------------------------------------------------------------------------
+   General page-section layout: the padded "section" wrapper, section titles,
+   the "feature grid" (used for the 4 icon boxes on Home and the article list
+   on the Help page), and the shared card look used by several components.
+   ============================================================================= */
+
+.section {
+  padding: 4rem 0;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.section-title p {
+  color: var(--color-text-muted);
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+/* A section with a slightly different background and top/bottom borders,
+   used to visually separate one section from the ones above/below it
+   (e.g. the "Featured Products" section on the home page). */
+.section-alt {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Narrower content column, for pages that read better without stretching
+   full-width (About, Help articles, Contact, Login, Register). */
+.page-narrow-sm { max-width: 480px; margin-inline: auto; }
+.page-narrow-md { max-width: 600px; margin-inline: auto; }
+.page-narrow-lg { max-width: 800px; margin-inline: auto; }
+
+/* ---- Shared "raised card" look ---------------------------------------------
+   Feature boxes, product cards, dashboard tiles, charts and the filter bar
+   all sit on the page as a raised card with the same background/border/
+   shadow. Each component's own CSS file only adds what makes IT different. */
+.feature-box,
+.product-card,
+.dash-card,
+.chart-card,
+.filter-bar {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.feature-box,
+.product-card,
+.theme-card {
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), border-color var(--transition-slow);
+}
+
+.feature-box:hover,
+.product-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+}
+
+/* 4 boxes in a row on a normal screen, 2 per row on a tablet, and stacked
+   in 1 column on a phone. */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feature-box {
+  padding: 1.8rem 1.6rem;
+}
+
+.feature-box:hover {
+  transform: translateY(-6px);
+}
+
+.feature-box .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: .9rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  background: rgba(0, 0, 0, .06);
+}
+
+/* A regular photo dropped inside a page's body copy (About page, Help
+   articles), with a bit of breathing room and a soft shadow. */
+.content-image {
+  border-radius: var(--radius);
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow-md);
+}
+
+/* The roastery video embed on the home page. */
+.section-video {
+  width: 100%;
+  max-width: 720px;
+  display: block;
+  margin: 0 auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}

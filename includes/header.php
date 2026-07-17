@@ -19,6 +19,13 @@ $pageDescription = $pageDescription ?? 'BrewLeaf is an online artisan coffee and
 $pageKeywords    = $pageKeywords ?? 'coffee, tea, artisan coffee, loose leaf tea, online coffee shop, specialty tea';
 $activeTheme     = get_active_theme($conn);
 
+// Which nav link should be highlighted as "you are here" (see header.css
+// for the .active pill style). Based on the current script's filename and,
+// for the shop links, the ?category= in the URL.
+$navScript   = basename($_SERVER['SCRIPT_NAME']);
+$navCategory = $_GET['category'] ?? '';
+$navIsHelp   = str_contains($_SERVER['SCRIPT_NAME'], '/help/');
+
 // Cart item count badge (works for both guests and logged-in users).
 $cartCount = 0;
 if (is_logged_in()) {
@@ -51,9 +58,33 @@ $cs->close();
 <meta property="og:type" content="website">
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="<?= h(SITE_BASE_URL) ?>/assets/images/favicon.png">
-<!-- Theme + base styles (theme is switchable site-wide by the admin) -->
-<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/style.css">
+<!--
+  Every page loads the SAME set of small CSS files, in this order:
+    1. variables.css   -- colors/fonts as reusable variables
+    2. theme-*.css     -- overrides some of those variables for the active
+                          theme (switchable site-wide in admin/theme.php)
+    3. base.css         -- reset + default text/page styling
+    4-13. one file per component (buttons, forms, header, footer, hero,
+          sections, product cards, tables, dashboard, admin)
+    14. utilities.css   -- small helper classes, loaded last so they can
+                          fine-tune spacing set by the files above
+  Only editing ONE thing? This list tells you which file to open.
+-->
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/variables.css">
 <link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/theme-<?= h($activeTheme) ?>.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/base.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/buttons.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/forms.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/header.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/footer.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/hero.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/sections.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/product-card.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/tabs.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/tables.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/dashboard.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/admin.css">
+<link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/utilities.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 </head>
@@ -63,9 +94,7 @@ $cs->close();
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="logo" href="<?= h(SITE_BASE_URL) ?>/index.php">
-      <span class="logo-mark" aria-hidden="true">&#9749;</span> BrewLeaf
-    </a>
+    <a class="logo" href="<?= h(SITE_BASE_URL) ?>/index.php">BrewLeaf</a>
 
     <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation menu">
       <span></span><span></span><span></span>
@@ -73,13 +102,13 @@ $cs->close();
 
     <nav class="primary-nav" id="primaryNav" aria-label="Primary">
       <ul>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/index.php">Home</a></li>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/products.php">Shop</a></li>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/products.php?category=coffee">Coffee</a></li>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/products.php?category=tea">Tea</a></li>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/about.php">About</a></li>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.php">Help</a></li>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/contact.php">Contact</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/index.php" class="<?= $navScript === 'index.php' ? 'active' : '' ?>">Home</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/products.php" class="<?= $navScript === 'products.php' && $navCategory === '' ? 'active' : '' ?>">Shop</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/products.php?category=coffee" class="<?= $navCategory === 'coffee' ? 'active' : '' ?>">Coffee</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/products.php?category=tea" class="<?= $navCategory === 'tea' ? 'active' : '' ?>">Tea</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/about.php" class="<?= $navScript === 'about.php' ? 'active' : '' ?>">About</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.php" class="<?= $navIsHelp ? 'active' : '' ?>">Help</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/contact.php" class="<?= $navScript === 'contact.php' ? 'active' : '' ?>">Contact</a></li>
       </ul>
       <ul class="nav-utility">
         <li>

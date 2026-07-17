@@ -120,8 +120,8 @@ require_once __DIR__ . '/../includes/admin-nav.php';
       </div>
       <div class="form-row">
         <label for="is_active">Visibility</label>
-        <label style="font-weight:normal;display:flex;align-items:center;gap:.5rem;">
-          <input type="checkbox" id="is_active" name="is_active" style="width:auto;" <?= $product['is_active'] ? 'checked' : '' ?>> Active (visible in shop)
+        <label class="checkbox-row">
+          <input type="checkbox" id="is_active" name="is_active" class="w-auto" <?= $product['is_active'] ? 'checked' : '' ?>> Active (visible in shop)
         </label>
       </div>
     </div>
@@ -134,9 +134,9 @@ require_once __DIR__ . '/../includes/admin-nav.php';
   </form>
 
   <?php if ($id): ?>
-    <h2 id="options" style="margin-top:2.5rem;">Options (Size, Grind/Style, etc.)</h2>
+    <h2 id="options" class="mt-xxl">Options (Size, Grind/Style, etc.)</h2>
     <p class="form-hint">Every product needs at least 2 option groups (e.g. Size + Grind) so shoppers can customize their order.</p>
-    <table style="margin-bottom:1.5rem;">
+    <table class="mb-lg">
       <thead><tr><th>Group</th><th>Value</th><th>Price Modifier</th><th></th></tr></thead>
       <tbody>
         <?php foreach ($existingOptions as $group => $rows): foreach ($rows as $opt): ?>
@@ -145,7 +145,7 @@ require_once __DIR__ . '/../includes/admin-nav.php';
             <td><?= h($opt['option_value']) ?></td>
             <td><?= h($opt['price_modifier']) >= 0 ? '+' . money((float) $opt['price_modifier']) : money((float) $opt['price_modifier']) ?></td>
             <td>
-              <form method="post" action="product-edit.php?id=<?= $id ?>" onsubmit="return confirm('Remove this option?');">
+              <form method="post" action="product-edit.php?id=<?= $id ?>" data-confirm="Remove this option?">
                 <input type="hidden" name="delete_option" value="<?= (int) $opt['id'] ?>">
                 <button type="submit" class="btn btn-sm btn-danger">Remove</button>
               </form>
@@ -155,7 +155,7 @@ require_once __DIR__ . '/../includes/admin-nav.php';
       </tbody>
     </table>
 
-    <form method="post" action="product-edit.php?id=<?= $id ?>#options" class="form-grid" style="align-items:end;">
+    <form method="post" action="product-edit.php?id=<?= $id ?>#options" class="form-grid form-grid-end">
       <div class="form-row">
         <label for="option_group">Group Name</label>
         <input type="text" id="option_group" name="option_group" placeholder="e.g. Size">
@@ -173,7 +173,7 @@ require_once __DIR__ . '/../includes/admin-nav.php';
       </div>
     </form>
   <?php else: ?>
-    <p class="form-hint" style="margin-top:2rem;">Save the product first, then you'll be able to add its size/grind options.</p>
+    <p class="form-hint mt-xl">Save the product first, then you'll be able to add its size/grind options.</p>
   <?php endif; ?>
 </section>
 

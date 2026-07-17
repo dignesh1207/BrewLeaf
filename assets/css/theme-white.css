@@ -1,0 +1,29 @@
+/* =============================================================================
+   theme-white.css -- Clean, minimal light theme.
+   Bright white surfaces, near-black text, and a warm copper accent. The hero
+   swaps the gradient for a full-bleed photo with a dark overlay so the
+   heading and button stay readable.
+   ============================================================================= */
+:root {
+  --color-bg: #fafaf8;
+  --color-surface: #ffffff;
+  --color-text: #1c1c1a;
+  --color-text-muted: #6b6b66;
+  --color-primary: #2a2a27;
+  --color-primary-dark: #141412;
+  --color-accent: #ffffff;
+  --color-accent-dark: #6d4f2c;
+  --color-border: #eaeae6;
+}
+
+.hero {
+  background:
+    linear-gradient(180deg, rgba(20, 20, 18, .55) 0%, rgba(20, 20, 18, .32) 45%, rgba(20, 20, 18, .62) 100%),
+    url('../images/hero-banner.jpg') center / cover no-repeat;
+}
+
+
+.hero::before,
+.hero::after {
+  display: none;
+}

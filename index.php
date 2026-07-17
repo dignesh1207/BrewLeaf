@@ -48,7 +48,10 @@ require_once __DIR__ . '/includes/header.php';
     <h2>Watch How We Roast</h2>
     <p>A quick look inside the BrewLeaf roastery.</p>
   </div>
-  <video controls preload="none" poster="assets/images/about-roastery.jpg" style="width:100%;max-width:720px;display:block;margin:0 auto;border-radius:10px;box-shadow:var(--shadow-md);">
+  <!-- autoplay only works in browsers if the video starts muted -- the
+       visitor can unmute with the volume control once it's playing.
+       Playback speed (1.5x) is set in assets/js/hero-video.js. -->
+  <video autoplay muted playsinline controls preload="auto" poster="assets/images/about-roastery.jpg" class="section-video">
     <source src="assets/videos/roasting-process.mp4" type="video/mp4">
     Your browser does not support embedded video.
   </video>
@@ -77,7 +80,7 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<section class="section" style="background:var(--color-surface);border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border);">
+<section class="section section-alt">
   <div class="container">
     <div class="section-title">
       <h2>Featured Products</h2>
@@ -85,7 +88,7 @@ require_once __DIR__ . '/includes/header.php';
     </div>
     <div class="product-grid">
       <?php while ($p = $featured->fetch_assoc()): ?>
-        <a class="product-card" href="product.php?slug=<?= h($p['slug']) ?>" style="color:inherit;">
+        <a class="product-card card-link" href="product.php?slug=<?= h($p['slug']) ?>">
           <img src="<?= h($p['image']) ?>" alt="<?= h($p['name']) ?>" loading="lazy">
           <div class="body">
             <span class="badge"><?= h(ucfirst($p['category'])) ?></span>
@@ -106,7 +109,13 @@ require_once __DIR__ . '/includes/header.php';
     <p>Live data straight from our product database.</p>
   </div>
   <div class="chart-card">
-    <canvas id="catalogueChart" height="90"></canvas>
+    <canvas
+      id="catalogueChart"
+      height="90"
+      data-labels="<?= h(json_encode($chartLabels)) ?>"
+      data-counts="<?= h(json_encode($chartCounts)) ?>"
+      data-ratings="<?= h(json_encode($chartRatings)) ?>"
+    ></canvas>
   </div>
 </section>
 
@@ -122,42 +131,10 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<!-- Chart.js from CDN, per project single-file-friendly rule (no local build step needed) -->
+<!-- Chart.js from CDN, per project single-file-friendly rule (no local build step needed).
+     The actual chart setup lives in assets/js/catalogue-chart.js, loaded from
+     includes/footer.php. Tab-switching behaviour lives in assets/js/tabs.js
+     and its look in assets/css/tabs.css. -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-<script>
-  // Category tab switching (interactive menu, no page reload).
-  document.querySelectorAll('.tab-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-      document.querySelectorAll('.tab-panel').forEach(function (p) { p.hidden = true; });
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-      document.getElementById(btn.dataset.target).hidden = false;
-    });
-  });
-
-  // Data visualization: products per category + average rating.
-  var ctx = document.getElementById('catalogueChart');
-  if (ctx) {
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: <?= json_encode($chartLabels) ?>,
-        datasets: [
-          { label: 'Products', data: <?= json_encode($chartCounts) ?>, backgroundColor: '#6f4e37' },
-          { label: 'Avg. Rating (x10)', data: <?= json_encode(array_map(fn($r) => round($r * 2, 1), $chartRatings)) ?>, backgroundColor: '#c98a3b' }
-        ]
-      },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-  }
-</script>
-
-<style>
-.category-tabs { max-width: 640px; margin: 0 auto; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 1.5rem; }
-.tab-buttons { display: flex; gap: .5rem; margin-bottom: 1rem; }
-.tab-btn { flex: 1; padding: .6rem; border: 1px solid var(--color-border); background: var(--color-bg); border-radius: 8px; font-weight: 600; }
-.tab-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
-</style>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -1,0 +1,123 @@
+/* =============================================================================
+   assets/css/tables.css
+   -----------------------------------------------------------------------------
+   Every <table> on the site (cart, checkout summary, admin lists) shares
+   this look, plus a few small helpers for table cells: a product thumbnail
+   image, a cell that lines up action buttons, and the colored "online/
+   offline" status pill used on monitor.php.
+   ============================================================================= */
+
+/* display: block + overflow-x: auto lets a table that's wider than its
+   column (like the cart table on a phone -- lots of columns) scroll
+   sideways WITHIN its own box, instead of forcing the whole page wider
+   than the screen. The rows/cells inside keep their normal table layout;
+   only the outer <table> box itself becomes a scrollable block. This one
+   rule fixes every table on the site, so no page needs any extra markup. */
+table {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden; /* keeps the rounded corners clipping the header row, like before */
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+th,
+td {
+  text-align: left;
+  padding: .85rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+th {
+  background: var(--color-bg);
+  font-family: var(--font-heading);
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--color-text-muted);
+}
+
+tbody tr {
+  transition: background var(--transition);
+}
+
+tbody tr:hover {
+  background: rgba(0, 0, 0, .03);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Right-align a cell's text, e.g. money amounts in the cart summary. */
+.text-right {
+  text-align: right;
+}
+
+/* Small square product thumbnail inside a table cell (cart + admin lists). */
+.table-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* A table cell that needs its contents laid out in a row (thumbnail next
+   to product name, or a group of action buttons next to each other). */
+.table-cell-flex {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.table-actions {
+  display: flex;
+  gap: .4rem;
+}
+
+/* The little order-total box under the cart table. */
+.cart-summary {
+  max-width: 320px;
+  margin-left: auto;
+  margin-top: 1.5rem;
+}
+
+/* ---- Status pill (used on monitor.php) ------------------------------------- */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-weight: 700;
+  font-size: .85rem;
+  padding: .35rem .85rem;
+  border-radius: 999px;
+}
+
+.status-online {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.status-online .status-dot {
+  box-shadow: 0 0 0 3px rgba(58, 122, 78, .25);
+}
+
+.status-offline {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.status-offline .status-dot {
+  box-shadow: 0 0 0 3px rgba(179, 64, 42, .25);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}

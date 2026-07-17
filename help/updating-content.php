@@ -6,7 +6,7 @@ $pageTitle = 'Updating Site Content | BrewLeaf Help';
 $pageDescription = 'A non-programmer guide to adding products, images, and video to BrewLeaf without touching code.';
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<section class="section container" style="max-width:760px;">
+<section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Updating Site Content (No Coding Required)</h1>
   <p>Everything below can be done from your web browser through the Admin area -- no code editing needed.</p>

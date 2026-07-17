@@ -6,7 +6,7 @@ $pageTitle = 'Managing Your Account | BrewLeaf Help';
 $pageDescription = 'How to update your profile and view order history on BrewLeaf.';
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<section class="section container" style="max-width:760px;">
+<section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Managing Your Account</h1>
 

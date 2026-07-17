@@ -171,7 +171,7 @@ INSERT INTO users (username, email, password_hash, full_name, role, status) VALU
 
 -- Site templates (regular / autumn / winter) -- 'regular' active by default.
 INSERT INTO site_settings (setting_key, setting_value) VALUES
-('active_theme', 'regular');
+('active_theme', 'white');
 
 -- Backend services checked by monitor.php
 INSERT INTO service_status (service_name, status) VALUES
@@ -185,7 +185,7 @@ INSERT INTO service_status (service_name, status) VALUES
 -- ----------------------------------------------------------------------------
 -- Products: 10 coffees + 10 teas.
 -- ----------------------------------------------------------------------------
-INSERT INTO products (name, slug, category, origin, description, base_price, image, rating_avg, rating_count) VALUES
+INSERT INTO products (name, slug, category, origin, description, base_price, image, rating_avg, rating_count, is_active) VALUES
 ('Sunrise Ethiopian Yirgacheffe', 'sunrise-ethiopian-yirgacheffe', 'coffee', 'Ethiopia', 'Bright, floral, and citrusy with notes of bergamot and jasmine. A washed-process coffee grown at high altitude.', 16.99, 'assets/images/product-01.jpg', 4.7, 132, 1),
 ('Midnight Sumatra Mandheling', 'midnight-sumatra-mandheling', 'coffee', 'Indonesia', 'Full-bodied and earthy with low acidity, notes of cedar and dark chocolate.', 15.49, 'assets/images/product-02.jpg', 4.5, 98, 1),
 ('Golden Colombian Supremo', 'golden-colombian-supremo', 'coffee', 'Colombia', 'Balanced and smooth with caramel sweetness and a nutty finish.', 14.99, 'assets/images/product-03.jpg', 4.6, 210, 1),

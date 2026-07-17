@@ -1,0 +1,230 @@
+/* =============================================================================
+   assets/css/product-card.css
+   -----------------------------------------------------------------------------
+   Everything related to showing a product: the grid of cards (Home page
+   "Featured Products" and the full Shop page), the product detail page
+   (product.php), the search/filter bar, and small pieces reused on those
+   pages like the category badge and star rating.
+   ============================================================================= */
+
+/* 4 product cards in a row on a normal screen, 2 per row on a tablet, and
+   stacked in 1 column on a phone. */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem 2rem;
+}
+
+@media (max-width: 1000px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.product-card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+}
+
+.product-card img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.product-card:hover img {
+  transform: scale(1.06);
+}
+
+.product-card .body {
+  padding: 1.1rem 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Space between the "COFFEE"/"TEA" badge and the product name below it. */
+/* Without this, the badge stretches to the full width of the card: .body
+   is a flex column, and flex items default to "stretch" across the
+   cross-axis (here, that's width) unless told to size to their own
+   content instead. align-self: flex-start opts this one item out of that
+   stretch so it stays a small pill, like a normal inline-block element. */
+.product-card .badge {
+  align-self: flex-start;
+  margin-bottom: .6rem;
+}
+
+.product-card h3 {
+  margin-bottom: .2rem;
+  font-size: 1.05rem;
+}
+
+.product-card .origin {
+  font-size: .8rem;
+  color: var(--color-text-muted);
+  margin-bottom: .5rem;
+}
+
+.product-card .price {
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: .4rem 0;
+}
+
+.product-card .stars {
+  color: var(--color-primary);
+  letter-spacing: 1px;
+  font-size: .9rem;
+}
+
+.product-card .cta-row {
+  margin-top: auto;
+  display: flex;
+  gap: .5rem;
+}
+
+/* Small rounded label, e.g. "COFFEE" / "TEA" / order status. Uses
+   --color-primary (not --color-accent) on purpose: --color-accent is
+   sometimes a very light color (see variables.css), which would make the
+   white badge text hard to read. --color-primary is always dark enough. */
+.badge {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .25rem .6rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* Some cards/boxes are wrapped in an <a> link (the whole card is clickable).
+   Without this, links turn text blue/purple -- this keeps the normal text
+   color instead. Used on product cards and the Help article boxes. */
+.card-link {
+  color: inherit;
+}
+
+/* ---- Search / filter bar (top of the Shop page) --------------------------- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  align-items: end;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+}
+
+.filter-bar .form-row {
+  margin-bottom: 0;
+  min-width: 160px;
+  flex: 1;
+}
+
+/* A form-row that should only take up as much width as it needs (not
+   stretch to fill the filter bar), e.g. the "Apply" button's row. */
+.filter-bar .form-row-auto {
+  flex: 0;
+}
+
+/* On a narrow phone, two 160px-min fields side by side leaves each one too
+   squeezed to use comfortably (e.g. the search box's placeholder text gets
+   cut off) -- stack every field to full width instead. */
+@media (max-width: 560px) {
+  .filter-bar .form-row,
+  .filter-bar .form-row-auto {
+    flex-basis: 100%;
+  }
+}
+
+/* ---- Product detail page (product.php) ------------------------------------ */
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.product-detail img {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* Small "Home / Shop / Product Name" trail above the product title. */
+.breadcrumb {
+  font-size: .85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+/* The big live-updating price next to the size/grind options. */
+.price-live {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Narrow quantity number field. */
+.qty-field {
+  max-width: 140px;
+}
+
+.option-group {
+  margin-bottom: 1rem;
+}
+
+.option-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.option-pill {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: .45rem 1rem;
+  font-size: .88rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: var(--color-surface);
+}
+
+.option-pill.selected,
+.option-pill:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ---- Customer review list (bottom of product.php) -------------------------- */
+.review-item {
+  margin-bottom: 1rem;
+}
+
+.review-text {
+  margin-top: .4rem;
+}
+
+/* Modifier for .badge that capitalizes the first letter of an order status
+   word (e.g. "shipped" -> "Shipped") instead of shouting it in caps. */
+.badge-capitalize {
+  text-transform: capitalize;
+}
+
+@media (max-width: 860px) {
+  .product-detail {
+    grid-template-columns: 1fr;
+  }
+}

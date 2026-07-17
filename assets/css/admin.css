@@ -1,0 +1,156 @@
+/* =============================================================================
+   assets/css/admin.css
+   -----------------------------------------------------------------------------
+   Styling only used on admin pages (anything under /admin/ plus the small
+   admin sub-nav bar included at the top of those pages).
+   ============================================================================= */
+
+/* ---- Admin sub-nav bar (includes/admin-nav.php) ---------------------------- */
+.admin-bar {
+  background: var(--color-primary-dark);
+}
+
+.admin-bar ul {
+  display: flex;
+  gap: 1.2rem;
+  padding: .8rem 0;
+  flex-wrap: wrap;
+}
+
+.admin-bar a {
+  color: rgba(255, 255, 255, .65);
+  font-weight: 500;
+}
+
+/* Added by PHP to whichever link matches the current admin page. */
+.admin-bar a.active {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Pushes the "Back to Site" link to the far right of the bar. */
+.admin-bar-back {
+  margin-left: auto;
+}
+
+/* ---- Theme picker (admin/theme.php) ---------------------------------------- */
+/* 4 theme cards in a row on a normal screen, 2 per row on a tablet, and
+   stacked in 1 column on a phone. */
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  .theme-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .theme-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.theme-card {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.theme-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.theme-card.active {
+  border-color: var(--color-primary);
+}
+
+/* The swatch is a tiny mock-up of the page (a header bar, a hero block,
+   3 little "cards") built entirely from divs/spans, colored per-theme --
+   it stands in for a real screenshot so it never goes out of date if a
+   theme's colors change. See admin/theme.php for the markup. */
+.theme-swatch {
+  height: 118px;
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-swatch .mock-header {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .4rem .5rem;
+  flex: 0 0 auto;
+}
+
+.theme-swatch .mock-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.theme-swatch .mock-line {
+  width: 20px;
+  height: 5px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.theme-swatch .mock-hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-swatch .mock-btn {
+  width: 34px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.theme-swatch .mock-body {
+  display: flex;
+  gap: .35rem;
+  padding: .5rem;
+  flex: 0 0 auto;
+}
+
+.theme-swatch .mock-card {
+  flex: 1;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.theme-card .theme-label {
+  padding: .8rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.theme-desc {
+  font-weight: normal;
+  color: var(--color-text-muted);
+}
+
+/* ---- Small header row: a page title next to an action button -------------- */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Row of small "chips" (used for the tag list on the admin dashboard). */
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+}

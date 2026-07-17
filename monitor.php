@@ -9,31 +9,53 @@ require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
-/**
- * Each check returns true (online) or false (offline). Wrapped in
- * try/catch so a failure in one check can't take down the whole page.
- */
-function run_check(callable $fn): bool
-{
-    try {
-        return (bool) $fn();
-    } catch (Throwable $e) {
-        error_log('Health check failed: ' . $e->getMessage());
-        return false;
-    }
+// Each check below sets true (online) or false (offline) into $checks.
+// Database checks are wrapped in try/catch so a failure in one check can't
+// take down the whole page.
+$checks = [];
+
+// Database Connection: can we run a simple query right now?
+try {
+    $conn->query('SELECT 1');
+    $checks['Database Connection'] = true;
+} catch (Throwable $e) {
+    error_log('Health check failed: ' . $e->getMessage());
+    $checks['Database Connection'] = false;
 }
 
-$checks = [
-    'Database Connection' => run_check(fn() => $conn->ping()),
-    'Product Catalogue'   => run_check(fn() => $conn->query('SELECT id FROM products LIMIT 1')->num_rows > 0),
-    'Shopping Cart'       => run_check(function () {
-        // Cart relies on PHP sessions -- confirm the session is active.
-        return session_status() === PHP_SESSION_ACTIVE;
-    }),
-    'Checkout Service'    => run_check(fn() => $conn->query("SHOW TABLES LIKE 'orders'")->num_rows === 1),
-    'User Authentication' => run_check(fn() => $conn->query("SHOW TABLES LIKE 'users'")->num_rows === 1),
-    'Search / SEO Sitemap' => run_check(fn() => file_exists(__DIR__ . '/sitemap.php')),
-];
+// Product Catalogue: does the products table have at least one row?
+try {
+    $result = $conn->query('SELECT id FROM products LIMIT 1');
+    $checks['Product Catalogue'] = $result->num_rows > 0;
+} catch (Throwable $e) {
+    error_log('Health check failed: ' . $e->getMessage());
+    $checks['Product Catalogue'] = false;
+}
+
+// Shopping Cart: the cart relies on PHP sessions, so just confirm the
+// session is active.
+$checks['Shopping Cart'] = session_status() === PHP_SESSION_ACTIVE;
+
+// Checkout Service: does the orders table exist?
+try {
+    $result = $conn->query("SHOW TABLES LIKE 'orders'");
+    $checks['Checkout Service'] = $result->num_rows === 1;
+} catch (Throwable $e) {
+    error_log('Health check failed: ' . $e->getMessage());
+    $checks['Checkout Service'] = false;
+}
+
+// User Authentication: does the users table exist?
+try {
+    $result = $conn->query("SHOW TABLES LIKE 'users'");
+    $checks['User Authentication'] = $result->num_rows === 1;
+} catch (Throwable $e) {
+    error_log('Health check failed: ' . $e->getMessage());
+    $checks['User Authentication'] = false;
+}
+
+// Search / SEO Sitemap: does the sitemap file exist on disk?
+$checks['Search / SEO Sitemap'] = file_exists(__DIR__ . '/sitemap.php');
 
 // Persist results so the admin dashboard snapshot stays in sync.
 foreach ($checks as $name => $isOnline) {
@@ -70,7 +92,7 @@ require_once __DIR__ . '/includes/header.php';
     </tbody>
   </table>
 
-  <p class="form-hint" style="margin-top:1.5rem;">This page runs live checks on every load (database ping, table availability, session status) rather than showing stale, hard-coded data.</p>
+  <p class="form-hint mt-lg">This page runs live checks on every load (database ping, table availability, session status) rather than showing stale, hard-coded data.</p>
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

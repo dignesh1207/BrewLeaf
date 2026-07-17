@@ -46,13 +46,13 @@ require_once __DIR__ . '/../includes/admin-nav.php';
         <?php while ($o = $orders->fetch_assoc()): ?>
           <tr>
             <td>#<?= (int) $o['id'] ?></td>
-            <td><?= h($o['full_name']) ?><br><small style="color:var(--color-text-muted);"><?= h($o['email']) ?></small></td>
+            <td><?= h($o['full_name']) ?><br><small class="text-muted-sm"><?= h($o['email']) ?></small></td>
             <td><?= h(date('M j, Y', strtotime($o['created_at']))) ?></td>
             <td><?= money((float) $o['total']) ?></td>
             <td>
-              <form method="post" action="orders.php" style="display:flex;gap:.4rem;">
+              <form method="post" action="orders.php" class="table-actions">
                 <input type="hidden" name="order_id" value="<?= (int) $o['id'] ?>">
-                <select name="status" onchange="this.form.submit()">
+                <select name="status" class="auto-submit">
                   <?php foreach (['pending', 'processing', 'shipped', 'delivered', 'cancelled'] as $s): ?>
                     <option value="<?= $s ?>" <?= $o['status'] === $s ? 'selected' : '' ?>><?= ucfirst($s) ?></option>
                   <?php endforeach; ?>
