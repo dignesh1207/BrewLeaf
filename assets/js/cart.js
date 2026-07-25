@@ -19,11 +19,13 @@ document.addEventListener('DOMContentLoaded', function () {
 function initAddToCartForms() {
   document.querySelectorAll('form.add-to-cart-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
-      // If fetch isn't available for some reason, fall back to normal submit.
+      // Fall back to a normal submit if fetch isn't available.
       if (!window.fetch) return;
       e.preventDefault();
 
       var formData = new FormData(form);
+      // POST in the background; X-Requested-With tells the PHP endpoint to
+      // reply with JSON instead of a full HTML page.
       fetch(form.action, { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(function (res) { return res.json(); })
         .then(function (data) {
@@ -57,6 +59,7 @@ function showToast(message) {
   toast.textContent = message;
   toast.className = 'toast';
   document.body.appendChild(toast);
+  // Add the "visible" class a frame later so the CSS transition animates in.
   requestAnimationFrame(function () { toast.classList.add('toast-visible'); });
   setTimeout(function () {
     toast.classList.remove('toast-visible');
@@ -82,6 +85,7 @@ function initQuantityInputs() {
       input.dispatchEvent(new Event('change'));
     });
 
+    // Any quantity change, from +/- or typed directly, submits this row's form.
     input.addEventListener('change', function () {
       stepper.closest('form').submit();
     });

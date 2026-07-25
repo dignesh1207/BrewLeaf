@@ -1,9 +1,7 @@
 <?php
 /**
- * index.php -- Home page.
- * Dynamic: pulls featured products and category stats live from MySQL.
- * Includes: hero video, featured product grid, interactive category tabs,
- * a data-visualization chart (Chart.js, CDN), and an embedded map (footer).
+ * index.php -- Home page. Pulls featured products and category stats live
+ * from MySQL; includes hero video, category tabs, and a Chart.js chart.
  */
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
@@ -12,17 +10,17 @@ require_once __DIR__ . '/includes/functions.php';
 $pageTitle = 'BrewLeaf Artisan Coffee & Tea Co. | Ethically Sourced, Small-Batch Roasted';
 $pageDescription = 'Shop small-batch artisan coffee and specialty loose-leaf tea. Ethically sourced from Ethiopia, Colombia, Japan and more. Free shipping over $40.';
 
-// Featured products: top 8 by rating.
+// Top 8 by rating (rating_count as tiebreaker) so the homepage highlights well-loved items.
 $featured = $conn->query(
     'SELECT id, name, slug, category, origin, base_price, image, rating_avg, rating_count
      FROM products WHERE is_active = 1 ORDER BY rating_avg DESC, rating_count DESC LIMIT 8'
 );
 
-// Data for the "products per category" chart used by Chart.js below.
 $catStats = $conn->query(
     "SELECT category, COUNT(*) AS n, ROUND(AVG(rating_avg),2) AS avg_rating
      FROM products WHERE is_active = 1 GROUP BY category"
 );
+// Reshaped into parallel arrays -- the flat format Chart.js expects.
 $chartLabels = [];
 $chartCounts = [];
 $chartRatings = [];
@@ -48,8 +46,7 @@ require_once __DIR__ . '/includes/header.php';
     <h2>Watch How We Roast</h2>
     <p>A quick look inside the BrewLeaf roastery.</p>
   </div>
-  <!-- autoplay only works in browsers if the video starts muted -- the
-       visitor can unmute with the volume control once it's playing.
+  <!-- autoplay requires muted; visitor can unmute via the volume control.
        Playback speed (1.5x) is set in assets/js/hero-video.js. -->
   <video autoplay muted playsinline controls preload="auto" poster="assets/images/about-roastery.jpg" class="section-video">
     <source src="assets/videos/roasting-process.mp4" type="video/mp4">
@@ -63,7 +60,6 @@ require_once __DIR__ . '/includes/header.php';
     <p>Use the tabs below to jump straight to coffee or tea.</p>
   </div>
 
-  <!-- Interactive tabbed menu (no page reload) -->
   <div class="category-tabs" data-component="tabs">
     <div class="tab-buttons" role="tablist">
       <button class="tab-btn active" role="tab" aria-selected="true" data-target="tab-coffee">Coffee</button>
@@ -109,6 +105,7 @@ require_once __DIR__ . '/includes/header.php';
     <p>Live data straight from our product database.</p>
   </div>
   <div class="chart-card">
+    <?php // Chart drawn by assets/js/catalogue-chart.js, reading these data-* attributes. ?>
     <canvas
       id="catalogueChart"
       height="90"
@@ -131,10 +128,7 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<!-- Chart.js from CDN, per project single-file-friendly rule (no local build step needed).
-     The actual chart setup lives in assets/js/catalogue-chart.js, loaded from
-     includes/footer.php. Tab-switching behaviour lives in assets/js/tabs.js
-     and its look in assets/css/tabs.css. -->
+<!-- Chart.js from CDN (no local build step). Setup in assets/js/catalogue-chart.js. -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

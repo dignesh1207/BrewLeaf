@@ -1,24 +1,24 @@
 <?php
-/**
- * admin/dashboard.php -- Admin landing page: key metrics + a live-data
- * revenue chart + a snapshot of the backend service monitor.
- */
+/** admin/dashboard.php -- Admin landing page: KPIs, revenue chart, service status snapshot. */
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+// Redirects non-admins away.
 require_admin();
 
 $productCount = $conn->query('SELECT COUNT(*) AS n FROM products WHERE is_active = 1')->fetch_assoc()['n'];
 $orderCount   = $conn->query('SELECT COUNT(*) AS n FROM orders')->fetch_assoc()['n'];
 $userCount    = $conn->query("SELECT COUNT(*) AS n FROM users WHERE role = 'customer'")->fetch_assoc()['n'];
+// Revenue excludes cancelled orders.
 $revenue      = $conn->query('SELECT COALESCE(SUM(total),0) AS n FROM orders WHERE status != "cancelled"')->fetch_assoc()['n'];
 
-// Orders per day for the last 14 days (data visualization on the admin side).
+// Orders per day, last 14 days.
 $salesData = $conn->query(
     "SELECT DATE(created_at) AS d, COUNT(*) AS n, COALESCE(SUM(total),0) AS revenue
      FROM orders WHERE created_at >= (CURDATE() - INTERVAL 14 DAY)
      GROUP BY DATE(created_at) ORDER BY d"
 );
+// Reshape into parallel label/revenue arrays for Chart.js.
 $salesLabels = [];
 $salesRevenue = [];
 while ($row = $salesData->fetch_assoc()) {
@@ -26,6 +26,7 @@ while ($row = $salesData->fetch_assoc()) {
     $salesRevenue[] = (float) $row['revenue'];
 }
 
+// Latest status per service (full history on public monitor.php).
 $services = $conn->query('SELECT service_name, status FROM service_status ORDER BY id');
 
 $pageTitle = 'Admin Dashboard | BrewLeaf';
@@ -46,6 +47,8 @@ require_once __DIR__ . '/../includes/admin-nav.php';
 
   <div class="chart-card chart-card-spaced">
     <h2>Revenue -- Last 14 Days</h2>
+    <?php // Labels/revenue are JSON-encoded into data-* attrs; revenue-chart.js
+    // JSON.parse()s them to feed Chart.js. h() escapes for the HTML attr. ?>
     <canvas
       id="revenueChart"
       height="90"
@@ -68,9 +71,7 @@ require_once __DIR__ . '/../includes/admin-nav.php';
   </div>
 </section>
 
-<!-- The chart itself is set up in assets/js/revenue-chart.js, loaded from
-     includes/footer.php -- it reads the data-labels/data-revenue attributes
-     above. -->
+<!-- Chart setup lives in assets/js/revenue-chart.js, loaded via includes/footer.php. -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

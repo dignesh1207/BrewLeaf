@@ -13,6 +13,7 @@ $userId = (int) $_SESSION['user_id'];
 $message = '';
 $error = '';
 
+// Username is intentionally not editable here, only full name and email.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $fullName = trim($_POST['full_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -24,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         $upd->bind_param('ssi', $fullName, $email, $userId);
         $upd->execute();
         $upd->close();
+        // Keep session copy in sync so the header/greeting updates immediately.
         $_SESSION['full_name'] = $fullName;
         $message = 'Profile updated.';
     }

@@ -48,6 +48,7 @@
 }
 
 .hero .container {
+  text-align: center;
   position: relative;
   z-index: 1;
   animation: hero-rise var(--transition-slow) both;
@@ -56,6 +57,7 @@
 .hero h1 {
   color: #fff;
 }
+
 
 .hero p {
   color: rgba(255, 255, 255, .88);

@@ -9,12 +9,10 @@ require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
-// Each check below sets true (online) or false (offline) into $checks.
-// Database checks are wrapped in try/catch so a failure in one check can't
-// take down the whole page.
+// Each check sets true/false into $checks; try/catch keeps one failing
+// check from taking down the whole page.
 $checks = [];
 
-// Database Connection: can we run a simple query right now?
 try {
     $conn->query('SELECT 1');
     $checks['Database Connection'] = true;
@@ -23,7 +21,6 @@ try {
     $checks['Database Connection'] = false;
 }
 
-// Product Catalogue: does the products table have at least one row?
 try {
     $result = $conn->query('SELECT id FROM products LIMIT 1');
     $checks['Product Catalogue'] = $result->num_rows > 0;
@@ -32,11 +29,8 @@ try {
     $checks['Product Catalogue'] = false;
 }
 
-// Shopping Cart: the cart relies on PHP sessions, so just confirm the
-// session is active.
 $checks['Shopping Cart'] = session_status() === PHP_SESSION_ACTIVE;
 
-// Checkout Service: does the orders table exist?
 try {
     $result = $conn->query("SHOW TABLES LIKE 'orders'");
     $checks['Checkout Service'] = $result->num_rows === 1;
@@ -45,7 +39,6 @@ try {
     $checks['Checkout Service'] = false;
 }
 
-// User Authentication: does the users table exist?
 try {
     $result = $conn->query("SHOW TABLES LIKE 'users'");
     $checks['User Authentication'] = $result->num_rows === 1;
@@ -54,10 +47,9 @@ try {
     $checks['User Authentication'] = false;
 }
 
-// Search / SEO Sitemap: does the sitemap file exist on disk?
 $checks['Search / SEO Sitemap'] = file_exists(__DIR__ . '/sitemap.php');
 
-// Persist results so the admin dashboard snapshot stays in sync.
+// Persist so the admin dashboard snapshot stays in sync.
 foreach ($checks as $name => $isOnline) {
     $status = $isOnline ? 'online' : 'offline';
     $stmt = $conn->prepare('UPDATE service_status SET status = ? WHERE service_name = ?');

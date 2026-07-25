@@ -8,6 +8,7 @@ require_once __DIR__ . '/config/db.php';
 
 header('Content-Type: application/xml; charset=utf-8');
 
+// Product pages are added dynamically below since slugs can't be hard-coded.
 $staticPages = ['index.php', 'products.php', 'about.php', 'contact.php', 'help/index.php'];
 
 echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";

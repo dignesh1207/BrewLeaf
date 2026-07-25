@@ -12,10 +12,13 @@ $category = $_GET['category'] ?? '';
 $search   = trim($_GET['q'] ?? '');
 $sort     = $_GET['sort'] ?? 'popular';
 
+// $params/$types are built in lockstep with $where so placeholder order
+// always matches the bind_param() call below.
 $where = ['is_active = 1'];
 $params = [];
 $types = '';
 
+// Whitelisted values only, so a bogus ?category= can't inject anything.
 if (in_array($category, ['coffee', 'tea'], true)) {
     $where[] = 'category = ?';
     $params[] = $category;
@@ -28,6 +31,7 @@ if ($search !== '') {
     $types .= 'sss';
 }
 
+// match() maps ?sort= to a fixed ORDER BY clause -- user input never reaches the SQL directly.
 $orderBy = match ($sort) {
     'price_low'  => 'base_price ASC',
     'price_high' => 'base_price DESC',
@@ -39,6 +43,7 @@ $orderBy = match ($sort) {
 $sql = 'SELECT id, name, slug, category, origin, base_price, image, rating_avg, rating_count
         FROM products WHERE ' . implode(' AND ', $where) . ' ORDER BY ' . $orderBy;
 
+// WHERE is built dynamically, but every value goes through bind_param(), not string concat.
 $stmt = $conn->prepare($sql);
 if ($params) {
     $stmt->bind_param($types, ...$params);
@@ -59,6 +64,7 @@ require_once __DIR__ . '/includes/header.php';
     <p><?= (int) $resultCount ?> product<?= $resultCount === 1 ? '' : 's' ?> found</p>
   </div>
 
+  <?php // GET form so filters show up in the URL (shareable/bookmarkable). ?>
   <form class="filter-bar" method="get" action="products.php" role="search" aria-label="Product filters">
     <div class="form-row">
       <label for="q">Search</label>

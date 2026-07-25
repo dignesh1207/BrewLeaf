@@ -1,14 +1,15 @@
 <?php
 /**
- * admin/product-edit.php -- Add a new product or edit an existing one
- * (?id=). Also manages that product's option rows (Size, Grind, etc.)
- * inline, since options can't exist without a parent product.
+ * admin/product-edit.php -- Add/edit a product (?id=). Also manages its
+ * option rows (Size, Grind, etc.) inline.
  */
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+// Redirects non-admins away.
 require_admin();
 
+// $id is null when adding a new product; $product holds form defaults for that case.
 $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
 $product = ['name' => '', 'slug' => '', 'category' => 'coffee', 'origin' => '', 'description' => '', 'base_price' => '', 'image' => 'assets/images/product-01.jpg', 'is_active' => 1];
 $error = '';
@@ -22,15 +23,18 @@ if ($id) {
     if ($found) $product = $found;
 }
 
-// Save product core fields.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_product'])) {
     $name = trim($_POST['name'] ?? '');
+    // Category whitelisted to 'coffee'/'tea'.
     $category = in_array($_POST['category'] ?? '', ['coffee', 'tea'], true) ? $_POST['category'] : 'coffee';
     $origin = trim($_POST['origin'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $basePrice = (float) ($_POST['base_price'] ?? 0);
     $image = trim($_POST['image'] ?? '');
     $isActive = isset($_POST['is_active']) ? 1 : 0;
+    // Existing products keep their slug (URLs stay stable); new ones get one
+    // generated from the name: lowercased, non-alphanumeric runs -> single
+    // hyphen, trimmed.
     $slug = $id ? $product['slug'] : preg_replace('/[^a-z0-9]+/', '-', strtolower($name));
     $slug = trim($slug, '-');
 
@@ -47,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_product'])) {
         $ins = $conn->prepare('INSERT INTO products (name, slug, category, origin, description, base_price, image, is_active) VALUES (?,?,?,?,?,?,?,?)');
         $ins->bind_param('sssssdsi', $name, $slug, $category, $origin, $description, $basePrice, $image, $isActive);
         $ins->execute();
+        // insert_id lets us redirect straight into edit mode.
         $id = $conn->insert_id;
         $ins->close();
         header('Location: product-edit.php?id=' . $id . '&saved=1');
@@ -54,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_product'])) {
     }
 }
 
-// Add a new option row.
+// Add a new option row (requires an existing product).
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_option']) && $id) {
     $group = trim($_POST['option_group'] ?? '');
     $value = trim($_POST['option_value'] ?? '');
@@ -69,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_option']) && $id)
     exit;
 }
 
-// Delete an option row.
+// "AND product_id = ?" ensures the option belongs to this product, not just any id.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_option']) && $id) {
     $optId = (int) $_POST['delete_option'];
     $del = $conn->prepare('DELETE FROM product_options WHERE id = ? AND product_id = ?');

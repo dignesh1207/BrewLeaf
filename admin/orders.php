@@ -1,13 +1,12 @@
 <?php
-/**
- * admin/orders.php -- View all orders and update their status (used by
- * customers to "track order" on their profile page).
- */
+/** admin/orders.php -- View all orders and update their status. */
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+// Redirects non-admins away.
 require_admin();
 
+// $status is checked against a whitelist before use.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'])) {
     $orderId = (int) $_POST['order_id'];
     $status = $_POST['status'] ?? 'pending';

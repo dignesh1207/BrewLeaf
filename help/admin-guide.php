@@ -1,11 +1,27 @@
 <?php
+
+// Help page for site administrators; admins only (redirected below).
+
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+
+
+// Non-admins get redirected before any admin content renders.
+if (!is_admin()) {
+    header('Location: login.php');
+    exit;
+}
+
 $pageTitle = 'Admin Guide | BrewLeaf Help';
+
 $pageDescription = 'How BrewLeaf site administrators manage products, orders, users, and the site template.';
+
 require_once __DIR__ . '/../includes/header.php';
+
+
 ?>
+<!-- Admin Guide -->
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Admin Guide</h1>
@@ -35,4 +51,5 @@ require_once __DIR__ . '/../includes/header.php';
   Regular, Harvest (Autumn), and Frost (Winter) -- with one click. The change applies to every
   visitor immediately.</p>
 </section>
+
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

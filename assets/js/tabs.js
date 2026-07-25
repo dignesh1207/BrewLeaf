@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       btn.classList.add('active');
       btn.setAttribute('aria-selected', 'true');
+      // data-target on the button holds the id of the panel it reveals.
       document.getElementById(btn.dataset.target).hidden = false;
     });
   });

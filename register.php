@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $confirm  = $_POST['password_confirm'] ?? '';
 
+    // Cheapest checks first; DB duplicate check only runs if everything else passes.
     if ($username === '' || $email === '' || $fullName === '' || $password === '') {
         $error = 'Please fill in every field.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -28,12 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $confirm) {
         $error = 'Passwords do not match.';
     } else {
+        // Username and email must both be unique account-wide.
         $check = $conn->prepare('SELECT id FROM users WHERE username = ? OR email = ?');
         $check->bind_param('ss', $username, $email);
         $check->execute();
         if ($check->get_result()->fetch_assoc()) {
             $error = 'That username or email is already registered.';
         } else {
+            // bcrypt hash only -- plaintext password is never stored.
             $hash = password_hash($password, PASSWORD_BCRYPT);
             $ins = $conn->prepare('INSERT INTO users (username, email, password_hash, full_name, role, status) VALUES (?, ?, ?, ?, "customer", "active")');
             $ins->bind_param('ssss', $username, $email, $hash, $fullName);

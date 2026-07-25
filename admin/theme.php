@@ -7,12 +7,11 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+// Redirects non-admins away.
 require_admin();
 
-// Each theme's colors, copied from that theme's own assets/css/theme-*.css
-// file (the ":root" block at the top). Used below to draw a tiny mock-up
-// of the page for each theme card -- if you change a theme's colors in its
-// CSS file, update the matching colors here too so the preview stays accurate.
+// Colors mirror each theme's assets/css/theme-*.css ":root" block, used for
+// the mock-up preview cards below -- keep in sync if that CSS changes.
 $themes = [
     'white' => [
         'label' => 'Clean White',
@@ -42,7 +41,9 @@ $themes = [
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
     $chosen = $_POST['theme'];
+    // Whitelist check: $chosen must be one of the keys in $themes.
     if (array_key_exists($chosen, $themes)) {
+        // ON DUPLICATE KEY UPDATE -- upsert, no need to check if the row exists first.
         $stmt = $conn->prepare('INSERT INTO site_settings (setting_key, setting_value) VALUES ("active_theme", ?)
                                  ON DUPLICATE KEY UPDATE setting_value = ?');
         $stmt->bind_param('ss', $chosen, $chosen);
@@ -71,12 +72,7 @@ $active = get_active_theme($conn);
       <?php foreach ($themes as $key => $t): ?>
         <label class="theme-card <?= $active === $key ? 'active' : '' ?>">
           <input type="radio" name="theme" value="<?= $key ?>" class="radio-hidden auto-submit" <?= $active === $key ? 'checked' : '' ?>>
-          <!-- This whole swatch is a tiny fake page (header bar, hero,
-               3 cards) instead of a real screenshot. Every color below
-               comes from the $themes array above (PHP data, not user
-               input), so inline styles are the simplest way to color each
-               piece -- a static CSS class can't know these colors ahead
-               of time since they're different for every theme. -->
+          <!-- Fake mini page-preview; colors come from $themes above, hence inline styles. -->
           <div class="theme-swatch" style="background:<?= $t['bg'] ?>;">
             <div class="mock-header" style="background:<?= $t['surface'] ?>;border-bottom:1px solid <?= $t['border'] ?>;">
               <span class="mock-dot" style="background:<?= $t['primary'] ?>;"></span>

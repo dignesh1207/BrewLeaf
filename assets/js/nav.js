@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   toggle.addEventListener('click', function () {
     var isOpen = nav.classList.toggle('open');
+    // Keep aria-expanded in sync so screen readers announce the state.
     toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 });

@@ -8,8 +8,10 @@ require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
+// Detect AJAX (main.js fetch) vs. plain form-submit fallback.
 $isAjax = ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest';
 
+// Sends JSON (with updated cart count) for AJAX, or a redirect otherwise. Always exits.
 function respond(bool $ok, string $message, bool $isAjax, mysqli $conn, ?int $userId, ?string $guestId, string $redirect = 'cart.php')
 {
     if ($isAjax) {
@@ -40,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $productId = (int) ($_POST['product_id'] ?? 0);
 $quantity  = max(1, (int) ($_POST['quantity'] ?? 1));
 
+// Look up fresh from DB (not trusting client input); is_active blocks delisted products.
 $prodStmt = $conn->prepare('SELECT id, name, base_price FROM products WHERE id = ? AND is_active = 1');
 $prodStmt->bind_param('i', $productId);
 $prodStmt->execute();
@@ -53,8 +56,7 @@ if (!$product) {
     respond(false, 'Product not found.', $isAjax, $conn, $userId, $guestId);
 }
 
-// Collect every posted field named option_* (one per option group, e.g.
-// option_size, option_grind) -- their values are product_options.id.
+// Collect posted option_* fields (values are product_options.id).
 $optionIds = [];
 foreach ($_POST as $key => $value) {
     if (str_starts_with($key, 'option_') && $value !== '') {
@@ -63,8 +65,10 @@ foreach ($_POST as $key => $value) {
 }
 $resolved = resolve_selected_options($conn, $optionIds);
 $unitPrice = (float) $product['base_price'] + $resolved['modifierTotal'];
+// Stored as JSON so the exact selection/price survives later changes to product_options.
 $optionsJson = json_encode($resolved['options']);
 
+// Each add-to-cart click creates a new row rather than merging quantities.
 $ins = $conn->prepare(
     'INSERT INTO cart_items (user_id, session_id, product_id, selected_options, unit_price, quantity)
      VALUES (?, ?, ?, ?, ?, ?)'

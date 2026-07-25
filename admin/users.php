@@ -1,17 +1,15 @@
 <?php
-/**
- * admin/users.php -- User account administration: view all accounts and
- * enable/disable them (disabled accounts can no longer log in -- see
- * attempt_login() in includes/auth.php).
- */
+/** admin/users.php -- User account administration: view accounts and enable/disable them. */
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+// Redirects non-admins away.
 require_admin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
     $targetId = (int) $_POST['toggle_id'];
     if ($targetId !== (int) $_SESSION['user_id']) { // admins can't disable themselves
+        // NOTE: inconsistent with rest of codebase -- concatenated into SQL instead of a prepared statement; the (int) cast above is the only thing keeping this safe.
         $conn->query('UPDATE users SET status = IF(status="active","disabled","active") WHERE id = ' . $targetId);
     }
     header('Location: users.php');

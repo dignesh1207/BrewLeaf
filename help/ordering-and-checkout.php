@@ -1,11 +1,17 @@
 <?php
+
+// Help page for shoppers on ordering and checkout; viewable by anyone.
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+
 $pageTitle = 'Ordering & Checkout | BrewLeaf Help';
 $pageDescription = 'How product options, the shopping cart, and checkout work on BrewLeaf.';
+
 require_once __DIR__ . '/../includes/header.php';
+
 ?>
+
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Ordering &amp; Checkout</h1>
@@ -29,4 +35,5 @@ require_once __DIR__ . '/../includes/header.php';
   <p>After checkout, visit <a href="managing-account.php">your account</a> to see order status,
   which an admin updates as it moves through Pending &rarr; Processing &rarr; Shipped &rarr; Delivered.</p>
 </section>
+
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

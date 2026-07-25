@@ -24,6 +24,12 @@
   font-size: .8rem;
 }
 
+/* Center text inside an element (e.g. a heading that isn't already wrapped
+   in .section-title, which centers its contents automatically). */
+.text-center {
+  text-align: center;
+}
+
 /* Let an element size itself instead of stretching full-width (inputs and
    buttons default to 100% width -- this switches a single one back to
    "normal size", e.g. a checkbox next to its label). */

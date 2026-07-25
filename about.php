@@ -17,7 +17,7 @@ require_once __DIR__ . '/includes/header.php';
 </section>
 
 <section class="section container page-narrow-lg">
-  <h2>Our Business</h2>
+  <h2 class="text-center">Our Business</h2>
   <p>
     BrewLeaf Artisan Coffee &amp; Tea Co. is an online catalogue and storefront for small-batch,
     ethically sourced coffee beans and loose-leaf teas. We work directly with growers and
@@ -33,16 +33,19 @@ require_once __DIR__ . '/includes/header.php';
 
   <img src="assets/images/about-roastery.jpg" alt="BrewLeaf roastery" class="content-image">
 
-  <h2>Our Story</h2>
+  <h2 class="text-center">Our Story</h2>
   <p>BrewLeaf started as a single roasting drum in a garage and grew into a small team obsessed with
   freshness: every bag is roasted or blended within a week of shipping, never sitting in a warehouse
   for months on end.</p>
 
-  <h2>Our Values</h2>
+  <h2 class="text-center">Our Values</h2>
   <div class="feature-grid">
+
+    <div class="feature-box"><span class="icon">&#127760;</span><h3>Ethically Sourced</h3><p>We work directly with growers and cooperatives to ensure fair pay and sustainable practices.</p></div>
     <div class="feature-box"><span class="icon">&#129309;</span><h3>Direct Trade</h3><p>We pay growers fair, transparent prices well above commodity rates.</p></div>
     <div class="feature-box"><span class="icon">&#9749;</span><h3>Small Batch</h3><p>Roasted and blended weekly in batches under 50kg for peak freshness.</p></div>
     <div class="feature-box"><span class="icon">&#9851;</span><h3>Sustainable</h3><p>Compostable packaging and carbon-neutral shipping on every order.</p></div>
+  
   </div>
 </section>
 

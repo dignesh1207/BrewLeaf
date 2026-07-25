@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         pills.forEach(function (p) { p.classList.remove('selected'); });
         pill.classList.add('selected');
 
+        // The group's hidden input actually gets submitted with the add-to-cart form.
         var hiddenInput = group.querySelector('input[type="hidden"]');
         if (hiddenInput) hiddenInput.value = pill.dataset.optionId;
 

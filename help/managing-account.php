@@ -1,11 +1,15 @@
 <?php
+
+// Help page for shoppers on managing their account; viewable by anyone.
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
 $pageTitle = 'Managing Your Account | BrewLeaf Help';
 $pageDescription = 'How to update your profile and view order history on BrewLeaf.';
 require_once __DIR__ . '/../includes/header.php';
+
 ?>
+
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Managing Your Account</h1>
@@ -25,4 +29,6 @@ require_once __DIR__ . '/../includes/header.php';
   <h2>Logging Out</h2>
   <p>Click <strong>Log out</strong> in the header at any time to end your session.</p>
 </section>
+
+
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

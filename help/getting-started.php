@@ -1,11 +1,16 @@
 <?php
+// Help page for new users; viewable by anyone.
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+
 $pageTitle = 'Getting Started | BrewLeaf Help';
 $pageDescription = 'How to create a BrewLeaf account and place your first order.';
+
 require_once __DIR__ . '/../includes/header.php';
+
 ?>
+
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Getting Started</h1>
@@ -28,4 +33,5 @@ require_once __DIR__ . '/../includes/header.php';
 
   <p>Next: <a href="ordering-and-checkout.php">Ordering &amp; Checkout &rarr;</a></p>
 </section>
+
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

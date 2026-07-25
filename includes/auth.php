@@ -1,33 +1,29 @@
 <?php
 /**
- * includes/auth.php
- * ---------------------------------------------------------------------------
- * Session bootstrap + authentication helper functions.
- * Include this AFTER config/db.php on any page that needs to know who
- * (if anyone) is logged in, or that needs to protect a private area.
- * ---------------------------------------------------------------------------
+ * Session bootstrap + authentication helpers.
+ * Include AFTER config/db.php.
  */
 
+// avoid a "session already started" warning on double-include
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-/** Is a user currently logged in? */
+/** True if a user is logged in (checks session user_id, set by attempt_login()). */
 function is_logged_in(): bool
 {
     return !empty($_SESSION['user_id']);
 }
 
-/** Is the current logged-in user an admin? */
+/** True if the logged-in user has the admin role. Use require_admin() to actually block a page. */
 function is_admin(): bool
 {
     return is_logged_in() && ($_SESSION['role'] ?? '') === 'admin';
 }
 
 /**
- * Redirect to login.php if not authenticated, preserving the return URL.
- * Uses SITE_BASE_URL so this works correctly whether called from the site
- * root or from a subfolder like /admin/.
+ * Redirect to login.php (preserving return URL) if not logged in.
+ * Call as the first line of any page requiring sign-in; exits on redirect.
  */
 function require_login(): void
 {
@@ -38,7 +34,7 @@ function require_login(): void
     }
 }
 
-/** Redirect to the shared login page if not an authenticated admin. */
+/** Redirect to login.php if not an authenticated admin. Put at the top of every /admin/ page. */
 function require_admin(): void
 {
     if (!is_admin()) {
@@ -48,9 +44,9 @@ function require_admin(): void
 }
 
 /**
- * Attempt to authenticate a user by username/email + password.
- * Returns the user row (array) on success, or null on failure.
- * Disabled accounts are rejected even with a correct password.
+ * Authenticate by username/email + password (checked against both columns).
+ * Returns the user row on success and stores it in the session, or null on
+ * failure/disabled account. Uses a prepared statement to avoid SQL injection.
  */
 function attempt_login(mysqli $conn, string $identifier, string $password): ?array
 {
@@ -63,6 +59,7 @@ function attempt_login(mysqli $conn, string $identifier, string $password): ?arr
     $user = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
+    // password_verify() checks against the stored bcrypt hash; also fails safely if no user was found
     if (!$user || !password_verify($password, $user['password_hash'])) {
         return null;
     }
@@ -78,6 +75,7 @@ function attempt_login(mysqli $conn, string $identifier, string $password): ?arr
     return $user;
 }
 
+/** Log out: clears session data and destroys the session. */
 function logout(): void
 {
     $_SESSION = [];

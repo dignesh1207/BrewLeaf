@@ -13,6 +13,8 @@ if (is_logged_in()) {
 }
 
 $error = '';
+// require_login() redirects here with ?redirect=... set to the originally
+// requested page, so we can send the visitor back there after login.
 $redirect = $_GET['redirect'] ?? 'profile.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -21,9 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = attempt_login($conn, $identifier, $password);
 
     if ($user) {
+        // Admins land on the dashboard; everyone else goes back to $redirect.
         header('Location: ' . ($user['role'] === 'admin' ? 'admin/dashboard.php' : urldecode($redirect)));
         exit;
     }
+    // Generic message: don't reveal whether the username exists.
     $error = 'Invalid credentials, or this account has been disabled. Please try again.';
 }
 

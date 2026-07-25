@@ -6,10 +6,9 @@ require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
+// No contact_messages table in this skeleton; just log and show success.
 $sent = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // In production, wire this up to mail() / a mail API, or insert into a
-    // contact_messages table. Kept lightweight here for the project skeleton.
     error_log('Contact form submission: ' . json_encode($_POST));
     $sent = true;
 }

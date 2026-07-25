@@ -1,7 +1,7 @@
 -- ============================================================================
 -- BrewLeaf Artisan Coffee & Tea Co. -- Database Schema
 -- ============================================================================
--- Target: MySQL 5.7+ / MariaDB 10.x  (compatible with myweb.cs.uwindsor.ca)
+-- Target: MySQL 5.7+ 
 --
 -- Install:
 --   1. Create a database, e.g.:  CREATE DATABASE brewleaf CHARACTER SET utf8mb4;

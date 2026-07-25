@@ -9,6 +9,7 @@
  * trustworthy checks still happen in PHP on the server.
  * ---------------------------------------------------------------------------
  */
+
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('form[data-validate]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
         valid = false;
       }
 
+      // Cosmetic only -- the PHP backend re-validates everything server-side.
       if (!valid) e.preventDefault();
     });
   });

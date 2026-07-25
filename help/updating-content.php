@@ -1,11 +1,18 @@
 <?php
+
+// Help page for admins on updating content. No is_admin() gate -- purely instructional, no sensitive data.
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+
 $pageTitle = 'Updating Site Content | BrewLeaf Help';
 $pageDescription = 'A non-programmer guide to adding products, images, and video to BrewLeaf without touching code.';
+
 require_once __DIR__ . '/../includes/header.php';
+
 ?>
+
+
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Updating Site Content (No Coding Required)</h1>

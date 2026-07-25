@@ -103,6 +103,17 @@
   background: rgba(0, 0, 0, .06);
 }
 
+/* Center the "Our Values" cards on the About page only (that section is the
+   one wrapped in .page-narrow-lg) -- Home's 4-box grid and the Help article
+   list also reuse .feature-box, so this is scoped to avoid changing those. */
+.page-narrow-lg .feature-box {
+  text-align: center;
+}
+
+.page-narrow-lg .feature-box .icon {
+  margin-inline: auto;
+}
+
 /* A regular photo dropped inside a page's body copy (About page, Help
    articles), with a bit of breathing room and a soft shadow. */
 .content-image {

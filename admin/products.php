@@ -1,15 +1,14 @@
 <?php
 /**
  * admin/products.php -- List all products with edit/delete actions.
- * Actual create/edit form lives in admin/product-edit.php to keep this
- * page focused on the catalogue overview.
+ * Create/edit form lives in admin/product-edit.php.
  */
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+// Redirects non-admins away.
 require_admin();
 
-// Handle delete.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $id = (int) $_POST['delete_id'];
     $del = $conn->prepare('DELETE FROM products WHERE id = ?');

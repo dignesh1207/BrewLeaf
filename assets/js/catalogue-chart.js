@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById('catalogueChart');
   if (!canvas || typeof Chart === 'undefined') return;
 
+  // Read the data-labels/-counts/-ratings JSON attributes index.php wrote onto the canvas.
   var labels = JSON.parse(canvas.dataset.labels || '[]');
   var counts = JSON.parse(canvas.dataset.counts || '[]');
   var ratings = JSON.parse(canvas.dataset.ratings || '[]');
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
       labels: labels,
       datasets: [
         { label: 'Products', data: counts, backgroundColor: '#6f4e37' },
+        // x2 scales ratings (out of 5) so their bars are comparable to the product-count bars.
         { label: 'Avg. Rating (x10)', data: ratings.map(function (r) { return Math.round(r * 2 * 10) / 10; }), backgroundColor: '#c98a3b' }
       ]
     },

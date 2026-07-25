@@ -7,10 +7,12 @@
  * attributes, and this file reads them back out.
  * ---------------------------------------------------------------------------
  */
+
 document.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById('revenueChart');
   if (!canvas || typeof Chart === 'undefined') return;
 
+  // Read the data-labels/-revenue JSON attributes dashboard.php wrote onto the canvas.
   var labels = JSON.parse(canvas.dataset.labels || '[]');
   var revenue = JSON.parse(canvas.dataset.revenue || '[]');
 

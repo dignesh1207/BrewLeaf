@@ -11,6 +11,8 @@
  * ---------------------------------------------------------------------------
  */
 
+
+// Database connection constants. Edit these according to the hosting environment.
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'brewleaf');
 define('DB_USER', 'root');
@@ -18,12 +20,13 @@ define('DB_PASS', '');
 
 // Base URL of the site (used for building absolute links, sitemap, canonical
 // tags for SEO). Change to your live URL when deploying, e.g.
-// 'https://myweb.cs.uwindsor.ca/~yourusername'
+// 'https://myweb.cs.uwindsor.ca/~yourusername(solank86)/brewleaf'
 define('SITE_BASE_URL', '');
 
 // mysqli should throw exceptions on error instead of failing silently.
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+// Attempt to connect to the database. If it fails, log the error and show a generic message to the user.
 try {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     $conn->set_charset('utf8mb4');

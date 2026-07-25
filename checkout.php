@@ -1,9 +1,7 @@
 <?php
 /**
  * checkout.php -- Converts the logged-in user's cart into an order.
- * Requires login (guests are asked to log in / register first, keeping the
- * order history tied to a real account for the "track order and history"
- * feature on profile.php).
+ * Requires login so order history stays tied to a real account (see profile.php).
  */
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
@@ -14,6 +12,8 @@ $userId = (int) $_SESSION['user_id'];
 $error = '';
 $success = false;
 
+// order_items keeps its own copy of product_name/selected_options so order
+// history stays accurate even if the product is later edited or deleted.
 $stmt = $conn->prepare(
     'SELECT ci.id, ci.quantity, ci.unit_price, ci.selected_options, p.id AS product_id, p.name
      FROM cart_items ci JOIN products p ON p.id = ci.product_id WHERE ci.user_id = ?'
@@ -27,6 +27,7 @@ $subtotal = 0.0;
 foreach ($cartRows as $row) {
     $subtotal += $row['unit_price'] * $row['quantity'];
 }
+// Same shipping rule as cart.php: free at $40+, otherwise a fixed fee.
 $shipping = $subtotal > 0 && $subtotal < 40 ? 5.99 : 0.0;
 $total = $subtotal + $shipping;
 
@@ -37,8 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($cartRows)) {
         $error = 'Your cart is empty.';
     } else {
+        // Transaction: creating the order, copying cart lines to order_items, and
+        // clearing the cart must all succeed together, or rollback() undoes all of it.
         $conn->begin_transaction();
         try {
+            // New orders start as "pending".
             $orderIns = $conn->prepare('INSERT INTO orders (user_id, status, shipping_address, total) VALUES (?, "pending", ?, ?)');
             $orderIns->bind_param('isd', $userId, $address, $total);
             $orderIns->execute();

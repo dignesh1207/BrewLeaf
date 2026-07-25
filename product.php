@@ -1,14 +1,13 @@
 <?php
 /**
- * product.php?slug=... -- Product detail page.
- * Shows description, selectable options (with live price recalculation via
- * main.js), an add-to-cart form (dynamic form #1), and a star-rating review
- * form (dynamic form #2). Includes schema.org structured data for SEO.
+ * product.php?slug=... -- Product detail page: description, selectable
+ * options with live price recalc, add-to-cart form, and review form.
  */
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
+// Looked up by slug (not numeric id) so product URLs stay human-readable.
 $slug = $_GET['slug'] ?? '';
 $stmt = $conn->prepare('SELECT * FROM products WHERE slug = ? AND is_active = 1 LIMIT 1');
 $stmt->bind_param('s', $slug);
@@ -25,14 +24,15 @@ if (!$product) {
     exit;
 }
 
+// Option groups (Size, Grind, etc.), grouped by name -- see get_product_options().
 $options = get_product_options($conn, (int) $product['id']);
 
-// Handle new review submission (requires login).
 $reviewError = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
     if (!is_logged_in()) {
         $reviewError = 'Please log in to leave a review.';
     } else {
+        // Clamp to 1-5 in case of a tampered request.
         $rating = max(1, min(5, (int) ($_POST['rating'] ?? 0)));
         $comment = trim($_POST['comment'] ?? '');
         $ins = $conn->prepare('INSERT INTO reviews (product_id, user_id, rating, comment) VALUES (?, ?, ?, ?)');
@@ -40,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
         $ins->execute();
         $ins->close();
 
-        // Recalculate aggregate rating.
+        // rating_avg/rating_count are a denormalized cache so listing pages
+        // don't need AVG/COUNT over reviews on every view.
         $agg = $conn->prepare('SELECT AVG(rating) AS avg_r, COUNT(*) AS n FROM reviews WHERE product_id = ?');
         $agg->bind_param('i', $product['id']);
         $agg->execute();
@@ -53,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
         $upd->execute();
         $upd->close();
 
+        // Redirect after POST so refreshing doesn't resubmit the review.
         header('Location: product.php?slug=' . urlencode($slug) . '#reviews');
         exit;
     }
@@ -94,10 +96,12 @@ require_once __DIR__ . '/includes/header.php';
         <?= money((float) $product['base_price']) ?>
       </p>
 
-      <!-- Dynamic form #1: add to cart, with live price recalculation as options are picked -->
+      <!-- Add-to-cart form with live price recalculation as options are picked -->
       <form class="add-to-cart-form" method="post" action="cart_add.php" data-validate>
         <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
 
+        <?php // Hidden input (name="option_<group>") is what's submitted; main.js copies the
+        // clicked pill's data-option-id into it and recalcs price via data-price-modifier. ?>
         <?php foreach ($options as $groupName => $values): ?>
           <div class="option-group">
             <label><?= h($groupName) ?></label>
@@ -144,7 +148,6 @@ require_once __DIR__ . '/includes/header.php';
     <?php endwhile; ?>
   <?php endif; ?>
 
-  <!-- Dynamic form #2: submit a review / rating -->
   <?php if (is_logged_in()): ?>
     <h3>Write a Review</h3>
     <form method="post" action="product.php?slug=<?= h($slug) ?>#reviews" data-validate>
