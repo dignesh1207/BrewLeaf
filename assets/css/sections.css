@@ -44,11 +44,50 @@
 .product-card,
 .dash-card,
 .chart-card,
-.filter-bar {
+.filter-bar,
+.video-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+}
+
+/* ---- Video gallery (About page "See BrewLeaf in Action") ------------------ */
+.video-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .video-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+.video-card {
+  overflow: hidden;
+}
+
+.video-card video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.video-card .video-card-body {
+  padding: 1.1rem 1.3rem;
+}
+
+.video-card h3 {
+  margin: 0 0 .35rem;
+}
+
+.video-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: .92rem;
 }
 
 .feature-box,

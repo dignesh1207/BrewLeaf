@@ -47,6 +47,50 @@ require_once __DIR__ . '/includes/header.php';
     <div class="feature-box"><span class="icon">&#9851;</span><h3>Sustainable</h3><p>Compostable packaging and carbon-neutral shipping on every order.</p></div>
   
   </div>
+  <br>
+  <br>
+
+  <h2 class="text-center">See BrewLeaf in Action</h2>
+  <div class="video-gallery">
+
+    <div class="video-card">
+      <video controls controlsList="nodownload" preload="metadata" poster="assets/images/video-roastery-tour.jpg">
+        <source src="assets/videos/roastery-tour.mp4" type="video/mp4">
+        Your browser does not support embedded video.
+      </video>
+      <div class="video-card-body">
+        <h3>Inside the Roastery</h3>
+        <p>A close look at the copper drum roaster where our beans get their signature depth of flavor.</p>
+        <p class="text-muted-sm">Footage: "Tonefoto grapher" via <a href="https://www.vecteezy.com/video/5442704-coffee-bean-is-roasting-in-roaster-machine-smoking-from-coffee">Vecteezy</a></p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls controlsList="nodownload" preload="metadata" poster="assets/images/video-roasting-process.jpg">
+        <source src="assets/videos/roasting-process.mp4" type="video/mp4">
+        Your browser does not support embedded video.
+      </video>
+      <div class="video-card-body">
+        <h3>Watch How We Roast</h3>
+        <p>From coffee cherry to roasted bean: a quick look at our small-batch roasting process.</p>
+        <p class="text-muted-sm">Made with Canva AI</p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls controlsList="nodownload" preload="metadata" poster="assets/images/video-brewing-guide.jpg">
+        <source src="assets/videos/brewing-guide.mp4" type="video/mp4">
+        Your browser does not support embedded video.
+      </video>
+      <div class="video-card-body">
+        <h3>Brewing the Perfect Cup</h3>
+        <p>A simple pour-over guide for getting the most out of your beans at home.</p>
+        <p class="text-muted-sm">Footage via <a href="https://pixabay.com/videos/coffee-cappuccino-caffeine-209424/">Pixabay</a></p>
+      </div>
+    </div>
+
+  </div>
+  <p class="text-muted-sm text-center mt-sm">&copy; <?= date('Y') ?> BrewLeaf Artisan Coffee &amp; Tea Co. All rights reserved.</p>
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

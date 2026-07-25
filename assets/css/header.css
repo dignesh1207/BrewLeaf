@@ -174,7 +174,8 @@
     display: block;
     width: 100%;
   }
-
+/* The utility links (cart, log in, sign up) are moved into the dropdown too,
+     so they don't get cut off on small screens. */
   .nav-utility {
     border-left: none;
     padding-left: 0;

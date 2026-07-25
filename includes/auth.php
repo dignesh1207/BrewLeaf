@@ -4,18 +4,19 @@
  * Include AFTER config/db.php.
  */
 
+
 // avoid a "session already started" warning on double-include
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-/** True if a user is logged in (checks session user_id, set by attempt_login()). */
+// True if a user is logged in (checks session user_id, set by attempt_login()). 
 function is_logged_in(): bool
 {
     return !empty($_SESSION['user_id']);
 }
 
-/** True if the logged-in user has the admin role. Use require_admin() to actually block a page. */
+// True if the logged-in user has the admin role. Use require_admin() to actually block a page. 
 function is_admin(): bool
 {
     return is_logged_in() && ($_SESSION['role'] ?? '') === 'admin';
@@ -63,10 +64,12 @@ function attempt_login(mysqli $conn, string $identifier, string $password): ?arr
     if (!$user || !password_verify($password, $user['password_hash'])) {
         return null;
     }
+    // account status check: only allow active users to log in
     if ($user['status'] !== 'active') {
         return null; // account disabled by admin
     }
 
+    // store user info in session for later use (e.g. is_logged_in(), is_admin())
     $_SESSION['user_id']   = $user['id'];
     $_SESSION['username']  = $user['username'];
     $_SESSION['full_name'] = $user['full_name'];
@@ -75,7 +78,7 @@ function attempt_login(mysqli $conn, string $identifier, string $password): ?arr
     return $user;
 }
 
-/** Log out: clears session data and destroys the session. */
+// Log out: clears session data and destroys the session. 
 function logout(): void
 {
     $_SESSION = [];

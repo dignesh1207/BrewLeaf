@@ -42,16 +42,18 @@ require_once __DIR__ . '/includes/header.php';
 </section>
 
 <section class="section container">
+  
   <div class="section-title">
     <h2>Watch How We Roast</h2>
     <p>A quick look inside the BrewLeaf roastery.</p>
   </div>
   <!-- autoplay requires muted; visitor can unmute via the volume control.
-       Playback speed (1.5x) is set in assets/js/hero-video.js. -->
-  <video autoplay muted playsinline controls preload="auto" poster="assets/images/about-roastery.jpg" class="section-video">
+       Playback speed (1.5x) (I think I changed the speed) is set in assets/js/hero-video.js. -->
+  <video autoplay muted playsinline controls controlsList="nodownload" preload="auto" poster="assets/images/about-roastery.jpg" class="section-video">
     <source src="assets/videos/roasting-process.mp4" type="video/mp4">
     Your browser does not support embedded video.
   </video>
+  
 </section>
 
 <section class="section container">
