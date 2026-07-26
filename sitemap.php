@@ -1,14 +1,11 @@
 <?php
-/**
- * sitemap.php -- Dynamically generated XML sitemap for SEO. Lists all
- * static pages plus every active product detail page. Link this from
- * robots.txt (see /robots.txt) so search engines can discover it.
- */
+// sitemap.php -- generates the xml sitemap, lists static pages plus every
+// active product page. linked from robots.txt so search engines find it
 require_once __DIR__ . '/config/db.php';
 
 header('Content-Type: application/xml; charset=utf-8');
 
-// Product pages are added dynamically below since slugs can't be hard-coded.
+// product pages get added below in the loop since we can't hard-code every slug
 $staticPages = ['index.php', 'products.php', 'about.php', 'contact.php', 'help/index.php'];
 
 echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";

@@ -1,10 +1,5 @@
-/* =============================================================================
-   assets/css/tabs.css
-   -----------------------------------------------------------------------------
-   The "Coffee / Tea" tab switcher in the home page's "Shop by Category"
-   section. The click behaviour that shows/hides each panel lives in
-   assets/js/tabs.js.
-   ============================================================================= */
+/* coffee/tea tab switcher on home page (shop by category section)
+   the show/hide logic is in assets/js/tabs.js */
 
 .category-tabs {
   max-width: 640px;
@@ -36,7 +31,7 @@
   transition: background var(--transition), color var(--transition), box-shadow var(--transition);
 }
 
-/* assets/js/tabs.js adds this class to whichever button was last clicked. */
+/* js adds this to whichever button was clicked last */
 .tab-btn.active {
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: #fff;

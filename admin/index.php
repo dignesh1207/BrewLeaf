@@ -1,5 +1,5 @@
 <?php
-/** admin/index.php -- Redirect: admins to dashboard, everyone else to login. */
+// admin/index.php - sends admins to the dashboard, everyone else back to login
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 

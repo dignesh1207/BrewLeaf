@@ -1,13 +1,7 @@
-/* =============================================================================
-   assets/css/utilities.css
-   -----------------------------------------------------------------------------
-   Small, generic "do one thing" helper classes used here and there across
-   different pages, instead of writing style="margin-top:1rem" directly in
-   the HTML. Load this file LAST so these can fine-tune spacing on top of a
-   component's own CSS file.
-   ============================================================================= */
+/* small helper classes used here and there, instead of inline styles.
+   loaded last so these can override spacing set by other css files */
 
-/* Margin-top helpers, from smallest to largest gap. */
+/* margin-top helpers, smallest to largest gap */
 .mt-sm  { margin-top: .5rem; }
 .mt-md  { margin-top: 1rem; }
 .mt-lg  { margin-top: 1.5rem; }
@@ -24,26 +18,39 @@
   font-size: .8rem;
 }
 
-/* Center text inside an element (e.g. a heading that isn't already wrapped
-   in .section-title, which centers its contents automatically). */
+/* centers text, for stuff not already wrapped in .section-title */
 .text-center {
   text-align: center;
 }
 
-/* Let an element size itself instead of stretching full-width (inputs and
-   buttons default to 100% width -- this switches a single one back to
-   "normal size", e.g. a checkbox next to its label). */
+/* hides visually but keeps it readable for screen readers -- e.g. a
+   table caption, sighted users don't need it since the heading already
+   says what the table is */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* lets one element size itself instead of stretching full width (inputs
+   and buttons default to 100%) -- e.g. a checkbox next to its label */
 .w-auto {
   width: auto;
 }
 
-/* Visually hide an element (used for radio buttons where we show a styled
-   card instead, but keep the real input in the page for accessibility). */
+/* visually hides an element -- used for radio buttons where we show a
+   styled card instead but keep the real input for accessibility */
 .radio-hidden {
   display: none;
 }
 
-/* ---- Toast (small pop-up message, see assets/js/cart.js) ------------------- */
+/* toast - small pop-up message, see assets/js/cart.js */
 .toast {
   position: fixed;
   bottom: 1.5rem;
@@ -59,8 +66,32 @@
   transition: opacity .25s ease;
 }
 
-/* assets/js/cart.js adds this class a moment after the toast is added to
-   the page, which fades it in (see the "transition" above). */
+/* cart.js adds this a moment after the toast shows up, fades it in
+   (see transition above) */
 .toast-visible {
   opacity: 1;
+}
+
+/* loading spinner next to a control while its ajax request is running
+   (e.g. cart page qty stepper). toggled with the hidden attribute, not
+   a class, so no extra js needed */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+    opacity: .6;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

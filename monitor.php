@@ -1,16 +1,13 @@
 <?php
-/**
- * monitor.php -- Public backend status page. Runs a handful of live health
- * checks (not just static DB rows) so the "online/offline" state actually
- * reflects the current condition of the site, then persists the result to
- * service_status so admin/dashboard.php can show a snapshot too.
- */
+// monitor.php -- public status page, actually runs live checks instead of
+// just reading old db rows, then saves the result to service_status so
+// admin/dashboard.php has something to show too
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
-// Each check sets true/false into $checks; try/catch keeps one failing
-// check from taking down the whole page.
+// each check just sets true/false in $checks. wrapped in try/catch so one
+// broken check doesn't crash the whole page
 $checks = [];
 
 try {
@@ -49,7 +46,7 @@ try {
 
 $checks['Search / SEO Sitemap'] = file_exists(__DIR__ . '/sitemap.php');
 
-// Persist so the admin dashboard snapshot stays in sync.
+// save these to the db so the admin dashboard shows the same thing
 foreach ($checks as $name => $isOnline) {
     $status = $isOnline ? 'online' : 'offline';
     $stmt = $conn->prepare('UPDATE service_status SET status = ? WHERE service_name = ?');

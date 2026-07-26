@@ -1,15 +1,18 @@
 <?php
-/** admin/users.php -- User account administration: view accounts and enable/disable them. */
+// admin/users.php - see all user accounts, enable/disable them
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
-// Redirects non-admins away.
+// send non-admins away
 require_admin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
     $targetId = (int) $_POST['toggle_id'];
-    if ($targetId !== (int) $_SESSION['user_id']) { // admins can't disable themselves
-        // NOTE: inconsistent with rest of codebase -- concatenated into SQL instead of a prepared statement; the (int) cast above is the only thing keeping this safe.
+    if ($targetId !== (int) $_SESSION['user_id']) { // don't let an admin disable their own account
+        // note to self: this one isn't a prepared statement like everywhere else,
+        // just building the query string directly. it's only "safe" because $targetId
+        // got cast to (int) above so nothing but a number can end up in the query.
+        // should probably fix this to use bind_param like the rest of the app does.
         $conn->query('UPDATE users SET status = IF(status="active","disabled","active") WHERE id = ' . $targetId);
     }
     header('Location: users.php');

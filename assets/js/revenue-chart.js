@@ -1,18 +1,11 @@
-/**
- * assets/js/revenue-chart.js
- * ---------------------------------------------------------------------------
- * Draws the revenue line chart on the admin dashboard, using Chart.js.
- * Same idea as assets/js/catalogue-chart.js: admin/dashboard.php writes the
- * database numbers onto the <canvas> as data-labels / data-revenue
- * attributes, and this file reads them back out.
- * ---------------------------------------------------------------------------
- */
+// revenue line chart for the admin dashboard, same deal as catalogue-chart.js --
+// dashboard.php puts the numbers on the canvas as data- attributes and we read them here
 
 document.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById('revenueChart');
   if (!canvas || typeof Chart === 'undefined') return;
 
-  // Read the data-labels/-revenue JSON attributes dashboard.php wrote onto the canvas.
+  // pull the data dashboard.php put on the canvas
   var labels = JSON.parse(canvas.dataset.labels || '[]');
   var revenue = JSON.parse(canvas.dataset.revenue || '[]');
 

@@ -1,7 +1,4 @@
-/* =============================================================================
-   theme-winter.css -- Seasonal "Frost" theme.
-   Cool slate blues with a crisp, minimal feel: tighter corners.
-   ============================================================================= */
+/* winter "Frost" theme - cool blues, tighter corners */
 :root {
   --color-bg: #f3f6f8;
   --color-surface: #ffffff;

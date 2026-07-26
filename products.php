@@ -1,9 +1,7 @@
 <?php
-/**
- * products.php -- Dynamic product listing with search, category filter,
- * and sort. All query building uses prepared statements (safe from SQL
- * injection) even though every clause is optional.
- */
+// products.php -- product list with search, category filter, and sort
+// query gets built dynamically but still uses prepared statements so it's
+// safe from sql injection even though most of the where clause is optional
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -12,13 +10,13 @@ $category = $_GET['category'] ?? '';
 $search   = trim($_GET['q'] ?? '');
 $sort     = $_GET['sort'] ?? 'popular';
 
-// $params/$types are built in lockstep with $where so placeholder order
-// always matches the bind_param() call below.
+// $params and $types need to stay in the same order as $where or the
+// bind_param below will match the wrong values to the wrong placeholders
 $where = ['is_active = 1'];
 $params = [];
 $types = '';
 
-// Whitelisted values only, so a bogus ?category= can't inject anything.
+// only allow coffee/tea here so a weird ?category= value can't do anything bad
 if (in_array($category, ['coffee', 'tea'], true)) {
     $where[] = 'category = ?';
     $params[] = $category;
@@ -31,7 +29,8 @@ if ($search !== '') {
     $types .= 'sss';
 }
 
-// match() maps ?sort= to a fixed ORDER BY clause -- user input never reaches the SQL directly.
+// match() turns ?sort= into one of these fixed ORDER BY strings, so the raw
+// user input never actually touches the query
 $orderBy = match ($sort) {
     'price_low'  => 'base_price ASC',
     'price_high' => 'base_price DESC',
@@ -43,7 +42,7 @@ $orderBy = match ($sort) {
 $sql = 'SELECT id, name, slug, category, origin, base_price, image, rating_avg, rating_count
         FROM products WHERE ' . implode(' AND ', $where) . ' ORDER BY ' . $orderBy;
 
-// WHERE is built dynamically, but every value goes through bind_param(), not string concat.
+// yeah the WHERE is built with string concat but the actual values still go through bind_param
 $stmt = $conn->prepare($sql);
 if ($params) {
     $stmt->bind_param($types, ...$params);
@@ -64,7 +63,7 @@ require_once __DIR__ . '/includes/header.php';
     <p><?= (int) $resultCount ?> product<?= $resultCount === 1 ? '' : 's' ?> found</p>
   </div>
 
-  <?php // GET form so filters show up in the URL (shareable/bookmarkable). ?>
+  <?php // using GET here so filters show up in the url and can be bookmarked/shared ?>
   <form class="filter-bar" method="get" action="products.php" role="search" aria-label="Product filters">
     <div class="form-row">
       <label for="q">Search</label>

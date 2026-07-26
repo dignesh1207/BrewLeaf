@@ -1,12 +1,10 @@
 <?php
-/**
- * Secondary admin nav. Include AFTER includes/header.php.
- * Expects $adminActive (dashboard|products|users|theme|orders) to highlight the current section.
- */
+// this is the little nav bar for admin pages, goes right after header.php
+// set $adminActive before including this (dashboard/products/orders/users/theme) so it knows what to highlight
 
 $adminActive = $adminActive ?? '';
 
-// section key => label/url; add a new admin page by adding one entry here
+// key => label/url, just add another line here if we make a new admin page
 $adminLinks = [
     'dashboard' => ['label' => 'Dashboard',     'url' => SITE_BASE_URL . '/admin/dashboard.php'],
     'products'  => ['label' => 'Products',      'url' => SITE_BASE_URL . '/admin/products.php'],
@@ -23,7 +21,7 @@ $adminLinks = [
     <ul>
       <?php foreach ($adminLinks as $key => $link): ?>
         <li>
-          <!-- "active" class when $adminActive matches this section -->
+          <!-- highlights the current section -->
           <a href="<?= h($link['url']) ?>" class="<?= $adminActive === $key ? 'active' : '' ?>">
             <?= h($link['label']) ?>
           </a>

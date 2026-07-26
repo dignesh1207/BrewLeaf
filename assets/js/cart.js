@@ -1,65 +1,43 @@
-/**
- * assets/js/cart.js
- * ---------------------------------------------------------------------------
- * Everything about adding/updating items in the cart:
- *   - "Add to cart" forms submit in the background (no page reload) and
- *     show a small toast message.
- *   - The +/- stepper buttons next to a quantity number on the cart page.
- *   - Typing a new quantity directly into the number box auto-submits the
- *     "update cart" form for that row.
- * ---------------------------------------------------------------------------
- */
+// cart stuff. add to cart forms submit with fetch and show a toast,
+// and on the cart page the qty +/- buttons and remove button also save with fetch
 document.addEventListener('DOMContentLoaded', function () {
   initAddToCartForms();
-  initQuantityInputs();
+  initCartPage();
 });
 
-/** Submits any form.add-to-cart-form via fetch() instead of a full page
- *  reload, then shows a toast and updates the cart count badge. */
+// submits the add-to-cart forms with fetch instead of reloading the page,
+// then shows a toast and updates the cart badge count
 function initAddToCartForms() {
   document.querySelectorAll('form.add-to-cart-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
-      // Fall back to a normal submit if fetch isn't available.
+      // if fetch isn't supported just let the form submit like normal
       if (!window.fetch) return;
       e.preventDefault();
 
       var formData = new FormData(form);
-      // POST in the background; X-Requested-With tells the PHP endpoint to
-      // reply with JSON instead of a full HTML page.
+      // posting in the background -- X-Requested-With header tells the php
+      // endpoint to send back json instead of the whole html page
       fetch(form.action, { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(function (res) { return res.json(); })
         .then(function (data) {
           showToast(data.message || 'Added to cart');
-          var badge = document.querySelector('.cart-badge');
-          if (data.cartCount !== undefined) {
-            if (badge) {
-              badge.textContent = data.cartCount;
-            } else if (data.cartCount > 0) {
-              var cartLink = document.querySelector('.cart-link');
-              if (cartLink) {
-                var span = document.createElement('span');
-                span.className = 'cart-badge';
-                span.textContent = data.cartCount;
-                cartLink.appendChild(span);
-              }
-            }
-          }
+          if (data.cartCount !== undefined) updateCartBadge(data.cartCount);
         })
         .catch(function () {
-          // Network/parse error: fall back to a normal page submit.
+          // fetch failed for some reason, just do a normal submit instead
           form.submit();
         });
     });
   });
 }
 
-/** Small message box that pops up in the corner and fades out on its own. */
+// little toast message that pops up and fades itself out
 function showToast(message) {
   var toast = document.createElement('div');
   toast.textContent = message;
   toast.className = 'toast';
   document.body.appendChild(toast);
-  // Add the "visible" class a frame later so the CSS transition animates in.
+  // adding the visible class a frame later so the css transition actually animates
   requestAnimationFrame(function () { toast.classList.add('toast-visible'); });
   setTimeout(function () {
     toast.classList.remove('toast-visible');
@@ -67,27 +45,151 @@ function showToast(message) {
   }, 2500);
 }
 
-/** Cart page: the +/- buttons next to a quantity box, and auto-submitting
- *  the row's form when the number is typed/changed directly. */
-function initQuantityInputs() {
-  document.querySelectorAll('.qty-stepper').forEach(function (stepper) {
-    var input = stepper.querySelector('input[type="number"]');
+// updates the little number bubble on the cart icon in the header
+// used both after add-to-cart and after the cart page updates below
+function updateCartBadge(count) {
+  var badge = document.querySelector('.cart-badge');
+  var cartLink = document.querySelector('.cart-link');
+  if (count > 0) {
+    if (badge) {
+      badge.textContent = count;
+    } else if (cartLink) {
+      var span = document.createElement('span');
+      span.className = 'cart-badge';
+      span.textContent = count;
+      cartLink.appendChild(span);
+    }
+  } else if (badge) {
+    badge.remove();
+  }
+}
+
+// this is for cart.php -- the +/- buttons and typed qty save via cart_update.php,
+// remove button asks to confirm first. does nothing if #cartItemsBody isn't on the page
+function initCartPage() {
+  var itemsBody = document.getElementById('cartItemsBody');
+  if (!itemsBody || !window.fetch) return;
+
+  itemsBody.querySelectorAll('.qty-stepper').forEach(function (stepper) {
+    var input = stepper.querySelector('.qty-input');
     var minus = stepper.querySelector('.qty-minus');
     var plus = stepper.querySelector('.qty-plus');
     if (!input) return;
 
+    function save(previousValue) {
+      // don't let qty go below 1
+      var qty = Math.max(1, parseInt(input.value, 10) || 1);
+      input.value = qty;
+      saveCartChange(stepper, { item_id: stepper.dataset.itemId, action: 'update', quantity: qty }, function onFailure() {
+        // put it back to the old value if the save failed
+        input.value = previousValue;
+      });
+    }
+
     if (minus) minus.addEventListener('click', function () {
+      var previousValue = input.value;
       input.value = Math.max(1, (parseInt(input.value, 10) || 1) - 1);
-      input.dispatchEvent(new Event('change'));
+      save(previousValue);
     });
     if (plus) plus.addEventListener('click', function () {
+      var previousValue = input.value;
       input.value = (parseInt(input.value, 10) || 1) + 1;
-      input.dispatchEvent(new Event('change'));
+      save(previousValue);
     });
-
-    // Any quantity change, from +/- or typed directly, submits this row's form.
+    input.addEventListener('focus', function () {
+      // save the starting value in case we need to undo it on a failed save
+      input.dataset.previousValue = input.value;
+    });
     input.addEventListener('change', function () {
-      stepper.closest('form').submit();
+      save(input.dataset.previousValue || input.value);
     });
   });
+
+  itemsBody.querySelectorAll('.remove-item-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      // doing the confirm() prompt right here instead of letting confirm-submit.js
+      // handle it, otherwise the fetch below could fire before the user even answers.
+      // stopImmediatePropagation so confirm-submit.js doesn't ALSO try to confirm this form
+      e.stopImmediatePropagation();
+      if (form.dataset.confirm && !window.confirm(form.dataset.confirm)) return;
+
+      var itemId = form.querySelector('[name="item_id"]').value;
+      saveCartChange(form, { item_id: itemId, action: 'remove' });
+    });
+  });
+}
+
+// sends a qty update or remove to cart_update.php. disables the row's buttons
+// and shows a spinner while it's loading, then updates the totals/badge on
+// success or shows an error and calls onFailure (e.g to undo the qty change)
+function saveCartChange(context, payload, onFailure) {
+  var row = context.closest('tr');
+  var controls = row.querySelectorAll('button, input');
+  var spinner = row.querySelector('.spinner');
+
+  function setBusy(busy) {
+    controls.forEach(function (el) { el.disabled = busy; });
+    if (spinner) spinner.hidden = !busy;
+  }
+
+  function fail(message) {
+    showCartError(message);
+    setBusy(false);
+    if (onFailure) onFailure();
+  }
+
+  setBusy(true);
+  hideCartError();
+
+  var formData = new FormData();
+  Object.keys(payload).forEach(function (key) { formData.append(key, payload[key]); });
+
+  fetch('cart_update.php', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (!data.success) {
+        fail(data.message || 'Something went wrong updating your cart. Please try again.');
+        return;
+      }
+
+      if (data.action === 'remove') {
+        row.remove();
+      } else {
+        var totalCell = row.querySelector('.cart-line-total');
+        if (totalCell) totalCell.textContent = data.lineTotalFormatted;
+        setBusy(false);
+      }
+
+      var subtotalEl = document.getElementById('cartSubtotal');
+      var shippingEl = document.getElementById('cartShipping');
+      var totalEl = document.getElementById('cartTotal');
+      if (subtotalEl) subtotalEl.textContent = data.subtotalFormatted;
+      if (shippingEl) shippingEl.textContent = data.shippingFormatted;
+      if (totalEl) totalEl.textContent = data.totalFormatted;
+      updateCartBadge(data.cartCount);
+
+      // last item was just removed, so show the empty cart state instead
+      if (data.cartEmpty) {
+        var content = document.getElementById('cartContent');
+        var empty = document.getElementById('cartEmptyState');
+        if (content) content.hidden = true;
+        if (empty) empty.hidden = false;
+      }
+    })
+    .catch(function () {
+      fail('Something went wrong updating your cart. Please check your connection and try again.');
+    });
+}
+
+function showCartError(message) {
+  var el = document.getElementById('cartError');
+  if (!el) return;
+  el.textContent = message;
+  el.hidden = false;
+}
+
+function hideCartError() {
+  var el = document.getElementById('cartError');
+  if (el) el.hidden = true;
 }

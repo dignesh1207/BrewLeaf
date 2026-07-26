@@ -1,8 +1,4 @@
-/* =============================================================================
-   theme-autumn.css -- Seasonal "Harvest" theme.
-   Deep pumpkin/rust tones for fall. Adds a subtle textured hero background
-   in addition to the token overrides.
-   ============================================================================= */
+/* autumn "Harvest" theme - pumpkin/rust tones, also adds a textured hero bg */
 :root {
   --color-bg: #fbf1e6;
   --color-surface: #fffaf4;
@@ -22,8 +18,8 @@
     linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
 }
 
-/* Theme already has its own radial texture above -- hide the generic blobs
-   from style.css so the two don't compete. */
+/* already has its own radial texture above, hide the generic blur blobs
+   so they don't fight each other */
 .hero::before,
 .hero::after {
   display: none;

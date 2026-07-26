@@ -1,8 +1,6 @@
 <?php
-/**
- * index.php -- Home page. Pulls featured products and category stats live
- * from MySQL; includes hero video, category tabs, and a Chart.js chart.
- */
+// index.php -- the home page. pulls featured products + category stats from
+// the db, has the hero video, the category tabs, and a chart.js graph
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -10,7 +8,7 @@ require_once __DIR__ . '/includes/functions.php';
 $pageTitle = 'BrewLeaf Artisan Coffee & Tea Co. | Ethically Sourced, Small-Batch Roasted';
 $pageDescription = 'Shop small-batch artisan coffee and specialty loose-leaf tea. Ethically sourced from Ethiopia, Colombia, Japan and more. Free shipping over $40.';
 
-// Top 8 by rating (rating_count as tiebreaker) so the homepage highlights well-loved items.
+// top 8 by rating, rating_count breaks ties -- shows the popular stuff on homepage
 $featured = $conn->query(
     'SELECT id, name, slug, category, origin, base_price, image, rating_avg, rating_count
      FROM products WHERE is_active = 1 ORDER BY rating_avg DESC, rating_count DESC LIMIT 8'
@@ -20,7 +18,7 @@ $catStats = $conn->query(
     "SELECT category, COUNT(*) AS n, ROUND(AVG(rating_avg),2) AS avg_rating
      FROM products WHERE is_active = 1 GROUP BY category"
 );
-// Reshaped into parallel arrays -- the flat format Chart.js expects.
+// splitting into 3 separate arrays bc that's the format chart.js wants
 $chartLabels = [];
 $chartCounts = [];
 $chartRatings = [];
@@ -47,8 +45,8 @@ require_once __DIR__ . '/includes/header.php';
     <h2>Watch How We Roast</h2>
     <p>A quick look inside the BrewLeaf roastery.</p>
   </div>
-  <!-- autoplay requires muted; visitor can unmute via the volume control.
-       Playback speed (1.5x) (I think I changed the speed) is set in assets/js/hero-video.js. -->
+  <!-- has to be muted for autoplay to work, visitor can unmute with the volume control.
+       speed is set to 1.5x somewhere in assets/js/hero-video.js -->
   <video autoplay muted playsinline controls controlsList="nodownload" preload="auto" poster="assets/images/about-roastery.jpg" class="section-video">
     <source src="assets/videos/roasting-process.mp4" type="video/mp4">
     Your browser does not support embedded video.
@@ -107,7 +105,7 @@ require_once __DIR__ . '/includes/header.php';
     <p>Live data straight from our product database.</p>
   </div>
   <div class="chart-card">
-    <?php // Chart drawn by assets/js/catalogue-chart.js, reading these data-* attributes. ?>
+    <?php // the actual chart drawing happens in assets/js/catalogue-chart.js, it reads these data- attrs ?>
     <canvas
       id="catalogueChart"
       height="90"
@@ -130,7 +128,7 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<!-- Chart.js from CDN (no local build step). Setup in assets/js/catalogue-chart.js. -->
+<!-- using chart.js straight from CDN, no build step needed. rest of the setup is in assets/js/catalogue-chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

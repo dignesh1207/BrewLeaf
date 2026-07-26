@@ -1,9 +1,4 @@
-/* =============================================================================
-   assets/css/footer.css
-   -----------------------------------------------------------------------------
-   The dark footer at the bottom of every page (see includes/footer.php):
-   the column layout, links, and the embedded map.
-   ============================================================================= */
+/* dark footer at bottom of every page - columns, links, embedded map */
 
 .site-footer {
   background: var(--color-primary-dark);
@@ -11,8 +6,7 @@
   margin-top: 4rem;
 }
 
-/* 5 columns on a wide screen, 3 per row on a tablet, and stacked in
-   1 column on a phone. */
+/* 5 cols on wide screen, 3 on tablet, 1 on phone */
 .footer-inner {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -70,8 +64,8 @@
   border-top: 1px solid rgba(255, 255, 255, .12);
 }
 
-/* ---- Public theme switcher (any visitor, not just admins -- see
-   includes/footer.php and set-theme.php) ------------------------------- */
+/* public theme switcher - any visitor, not just admins. see footer.php
+   and set-theme.php */
 .theme-switcher {
   display: flex;
   gap: .6rem;
@@ -90,7 +84,7 @@
   transform: translateY(-2px);
 }
 
-/* The theme currently live on the site gets a solid white ring. */
+/* whichever theme is currently live gets the white ring */
 .theme-dot.active {
   border-color: #fff;
 }

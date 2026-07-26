@@ -1,9 +1,6 @@
 <?php
-/**
- * profile.php -- Private area (requires login). Shows account details,
- * lets the user update their profile, and lists their order history /
- * tracking status.
- */
+// profile.php -- needs login. shows account info, lets you edit your
+// profile, and lists your past orders with status
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -13,7 +10,7 @@ $userId = (int) $_SESSION['user_id'];
 $message = '';
 $error = '';
 
-// Username is intentionally not editable here, only full name and email.
+// username can't be changed here on purpose, only name and email
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $fullName = trim($_POST['full_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -25,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         $upd->bind_param('ssi', $fullName, $email, $userId);
         $upd->execute();
         $upd->close();
-        // Keep session copy in sync so the header/greeting updates immediately.
+        // update the session copy too or the header greeting won't change till next login
         $_SESSION['full_name'] = $fullName;
         $message = 'Profile updated.';
     }

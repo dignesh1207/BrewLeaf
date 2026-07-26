@@ -1,25 +1,23 @@
 <?php
-/** Small shared helper functions used across the front-end. */
+// helper functions used all over the site
 
-/** Escape a string for safe HTML output (XSS prevention). Wrap every dynamic value in h(...) before echoing it. */
+// escapes stuff for html so we don't get xss, wrap any variable in this before printing it
 function h(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
-/** Format a float as currency, e.g. 14.99 -> "$14.99". */
+// turns 14.99 into "$14.99"
 function money(float $amount): string
 {
     return '$' . number_format($amount, 2);
 }
 
-/**
- * Get a product's option rows grouped by option_group, e.g.
- * ['Size' => [...], 'Grind' => [...]]. Empty array if none.
- */
+// gets the options for a product (like Size, Grind) and groups them by option_group
+// so you get something like ['Size' => [...], 'Grind' => [...]]
 function get_product_options(mysqli $conn, int $productId): array
 {
-    // order by option_group so rows for the same group are adjacent, for the grouping loop below
+    // ordering by option_group so rows in the same group end up next to each other for the loop below
     $stmt = $conn->prepare(
         'SELECT id, option_group, option_value, price_modifier
          FROM product_options WHERE product_id = ? ORDER BY option_group, id'
@@ -36,15 +34,13 @@ function get_product_options(mysqli $conn, int $productId): array
     return $grouped;
 }
 
-/**
- * Active site theme name ('regular'|'autumn'|'winter'|'white'). Reads
- * site_settings, or ?preview_theme= for a per-visitor preview. Always
- * whitelisted -- the value builds a CSS filename, so an unchecked value
- * could be abused to include an arbitrary file.
- */
+// figures out which theme should be active. checks ?preview_theme= first (so people can preview
+// a theme without changing it for everyone), otherwise reads it from site_settings in the db.
+// only letting the 4 real theme names through here on purpose -- this value ends up in a css
+// filename below, so if I let literally any string through someone could probably mess with the path
 function get_active_theme(mysqli $conn): string
 {
-    // whitelist prevents a crafted ?preview_theme= from pointing at an arbitrary file
+    // only allow these exact values, don't want a random ?preview_theme= messing with the file path
     if (isset($_GET['preview_theme']) && in_array($_GET['preview_theme'], ['regular', 'autumn', 'winter', 'white'], true)) {
         return $_GET['preview_theme'];
     }
@@ -52,11 +48,11 @@ function get_active_theme(mysqli $conn): string
     $result = $conn->query("SELECT setting_value FROM site_settings WHERE setting_key = 'active_theme' LIMIT 1");
     $row = $result ? $result->fetch_assoc() : null;
     $theme = $row['setting_value'] ?? 'white';
-    // re-check whitelist in case the stored value is missing/invalid
+    // checking again in case whatever's saved in the db is empty or not a real theme name
     return in_array($theme, ['regular', 'autumn', 'winter', 'white'], true) ? $theme : 'white';
 }
 
-/** Render a 0-5 rating (decimals allowed) as filled/half/outline star HTML. */
+// takes a rating like 3.5 and turns it into star html (filled/half/empty)
 function render_stars(float $rating): string
 {
     $full = (int) floor($rating);
@@ -65,29 +61,23 @@ function render_stars(float $rating): string
     return str_repeat('&#9733;', $full) . ($half ? '&#189;' : '') . str_repeat('&#9734;', $empty);
 }
 
-/**
- * Get (or create) a stable per-session guest id for anonymous carts,
- * so cart_items can key off session_id when there's no user_id.
- */
+// gives a guest (not logged in) a random id we can store in the session, so their
+// cart_items rows can use session_id instead of user_id since they don't have an account
 function get_guest_session_id(): string
 {
     if (empty($_SESSION['guest_id'])) {
-        // cryptographically secure so it can't be guessed
+        // random_bytes so this can't be guessed
         $_SESSION['guest_id'] = bin2hex(random_bytes(16));
     }
     return $_SESSION['guest_id'];
 }
 
-/**
- * Resolve selected product_options ids into full rows (for storing as JSON)
- * plus the total price modifier. $optionIds is the raw posted list (may
- * contain junk/0s/duplicates, cleaned up here).
- *
- * @return array{options: array, modifierTotal: float}
- */
+// takes the option ids that got posted from the form and turns them into full rows we can
+// save as json, plus adds up the total price modifier. $optionIds is raw form data so it might
+// have junk/zeros/duplicates in it, that gets cleaned up here first
 function resolve_selected_options(mysqli $conn, array $optionIds): array
 {
-    // cast to int, drop zeros/duplicates
+    // make everything an int and drop zeros/dupes
     $cleanIds = [];
     foreach ($optionIds as $id) {
         $id = (int) $id;
@@ -97,12 +87,12 @@ function resolve_selected_options(mysqli $conn, array $optionIds): array
     }
     $optionIds = $cleanIds;
 
-    // empty IN (...) would be invalid SQL
+    // an empty IN () breaks the query so just bail out early
     if (!$optionIds) {
         return ['options' => [], 'modifierTotal' => 0.0];
     }
 
-    // one "?" placeholder per id
+    // need one ? placeholder for each id
     $placeholders = implode(',', array_fill(0, count($optionIds), '?'));
     $types = str_repeat('i', count($optionIds));
     $stmt = $conn->prepare("SELECT id, option_group, option_value, price_modifier FROM product_options WHERE id IN ($placeholders)");
@@ -110,7 +100,7 @@ function resolve_selected_options(mysqli $conn, array $optionIds): array
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // reshape for JSON storage, accumulate the price modifier total
+    // build the array we'll save as json and total up the price modifier at the same time
     $options = [];
     $modifierTotal = 0.0;
     while ($row = $result->fetch_assoc()) {
@@ -127,13 +117,11 @@ function resolve_selected_options(mysqli $conn, array $optionIds): array
     return ['options' => $options, 'modifierTotal' => $modifierTotal];
 }
 
-/**
- * Render selected_options JSON (from resolve_selected_options()) as
- * "Size: Large, Grind: Whole Bean". Empty string if none.
- */
+// takes the json we saved from resolve_selected_options() and turns it into something
+// readable, like "Size: Large, Grind: Whole Bean"
 function format_selected_options(?string $json): string
 {
-    // fall back to [] if decoding fails
+    // if json_decode fails for some reason just treat it as empty instead of erroring
     $options = json_decode($json ?? '[]', true) ?: [];
     $parts = [];
     foreach ($options as $option) {

@@ -1,11 +1,4 @@
-/**
- * assets/js/nav.js
- * ---------------------------------------------------------------------------
- * Makes the hamburger button in the header open/close the mobile menu.
- * Only runs if the button exists on the page (it's in every page's header,
- * but this check keeps the file safe to include everywhere).
- * ---------------------------------------------------------------------------
- */
+// hamburger button toggles the mobile nav open/closed
 document.addEventListener('DOMContentLoaded', function () {
   var toggle = document.getElementById('navToggle');
   var nav = document.getElementById('primaryNav');
@@ -13,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   toggle.addEventListener('click', function () {
     var isOpen = nav.classList.toggle('open');
-    // Keep aria-expanded in sync so screen readers announce the state.
+    // update aria-expanded too so screen readers know it opened
     toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 });

@@ -1,13 +1,13 @@
 <?php
 
-// Help page for site administrators; admins only (redirected below).
+// this page is only for admins, kicks non-admins out below
 
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 
-// Non-admins get redirected before any admin content renders.
+// send them back to login if they're not an admin, don't want randoms seeing this page
 if (!is_admin()) {
     header('Location: login.php');
     exit;

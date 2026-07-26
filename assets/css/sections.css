@@ -1,10 +1,4 @@
-/* =============================================================================
-   assets/css/sections.css
-   -----------------------------------------------------------------------------
-   General page-section layout: the padded "section" wrapper, section titles,
-   the "feature grid" (used for the 4 icon boxes on Home and the article list
-   on the Help page), and the shared card look used by several components.
-   ============================================================================= */
+/* general section layout - padding wrapper, titles, feature grid, shared card look */
 
 .section {
   padding: 4rem 0;
@@ -21,25 +15,22 @@
   margin-inline: auto;
 }
 
-/* A section with a slightly different background and top/bottom borders,
-   used to visually separate one section from the ones above/below it
-   (e.g. the "Featured Products" section on the home page). */
+/* slightly diff bg + top/bottom borders to separate it from sections
+   above/below, e.g. Featured Products on home page */
 .section-alt {
   background: var(--color-surface);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
 }
 
-/* Narrower content column, for pages that read better without stretching
-   full-width (About, Help articles, Contact, Login, Register). */
+/* narrower column so text isn't full width - About, Help, Contact, Login, Register */
 .page-narrow-sm { max-width: 480px; margin-inline: auto; }
 .page-narrow-md { max-width: 600px; margin-inline: auto; }
 .page-narrow-lg { max-width: 800px; margin-inline: auto; }
 
-/* ---- Shared "raised card" look ---------------------------------------------
-   Feature boxes, product cards, dashboard tiles, charts and the filter bar
-   all sit on the page as a raised card with the same background/border/
-   shadow. Each component's own CSS file only adds what makes IT different. */
+/* shared "raised card" look - feature boxes, product cards, dash tiles,
+   charts and the filter bar all use this. each file just adds whatever
+   makes it different */
 .feature-box,
 .product-card,
 .dash-card,
@@ -52,7 +43,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* ---- Video gallery (About page "See BrewLeaf in Action") ------------------ */
+/* video gallery on the About page */
 .video-gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -102,8 +93,7 @@
   border-color: var(--color-primary);
 }
 
-/* 4 boxes in a row on a normal screen, 2 per row on a tablet, and stacked
-   in 1 column on a phone. */
+/* 4 boxes per row, 2 on tablet, 1 on phone */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -142,9 +132,9 @@
   background: rgba(0, 0, 0, .06);
 }
 
-/* Center the "Our Values" cards on the About page only (that section is the
-   one wrapped in .page-narrow-lg) -- Home's 4-box grid and the Help article
-   list also reuse .feature-box, so this is scoped to avoid changing those. */
+/* centers the Our Values cards on About page only (.page-narrow-lg wraps
+   that section) -- home's grid and the help article list also use
+   .feature-box so had to scope this or it'd affect those too */
 .page-narrow-lg .feature-box {
   text-align: center;
 }
@@ -153,15 +143,14 @@
   margin-inline: auto;
 }
 
-/* A regular photo dropped inside a page's body copy (About page, Help
-   articles), with a bit of breathing room and a soft shadow. */
+/* photo dropped into page body text - About page, help articles */
 .content-image {
   border-radius: var(--radius);
   margin: 1.5rem 0;
   box-shadow: var(--shadow-md);
 }
 
-/* The roastery video embed on the home page. */
+/* roastery video on the home page */
 .section-video {
   width: 100%;
   max-width: 720px;

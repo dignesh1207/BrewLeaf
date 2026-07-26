@@ -1,11 +1,5 @@
-/* =============================================================================
-   assets/css/hero.css
-   -----------------------------------------------------------------------------
-   The big banner section at the top of the Home, About, and Help pages
-   (<section class="hero">). The background image/gradient itself is set
-   per-theme (see the .hero rule inside each theme-*.css file) -- this file
-   only holds the layout that stays the same no matter which theme is active.
-   ============================================================================= */
+/* hero banner at top of Home/About/Help pages. bg image/gradient is set
+   per theme (see .hero in each theme-*.css) -- this file is just the layout */
 
 .hero {
   position: relative;
@@ -15,11 +9,10 @@
   text-align: center;
 }
 
-/* Soft blurred circles used as background decoration by some themes.
-   A theme can hide these with "display: none" if it uses a photo instead
-   (see theme-white.css). "opacity" makes each circle see-through instead
-   of a solid color -- simpler than mixing transparency into the color
-   itself, since these have no text/content to worry about fading too. */
+/* blurred circles for bg decoration -- some themes hide these with
+   display:none if they use a photo instead (theme-white.css). using
+   opacity instead of baking transparency into the color since there's
+   no text in these to worry about fading */
 .hero::before,
 .hero::after {
   content: '';
@@ -76,7 +69,7 @@
   box-shadow: var(--shadow-lg);
 }
 
-/* Small fade-and-rise animation the hero text plays once, on page load. */
+/* fade + rise animation the hero text plays once on page load */
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }

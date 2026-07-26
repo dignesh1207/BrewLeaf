@@ -1,43 +1,41 @@
-# CSS map — "I want to change X, which file do I open?"
+## which css file do i edit?
 
-| I want to change...                                              | Open this file       |
-|-------------------------------------------------------------------|-----------------------|
-| A color, for a specific season/theme (autumn, winter, etc.)       | `theme-*.css` (the one matching that theme) |
-| A color, everywhere, in every theme at once                       | `variables.css` (only if you want to change the *fallback*/default — see note below) |
-| Fonts, base text color, page width, the CSS reset                 | `base.css` |
-| Any `<button>` or `class="btn"` link                               | `buttons.css` |
-| The top nav bar (logo, menu links, cart icon, mobile hamburger)    | `header.css` |
-| The footer (columns, links, embedded map)                         | `footer.css` |
-| The big banner at the top of Home/About/Help pages                | `hero.css` (layout) + the matching `theme-*.css` (background image/color) |
-| Product cards (Home "Featured", Shop grid, product detail page)   | `product-card.css` |
-| Padded page sections, section titles, the "Our Values" icon boxes | `sections.css` |
-| The Coffee/Tea tab switcher on the home page                      | `tabs.css` |
-| Any `<table>` (cart, checkout, admin lists)                       | `tables.css` |
-| Form inputs, labels, validation messages, alert banners           | `forms.css` |
-| Admin dashboard stat tiles / chart cards                          | `dashboard.css` |
-| Anything only on `/admin/*` pages                                 | `admin.css` |
-| A one-off spacing tweak (margin) on a single element               | `utilities.css` (add/reuse a small `.mt-*`/`.mb-*` class instead of a new rule) |
+quick notes so i don't forget where stuff is:
 
-## Why there are so many files
+- a theme color (autumn/winter/etc) -> theme-*.css, pick the right one
+- a color everywhere, all themes -> variables.css (this is just the default though, see below)
+- fonts, text color, page width, the reset -> base.css
+- buttons (class="btn") -> buttons.css
+- top nav bar -> header.css
+- footer -> footer.css
+- the big banner on Home/About/Help -> hero.css for layout, theme-*.css for the actual background
+- product cards -> product-card.css
+- page sections / "Our Values" boxes -> sections.css
+- coffee/tea tabs on home page -> tabs.css
+- any table -> tables.css
+- form inputs / alert boxes -> forms.css
+- admin dashboard tiles -> dashboard.css
+- anything admin-only -> admin.css
+- small margin tweak -> utilities.css, there's probably already a class like mt-sm
 
-Every page loads **all** of these, always, in this fixed order (see `includes/header.php`):
+## why so many files
 
-```
-variables.css → theme-*.css (whichever is active) → base.css
-→ buttons, header, footer, hero, sections, tabs, tables, forms,
-  product-card, dashboard, admin (any order among these 11)
-→ utilities.css
-```
+every page loads ALL of these every time (see includes/header.php), in this order:
+variables -> theme -> base -> (buttons, header, footer, hero, sections, tabs,
+tables, forms, product-card, dashboard, admin) -> utilities
 
-Each file only owns **one part of the page** (its header comment says which), so you never have to guess where a rule that changes the footer might be hiding in the button styles. The tradeoff is more files instead of one giant stylesheet.
+so each file just owns one part of the page instead of one huge css file.
+more files but easier to find stuff.
 
-## How colors actually work (the part that trips people up)
+## the theme/color thing that confused me at first
 
-Colors are never hardcoded in the component files (`buttons.css`, `header.css`, etc.) — they always reference a variable like `var(--color-primary)`. That variable's actual value is defined **twice**:
+colors aren't hardcoded in buttons.css etc, they use variables like
+var(--color-primary). that variable gets set twice: once in variables.css
+(the default) and then again in each theme-*.css with different values.
+whichever theme.css loads last wins, and that's literally the whole theme
+switcher -- it's not doing anything fancy, it just loads a different css
+file depending on what's saved in the db.
 
-1. Once in `variables.css`, as a fallback/default.
-2. Again in each `theme-*.css` file, using the *same variable names* but different color values.
-
-Whichever theme file the site currently has active loads **after** `variables.css`, so its values win. That's the entire theme-switching mechanism — nothing else changes when you switch themes in Admin → Site Template, just which `theme-*.css` file loads last.
-
-**So: if you want to change a color for one theme only, edit that `theme-*.css` file. If you want to add a brand-new color variable for use across the whole site, add it to `variables.css` *and* give it a matching value in all four `theme-*.css` files** (otherwise it'll only have a value in whichever theme doesn't override it, and look broken in the other three).
+so if i want to change one theme's color, edit that theme file. if i add a
+brand new variable, i need to give it a value in variables.css AND all 4
+theme files or it'll only work in 3 of them.

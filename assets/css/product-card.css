@@ -1,14 +1,6 @@
-/* =============================================================================
-   assets/css/product-card.css
-   -----------------------------------------------------------------------------
-   Everything related to showing a product: the grid of cards (Home page
-   "Featured Products" and the full Shop page), the product detail page
-   (product.php), the search/filter bar, and small pieces reused on those
-   pages like the category badge and star rating.
-   ============================================================================= */
+/* product card styles - home page grid, shop page, product detail page */
 
-/* 4 product cards in a row on a normal screen, 2 per row on a tablet, and
-   stacked in 1 column on a phone. */
+/* 4 cards per row normally, 2 on tablet, 1 on phone */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -54,12 +46,9 @@
   flex: 1;
 }
 
-/* Space between the "COFFEE"/"TEA" badge and the product name below it. */
-/* Without this, the badge stretches to the full width of the card: .body
-   is a flex column, and flex items default to "stretch" across the
-   cross-axis (here, that's width) unless told to size to their own
-   content instead. align-self: flex-start opts this one item out of that
-   stretch so it stays a small pill, like a normal inline-block element. */
+/* gap under the badge before the product name.
+   without align-self the badge stretches full width -- .body is a flex
+   column and flex items stretch by default. this keeps it a small pill */
 .product-card .badge {
   align-self: flex-start;
   margin-bottom: .6rem;
@@ -94,10 +83,9 @@
   gap: .5rem;
 }
 
-/* Small rounded label, e.g. "COFFEE" / "TEA" / order status. Uses
-   --color-primary (not --color-accent) on purpose: --color-accent is
-   sometimes a very light color (see variables.css), which would make the
-   white badge text hard to read. --color-primary is always dark enough. */
+/* rounded label like "COFFEE"/"TEA"/order status. using --color-primary
+   not --color-accent here bc accent can be really light in some themes
+   and then white text on it is unreadable */
 .badge {
   display: inline-block;
   font-size: .7rem;
@@ -110,14 +98,12 @@
   color: #fff;
 }
 
-/* Some cards/boxes are wrapped in an <a> link (the whole card is clickable).
-   Without this, links turn text blue/purple -- this keeps the normal text
-   color instead. Used on product cards and the Help article boxes. */
+/* whole card is a link so text would go blue/purple without this */
 .card-link {
   color: inherit;
 }
 
-/* ---- Search / filter bar (top of the Shop page) --------------------------- */
+/* search/filter bar at top of shop page */
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -133,15 +119,13 @@
   flex: 1;
 }
 
-/* A form-row that should only take up as much width as it needs (not
-   stretch to fill the filter bar), e.g. the "Apply" button's row. */
+/* form-row that shouldn't stretch, like the Apply button's row */
 .filter-bar .form-row-auto {
   flex: 0;
 }
 
-/* On a narrow phone, two 160px-min fields side by side leaves each one too
-   squeezed to use comfortably (e.g. the search box's placeholder text gets
-   cut off) -- stack every field to full width instead. */
+/* two 160px fields side by side is too cramped on a small phone (search
+   box placeholder gets cut off), so just stack them full width */
 @media (max-width: 560px) {
   .filter-bar .form-row,
   .filter-bar .form-row-auto {
@@ -149,7 +133,7 @@
   }
 }
 
-/* ---- Product detail page (product.php) ------------------------------------ */
+/* product detail page (product.php) */
 .product-detail {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -162,21 +146,21 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Small "Home / Shop / Product Name" trail above the product title. */
+/* the Home / Shop / Product Name trail above the title */
 .breadcrumb {
   font-size: .85rem;
   color: var(--color-text-muted);
   margin-bottom: 1rem;
 }
 
-/* The big live-updating price next to the size/grind options. */
+/* big price that updates live next to the size/grind options */
 .price-live {
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--color-primary);
 }
 
-/* Narrow quantity number field. */
+/* narrow qty field */
 .qty-field {
   max-width: 140px;
 }
@@ -208,7 +192,7 @@
   color: #fff;
 }
 
-/* ---- Customer review list (bottom of product.php) -------------------------- */
+/* customer reviews list */
 .review-item {
   margin-bottom: 1rem;
 }
@@ -217,8 +201,7 @@
   margin-top: .4rem;
 }
 
-/* Modifier for .badge that capitalizes the first letter of an order status
-   word (e.g. "shipped" -> "Shipped") instead of shouting it in caps. */
+/* capitalizes order status instead of ALL CAPS, e.g. shipped -> Shipped */
 .badge-capitalize {
   text-transform: capitalize;
 }

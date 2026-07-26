@@ -1,17 +1,15 @@
 <?php
-/**
- * cart_add.php -- POST endpoint for the add-to-cart form on product.php.
- * Handles both AJAX (fetch, returns JSON) and a plain form-submit fallback
- * (redirects to cart.php) since main.js progressively enhances the form.
- */
+// handles the add-to-cart form from product.php
+// works two ways: AJAX (fetch, sends back JSON) and normal form submit
+// (just redirects to cart.php) in case JS is off, main.js upgrades the form
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
-// Detect AJAX (main.js fetch) vs. plain form-submit fallback.
+// check if this came from fetch() in main.js or a normal form post
 $isAjax = ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest';
 
-// Sends JSON (with updated cart count) for AJAX, or a redirect otherwise. Always exits.
+// sends back JSON + new cart count if AJAX, otherwise just redirects. exits either way
 function respond(bool $ok, string $message, bool $isAjax, mysqli $conn, ?int $userId, ?string $guestId, string $redirect = 'cart.php')
 {
     if ($isAjax) {
@@ -39,10 +37,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(false, 'Invalid request method.', $isAjax, $conn, is_logged_in() ? (int) $_SESSION['user_id'] : null, is_logged_in() ? null : get_guest_session_id());
 }
 
+// admins can't add to cart. role comes from the session (set when they
+// logged in) not from the request, so nobody can fake this from the client
+if (is_admin()) {
+    respond(false, 'Admin accounts cannot add items to a cart.', $isAjax, $conn, (int) $_SESSION['user_id'], null, SITE_BASE_URL . '/admin/dashboard.php');
+}
+
 $productId = (int) ($_POST['product_id'] ?? 0);
 $quantity  = max(1, (int) ($_POST['quantity'] ?? 1));
 
-// Look up fresh from DB (not trusting client input); is_active blocks delisted products.
+// grab the real product from the db instead of trusting whatever came from the form
+// is_active = 1 also blocks adding a product that got delisted
 $prodStmt = $conn->prepare('SELECT id, name, base_price FROM products WHERE id = ? AND is_active = 1');
 $prodStmt->bind_param('i', $productId);
 $prodStmt->execute();
@@ -56,7 +61,7 @@ if (!$product) {
     respond(false, 'Product not found.', $isAjax, $conn, $userId, $guestId);
 }
 
-// Collect posted option_* fields (values are product_options.id).
+// grab all the option_* fields from the post, these are product_options ids
 $optionIds = [];
 foreach ($_POST as $key => $value) {
     if (str_starts_with($key, 'option_') && $value !== '') {
@@ -65,10 +70,10 @@ foreach ($_POST as $key => $value) {
 }
 $resolved = resolve_selected_options($conn, $optionIds);
 $unitPrice = (float) $product['base_price'] + $resolved['modifierTotal'];
-// Stored as JSON so the exact selection/price survives later changes to product_options.
+// save as JSON so even if product_options changes later, this cart row still shows what was picked
 $optionsJson = json_encode($resolved['options']);
 
-// Each add-to-cart click creates a new row rather than merging quantities.
+// note: just inserts a new row every time, doesn't merge with an existing matching line
 $ins = $conn->prepare(
     'INSERT INTO cart_items (user_id, session_id, product_id, selected_options, unit_price, quantity)
      VALUES (?, ?, ?, ?, ?, ?)'

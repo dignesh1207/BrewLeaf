@@ -1,8 +1,5 @@
-/* =============================================================================
-   theme-regular.css -- Default "Roastery" theme.
-   Warm coffee browns and cream. Only overrides tokens from style.css; no
-   layout rules belong in here.
-   ============================================================================= */
+/* default "Roastery" theme - warm coffee browns and cream.
+   just token overrides here, no layout rules */
 :root {
   --color-bg: #faf7f2;
   --color-surface: #ffffff;

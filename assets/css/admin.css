@@ -1,11 +1,6 @@
-/* =============================================================================
-   assets/css/admin.css
-   -----------------------------------------------------------------------------
-   Styling only used on admin pages (anything under /admin/ plus the small
-   admin sub-nav bar included at the top of those pages).
-   ============================================================================= */
+/* styles for admin pages only (/admin/ + the sub-nav bar at the top) */
 
-/* ---- Admin sub-nav bar (includes/admin-nav.php) ---------------------------- */
+/* admin sub-nav bar (includes/admin-nav.php) */
 .admin-bar {
   background: var(--color-primary-dark);
 }
@@ -22,20 +17,19 @@
   font-weight: 500;
 }
 
-/* Added by PHP to whichever link matches the current admin page. */
+/* php adds this to whatever link matches the current page */
 .admin-bar a.active {
   color: #fff;
   font-weight: 700;
 }
 
-/* Pushes the "Back to Site" link to the far right of the bar. */
+/* pushes Back to Site link to the far right */
 .admin-bar-back {
   margin-left: auto;
 }
 
-/* ---- Theme picker (admin/theme.php) ---------------------------------------- */
-/* 4 theme cards in a row on a normal screen, 2 per row on a tablet, and
-   stacked in 1 column on a phone. */
+/* theme picker (admin/theme.php) */
+/* 4 cards per row, 2 on tablet, 1 on phone */
 .theme-options {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -70,10 +64,9 @@
   border-color: var(--color-primary);
 }
 
-/* The swatch is a tiny mock-up of the page (a header bar, a hero block,
-   3 little "cards") built entirely from divs/spans, colored per-theme --
-   it stands in for a real screenshot so it never goes out of date if a
-   theme's colors change. See admin/theme.php for the markup. */
+/* swatch is a mini mockup of the page (header bar, hero, 3 little cards)
+   made out of divs/spans, colored per theme -- used instead of a real
+   screenshot so it can't go out of date. markup is in admin/theme.php */
 .theme-swatch {
   height: 118px;
   display: flex;
@@ -139,7 +132,7 @@
   color: var(--color-text-muted);
 }
 
-/* ---- Small header row: a page title next to an action button -------------- */
+/* header row - page title next to an action button */
 .header-row {
   display: flex;
   justify-content: space-between;
@@ -148,9 +141,100 @@
   gap: 1rem;
 }
 
-/* Row of small "chips" (used for the tag list on the admin dashboard). */
+/* row of small chips, used for the tag list on admin dashboard */
 .chip-list {
   display: flex;
   flex-wrap: wrap;
   gap: .8rem;
+}
+
+/* Manage Products table (admin/products.php)
+   table-layout: fixed + the .col-* widths below make header and rows line
+   up exactly (browser's default "auto" layout sizes columns per row based
+   on content, can't rely on that). name column has no fixed width so it's
+   the one that grabs whatever space is left. widths below are eyeballed
+   against the real content -- .col-actions used to be 150px and that was
+   like 8px too narrow, clipped the Delete button */
+.product-table {
+  table-layout: fixed;
+  /* sum of the fixed .col-* widths below + ~260px so name column has room
+     for most product names without truncating. below this width
+     .table-scroll kicks in and scrolls sideways instead of squishing cols */
+  min-width: 970px;
+}
+
+.col-thumb    { width: 96px; }
+.col-category { width: 100px; }
+.col-price    { width: 90px; }
+.col-rating   { width: 90px; }
+.col-status   { width: 110px; }
+.col-actions  { width: 220px; }
+/* .col-name has no width on purpose, see above */
+
+.product-table th,
+.product-table td {
+  padding: .65rem 1rem;
+  vertical-align: middle;
+}
+
+/* long names truncate with ... instead of wrapping so rows stay one line
+   tall -- full name still shows up as a tooltip via title="" in the php */
+.product-table .col-name-cell {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.product-thumb {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  padding: 4px;
+}
+
+/* the <td> itself stays a normal table-cell so its height/border match
+   the rest of the row -- setting display:flex right on the td was
+   breaking that (border ended up ~33px too high). flex lives on this
+   inner wrapper div instead */
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.actions-cell .btn {
+  flex-shrink: 0;
+}
+
+/* td.actions-td padding-right (room after Delete button) is shared in
+   tables.css -- cart table uses it too */
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* disabled Prev/Next becomes a plain <span> in the php (not a real
+   disabled <a>) -- this just dims it so it looks inactive */
+.pager [aria-disabled="true"] {
+  opacity: .45;
+  box-shadow: none;
+}
+
+/* sitewide :focus outline (base.css) uses --color-accent, but that's
+   pure white in the White theme so it's invisible on this light bg.
+   using --color-primary-dark instead since it's dark in every theme */
+.filter-bar :focus-visible,
+.product-table :focus-visible,
+.pager :focus-visible {
+  outline: 2px solid var(--color-primary-dark);
+  outline-offset: 2px;
 }

@@ -1,28 +1,20 @@
--- ============================================================================
--- BrewLeaf Artisan Coffee & Tea Co. -- Database Schema
--- ============================================================================
--- Target: MySQL 5.7+ 
+-- BrewLeaf database schema
+-- MySQL 5.7+
 --
--- Install:
---   1. Create a database, e.g.:  CREATE DATABASE brewleaf CHARACTER SET utf8mb4;
---   2. Import this file:         mysql -u <user> -p brewleaf < schema.sql
---   3. Update config/db.php with your DB host/name/user/password.
+-- how to set up:
+--   1. CREATE DATABASE brewleaf CHARACTER SET utf8mb4;
+--   2. mysql -u <user> -p brewleaf < schema.sql
+--   3. update config/db.php with your db host/name/user/password
 --
--- This file creates all tables required by the app and seeds:
---   - 1 default admin account (username: admin / password: Admin123!)
---   - 20 products (10 coffees + 10 teas), each with 2 option groups
---   - 3 site templates registered in site_settings
---   - service_status rows used by the backend monitor page
--- ============================================================================
+-- this makes all the tables and fills in some starting data:
+-- an admin account (admin / Admin123!), 20 products, 3 themes, and the
+-- service_status rows for the monitor page
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- ----------------------------------------------------------------------------
--- Table: users
--- Stores both customer and admin accounts. `status` lets admins disable
--- an account without deleting it (rubric: user account administration).
--- ----------------------------------------------------------------------------
+-- customers and admins both live in this table, role tells them apart.
+-- status lets an admin disable someone instead of deleting the row
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -35,10 +27,7 @@ CREATE TABLE users (
     created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- ----------------------------------------------------------------------------
--- Table: products
--- The catalogue. `category` separates coffee vs tea for filtering/search.
--- ----------------------------------------------------------------------------
+-- the product catalogue. category is just coffee/tea so we can filter by it
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -55,11 +44,9 @@ CREATE TABLE products (
     created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- ----------------------------------------------------------------------------
--- Table: product_options
--- Each product has >=2 option groups (e.g. size, grind/style). A row is one
--- selectable value within a group, with a price modifier applied to base_price.
--- ----------------------------------------------------------------------------
+-- each product has a couple of option groups (like size, grind/style).
+-- one row here = one choice in a group, and price_modifier gets added
+-- to the product's base_price when that option is picked
 DROP TABLE IF EXISTS product_options;
 CREATE TABLE product_options (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -70,9 +57,7 @@ CREATE TABLE product_options (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ----------------------------------------------------------------------------
--- Table: reviews
--- ----------------------------------------------------------------------------
+-- star rating + comment on a product
 DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -85,14 +70,11 @@ CREATE TABLE reviews (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ----------------------------------------------------------------------------
--- Table: cart_items
--- Supports both logged-in users (user_id) and guests (session_id).
--- `selected_options` stores a JSON-encoded array of the option rows chosen
--- for this line (one product can have multiple option GROUPS -- e.g. Size
--- AND Grind -- selected at once, so a single option_id FK isn't enough).
--- Example: [{"option_id":3,"group":"Size","value":"500g","price_modifier":7.5}, ...]
--- ----------------------------------------------------------------------------
+-- cart rows. user_id is set for logged in people, session_id for guests.
+-- selected_options is just a JSON array of whatever options they picked --
+-- a product can have more than one option group selected (size AND grind)
+-- so a single option_id column wouldn't be enough here.
+-- looks like: [{"option_id":3,"group":"Size","value":"500g","price_modifier":7.5}]
 DROP TABLE IF EXISTS cart_items;
 CREATE TABLE cart_items (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -107,9 +89,7 @@ CREATE TABLE cart_items (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ----------------------------------------------------------------------------
--- Table: orders / order_items
--- ----------------------------------------------------------------------------
+-- orders + order_items (one order can have many items)
 DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
@@ -134,21 +114,14 @@ CREATE TABLE order_items (
     FOREIGN KEY (product_id) REFERENCES products(id)
 ) ENGINE=InnoDB;
 
--- ----------------------------------------------------------------------------
--- Table: site_settings
--- Key/value store; used to persist the active site-wide template chosen
--- by the admin (rubric: 3 switchable templates).
--- ----------------------------------------------------------------------------
+-- just a key/value table -- right now it only stores which theme is active
 DROP TABLE IF EXISTS site_settings;
 CREATE TABLE site_settings (
     setting_key     VARCHAR(60) PRIMARY KEY,
     setting_value   VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
 
--- ----------------------------------------------------------------------------
--- Table: service_status
--- Rows checked/updated by the backend monitor page (monitor.php).
--- ----------------------------------------------------------------------------
+-- rows the monitor.php page checks/updates
 DROP TABLE IF EXISTS service_status;
 CREATE TABLE service_status (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -159,21 +132,19 @@ CREATE TABLE service_status (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- ============================================================================
--- SEED DATA
--- ============================================================================
+-- everything below here is just starter data so the site isn't empty
 
--- Default admin account. Password is 'Admin123!' hashed with PHP's
--- password_hash() (bcrypt). CHANGE THIS after first login.
+-- admin login is admin / Admin123! (hashed with PHP's password_hash())
+-- should probably change this password after logging in the first time
 INSERT INTO users (username, email, password_hash, full_name, role, status) VALUES
 ('admin', 'admin@brewleaf.test', '$2y$10$i3ISeOLC0fQyhpeZ5X2vT.HqPjIMwrEVez0Pqd.FGdJOGRhYrgSwC', 'Site Administrator', 'admin', 'active'),
 ('jsmith', 'jsmith@example.com', '$2y$10$i3ISeOLC0fQyhpeZ5X2vT.HqPjIMwrEVez0Pqd.FGdJOGRhYrgSwC', 'Jane Smith', 'customer', 'active');
 
--- Site templates (regular / autumn / winter) -- 'regular' active by default.
+-- white theme is the default
 INSERT INTO site_settings (setting_key, setting_value) VALUES
 ('active_theme', 'white');
 
--- Backend services checked by monitor.php
+-- services shown on the monitor page
 INSERT INTO service_status (service_name, status) VALUES
 ('Database Connection', 'online'),
 ('Product Catalogue', 'online'),
@@ -182,9 +153,7 @@ INSERT INTO service_status (service_name, status) VALUES
 ('User Authentication', 'online'),
 ('Search / SEO Sitemap', 'online');
 
--- ----------------------------------------------------------------------------
--- Products: 10 coffees + 10 teas.
--- ----------------------------------------------------------------------------
+-- 10 coffees + 10 teas
 INSERT INTO products (name, slug, category, origin, description, base_price, image, rating_avg, rating_count, is_active) VALUES
 ('Sunrise Ethiopian Yirgacheffe', 'sunrise-ethiopian-yirgacheffe', 'coffee', 'Ethiopia', 'Bright, floral, and citrusy with notes of bergamot and jasmine. A washed-process coffee grown at high altitude.', 16.99, 'assets/images/product-01.jpg', 4.7, 132, 1),
 ('Midnight Sumatra Mandheling', 'midnight-sumatra-mandheling', 'coffee', 'Indonesia', 'Full-bodied and earthy with low acidity, notes of cedar and dark chocolate.', 15.49, 'assets/images/product-02.jpg', 4.5, 98, 1),
@@ -207,11 +176,9 @@ INSERT INTO products (name, slug, category, origin, description, base_price, ima
 ('Hibiscus Berry Herbal', 'hibiscus-berry-herbal', 'tea', 'South Africa', 'Tart and fruity caffeine-free blend with hibiscus and mixed berries.', 10.49, 'assets/images/product-19.jpg', 4.1, 33, 1),
 ('Matcha Ceremonial Grade', 'matcha-ceremonial-grade', 'tea', 'Japan', 'Stone-ground shade-grown green tea powder, vibrant and umami-rich.', 24.99, 'assets/images/product-20.jpg', 4.8, 112, 1);
 
--- ----------------------------------------------------------------------------
--- Product options: each product gets a Size group and a Grind/Style group.
--- Coffees -> Size (250g/500g/1kg) + Grind (Whole Bean/Ground/Espresso Ground)
--- Teas    -> Size (50g/100g/250g)  + Style (Loose Leaf/Tea Bags [x20])
--- ----------------------------------------------------------------------------
+-- every product gets a Size group + a Grind/Style group
+-- coffee: Size (250g/500g/1kg), Grind (Whole Bean/Ground/Espresso Ground)
+-- tea: Size (50g/100g/250g), Style (Loose Leaf/Tea Bags x20)
 INSERT INTO product_options (product_id, option_group, option_value, price_modifier)
 SELECT id, 'Size', '250g', 0.00 FROM products WHERE category = 'coffee';
 INSERT INTO product_options (product_id, option_group, option_value, price_modifier)
@@ -236,7 +203,7 @@ SELECT id, 'Style', 'Loose Leaf', 0.00 FROM products WHERE category = 'tea';
 INSERT INTO product_options (product_id, option_group, option_value, price_modifier)
 SELECT id, 'Style', 'Tea Bags (x20)', 1.50 FROM products WHERE category = 'tea';
 
--- Sample reviews so product pages have content out of the box.
+-- a few sample reviews so the product pages aren't empty
 INSERT INTO reviews (product_id, user_id, rating, comment) VALUES
 (1, 2, 5, 'Incredibly fragrant, my favorite morning cup.'),
 (3, 2, 4, 'Smooth and reliable house blend, great value.'),

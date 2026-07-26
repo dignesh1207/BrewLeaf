@@ -1,11 +1,4 @@
-/**
- * assets/js/tabs.js
- * ---------------------------------------------------------------------------
- * Runs only on the home page. Lets a visitor switch between the "Coffee"
- * and "Tea" tab buttons in the "Shop by Category" section without a page
- * reload -- clicking a button shows its matching panel and hides the rest.
- * ---------------------------------------------------------------------------
- */
+// coffee/tea tab switcher for the shop by category section, home page only
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -17,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       btn.classList.add('active');
       btn.setAttribute('aria-selected', 'true');
-      // data-target on the button holds the id of the panel it reveals.
+      // data-target has the id of the panel to show
       document.getElementById(btn.dataset.target).hidden = false;
     });
   });

@@ -1,15 +1,7 @@
-/* =============================================================================
-   assets/css/base.css
-   -----------------------------------------------------------------------------
-   The most basic, page-wide rules: the CSS "reset", default body/heading/
-   paragraph styling, the .container that centers page content, and the
-   skip-link for keyboard users. Edit this file for anything that applies
-   to EVERY page (fonts, base text color, page width).
+/* base page-wide rules - reset, body/heading defaults, .container, skip link.
+   needs variables.css loaded first since this uses var(--color-...) a lot */
 
-   Needs variables.css loaded first (it uses var(--color-...) everywhere).
-   ============================================================================= */
-
-/* ---- Reset: remove the browser's built-in default spacing/styles -------- */
+/* reset - strip the browser's default spacing/styles */
 *,
 *::before,
 *::after {
@@ -52,14 +44,13 @@ button {
   color: #fff;
 }
 
-/* Shows a visible outline around whatever is focused (e.g. tabbing through
-   links with the keyboard), so keyboard users can always see where they are. */
+/* visible outline on whatever's focused, so keyboard users can see where they are */
 :focus {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
-/* ---- Page defaults -------------------------------------------------------- */
+/* page defaults */
 body {
   background: var(--color-bg);
   color: var(--color-text);
@@ -80,8 +71,7 @@ h1 { font-size: 2.6rem; }
 h2 { font-size: 1.9rem; }
 h3 { font-size: 1.2rem; }
 
-/* On small phone screens, the big headings above are too wide to read
-   comfortably, so make them a little smaller. */
+/* headings above are too big for small phones, shrink them a bit */
 @media (max-width: 480px) {
   h1 { font-size: 2rem; }
   h2 { font-size: 1.5rem; }
@@ -91,8 +81,8 @@ p {
   margin: 0 0 1em;
 }
 
-/* .container centers page content and stops it from stretching too wide on
-   big screens. Almost every section on the site wraps its content in this. */
+/* centers content and stops it stretching too wide on big screens.
+   almost every section wraps its content in this */
 .container {
   width: 100%;
   max-width: 1180px;
@@ -100,8 +90,8 @@ p {
   padding: 0 1.25rem;
 }
 
-/* "Skip to main content" link -- hidden off-screen until a keyboard user
-   tabs to it, then it jumps into view so they can skip the nav menu. */
+/* "skip to main content" link -- hidden off screen until a keyboard user
+   tabs to it, then it pops into view so they can skip the nav menu */
 .skip-link {
   position: absolute;
   left: -999px;
@@ -119,7 +109,7 @@ p {
   border-radius: var(--radius-sm);
 }
 
-/* ---- Respect "reduce motion" accessibility setting ------------------------ */
+/* respect the "reduce motion" accessibility setting */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

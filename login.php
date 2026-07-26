@@ -1,8 +1,5 @@
 <?php
-/**
- * login.php -- Customer / admin login (single form; role determines
- * where we redirect afterwards).
- */
+// login.php -- one form for both customers and admins, role decides where they go after
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -13,8 +10,8 @@ if (is_logged_in()) {
 }
 
 $error = '';
-// require_login() redirects here with ?redirect=... set to the originally
-// requested page, so we can send the visitor back there after login.
+// require_login() sends people here with ?redirect= set to whatever page they
+// wanted originally, so we know where to send them back after they log in
 $redirect = $_GET['redirect'] ?? 'profile.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -23,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = attempt_login($conn, $identifier, $password);
 
     if ($user) {
-        // Admins land on the dashboard; everyone else goes back to $redirect.
+        // admins go to the dashboard, everyone else goes back to $redirect
         header('Location: ' . ($user['role'] === 'admin' ? 'admin/dashboard.php' : urldecode($redirect)));
         exit;
     }
-    // Generic message: don't reveal whether the username exists.
+    // keeping this vague on purpose so we're not telling people if the username exists
     $error = 'Invalid credentials, or this account has been disabled. Please try again.';
 }
 

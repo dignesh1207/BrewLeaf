@@ -1,17 +1,16 @@
 <?php
-/**
- * admin/theme.php -- Site-wide template switcher. Writes the chosen theme
- * into site_settings.active_theme, which includes/header.php reads on
- * every page load (see get_active_theme() in includes/functions.php).
- */
+// admin/theme.php - lets admin switch the site theme for everyone
+// saves the choice into site_settings.active_theme, header.php checks that on
+// every page load (get_active_theme() in functions.php)
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
-// Redirects non-admins away.
+// non-admins get redirected out
 require_admin();
 
-// Colors mirror each theme's assets/css/theme-*.css ":root" block, used for
-// the mock-up preview cards below -- keep in sync if that CSS changes.
+// these colors need to match the :root vars in each theme-*.css file, they're
+// just here so the little preview cards below look right. if the css changes
+// update these too or the preview will be wrong
 $themes = [
     'white' => [
         'label' => 'Clean White',
@@ -41,9 +40,10 @@ $themes = [
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
     $chosen = $_POST['theme'];
-    // Whitelist check: $chosen must be one of the keys in $themes.
+    // make sure $chosen is actually one of our theme keys and not something random
     if (array_key_exists($chosen, $themes)) {
-        // ON DUPLICATE KEY UPDATE -- upsert, no need to check if the row exists first.
+        // ON DUPLICATE KEY UPDATE does insert-or-update in one go, so we don't
+        // have to first select and check if the setting row is already there
         $stmt = $conn->prepare('INSERT INTO site_settings (setting_key, setting_value) VALUES ("active_theme", ?)
                                  ON DUPLICATE KEY UPDATE setting_value = ?');
         $stmt->bind_param('ss', $chosen, $chosen);
@@ -72,7 +72,7 @@ $active = get_active_theme($conn);
       <?php foreach ($themes as $key => $t): ?>
         <label class="theme-card <?= $active === $key ? 'active' : '' ?>">
           <input type="radio" name="theme" value="<?= $key ?>" class="radio-hidden auto-submit" <?= $active === $key ? 'checked' : '' ?>>
-          <!-- Fake mini page-preview; colors come from $themes above, hence inline styles. -->
+          <!-- little fake preview of the page, colors pulled from $themes above so inline styles it is -->
           <div class="theme-swatch" style="background:<?= $t['bg'] ?>;">
             <div class="mock-header" style="background:<?= $t['surface'] ?>;border-bottom:1px solid <?= $t['border'] ?>;">
               <span class="mock-dot" style="background:<?= $t['primary'] ?>;"></span>

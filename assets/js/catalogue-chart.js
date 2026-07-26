@@ -1,20 +1,11 @@
-/**
- * assets/js/catalogue-chart.js
- * ---------------------------------------------------------------------------
- * Draws the "Catalogue at a Glance" bar chart on the home page, using
- * Chart.js (loaded from a CDN in includes/footer.php).
- *
- * The numbers come from the database, so index.php can't just hard-code
- * them here -- instead index.php writes them onto the <canvas> element as
- * data-labels / data-counts / data-ratings attributes (see index.php), and
- * this file reads them back out with JSON.parse().
- * ---------------------------------------------------------------------------
- */
+// bar chart for the "Catalogue at a Glance" section on home page, uses Chart.js from a cdn
+// the numbers come from the db so index.php can't hardcode them here -- it writes them
+// onto the canvas as data- attributes instead and we just read them back out below
 document.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById('catalogueChart');
   if (!canvas || typeof Chart === 'undefined') return;
 
-  // Read the data-labels/-counts/-ratings JSON attributes index.php wrote onto the canvas.
+  // grab the data index.php stuck onto the canvas
   var labels = JSON.parse(canvas.dataset.labels || '[]');
   var counts = JSON.parse(canvas.dataset.counts || '[]');
   var ratings = JSON.parse(canvas.dataset.ratings || '[]');
@@ -25,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
       labels: labels,
       datasets: [
         { label: 'Products', data: counts, backgroundColor: '#6f4e37' },
-        // x2 scales ratings (out of 5) so their bars are comparable to the product-count bars.
+        // x2 so the rating bars are roughly the same scale as the count bars
         { label: 'Avg. Rating (x10)', data: ratings.map(function (r) { return Math.round(r * 2 * 10) / 10; }), backgroundColor: '#c98a3b' }
       ]
     },

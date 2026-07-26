@@ -1,19 +1,7 @@
-/* =============================================================================
-   assets/css/variables.css
-   -----------------------------------------------------------------------------
-   This file only stores "variables" (CSS calls them custom properties).
-   Think of each one as a labeled box holding a color or a number, so we
-   don't have to retype the same value in 50 places.
-
-   Example: --color-primary holds our main brown color. Anywhere else in the
-   CSS you'll see var(--color-primary) -- that just means "go get the value
-   from that box". Change the value here once and it updates everywhere.
-
-   The theme files (theme-white.css, theme-regular.css, theme-autumn.css,
-   theme-winter.css) reuse these SAME variable names but give them different
-   colors. Whichever theme.css is loaded last on the page "wins", which is
-   how the theme picker in admin/theme.php can change the whole site's look.
-   ============================================================================= */
+/* css variables (custom properties) - colors/fonts/etc reused everywhere.
+   theme-*.css files reuse these same names with different values, and
+   whichever theme file loads last wins -- that's how the theme picker
+   in admin/theme.php swaps the whole site's look */
 :root {
   /* Page colors */
   --color-bg: #faf7f2;
@@ -25,9 +13,8 @@
   --color-primary: #6f4e37;
   --color-primary-dark: #4a3225;
   --color-accent: #c98a3b;
-  /* A darker shade of --color-accent, used for buttons with white text on
-     them (plain --color-accent is sometimes too light for white text to
-     stay readable). Each theme sets its own matching shade. */
+  /* darker shade of accent, for buttons with white text (plain accent is
+     sometimes too light to stay readable). each theme has its own version */
   --color-accent-dark: #966732;
   --color-border: #e7ddd2;
 
@@ -48,8 +35,8 @@
   --radius: 14px;
   --radius-lg: 22px;
 
-  /* Drop shadows: plain black at different levels of transparency (the
-     last number, e.g. .12 = 12% opaque) for a small/medium/large shadow. */
+  /* drop shadows: black at different opacity (last number = how opaque)
+     for small/medium/large */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, .1);
   --shadow-md: 0 10px 28px -8px rgba(0, 0, 0, .22);
   --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, .28);

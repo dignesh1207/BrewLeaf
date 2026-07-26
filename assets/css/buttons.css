@@ -1,11 +1,6 @@
-/* =============================================================================
-   assets/css/buttons.css
-   -----------------------------------------------------------------------------
-   Every button/link styled to look like a button (class="btn") lives here.
-   .btn is the base look; the other classes (.btn-outline, .btn-accent, etc.)
-   are added ON TOP of .btn to change its color, e.g.:
-     <a class="btn btn-accent">Shop Now</a>
-   ============================================================================= */
+/* button styles. .btn is the base look, other classes (.btn-outline,
+   .btn-accent, etc) get added on top to change the color, e.g.
+   <a class="btn btn-accent">Shop Now</a> */
 
 .btn {
   display: inline-flex;
@@ -44,9 +39,9 @@
   background: rgba(0, 0, 0, .05);
 }
 
-/* Accent button: uses the darker accent shade (--color-accent-dark), for
-   the main call-to-action. Plain --color-accent is too light in some
-   themes for white button text to stay readable -- see variables.css. */
+/* accent button - uses --color-accent-dark for the main CTA. plain accent
+   is too light in some themes for white text to stay readable, see
+   variables.css */
 .btn-accent {
   background: var(--color-accent-dark);
 }
@@ -66,16 +61,15 @@
   font-size: .85rem;
 }
 
-/* Button used in the top navigation bar ("Sign up").
-   border-radius: 999px is what makes this a "pill" shape -- it rounds the
-   corners as much as the button's own height allows. That trick only looks
-   right if the padding stays small/compact, like the plain text links next
-   to it in the nav bar; a big padding value here makes the button grow much
-   taller than the nav bar, and the pill shape turns into an oversized blob
-   instead of a normal rounded button. Keep padding small (under ~1rem
-   vertically) for anything using border-radius: 999px in a nav bar. */
-/* Uses --color-accent-dark (not the plain accent) so the white text stays
-   readable -- same reason as .btn-accent above. */
+/* Sign up button in the nav bar.
+   border-radius:999px makes it a pill -- rounds the corners as much as
+   the button's height allows. only looks right if the padding stays
+   small, like the plain text links next to it -- too much padding and
+   the button grows taller than the bar and looks like a blob instead of
+   a pill. keep vertical padding small (under ~1rem) for anything using
+   999px radius in a nav bar */
+/* uses --color-accent-dark not plain accent so white text stays
+   readable, same reason as .btn-accent above */
 .btn-nav {
   background: var(--color-accent-dark);
   color: #fff;
@@ -85,8 +79,8 @@
   font-size: .92rem;
 }
 
-/* Makes a button/link fill the full width of its parent -- handy for the
-   submit button under a narrow login/register form. */
+/* makes a button fill full width -- handy for the submit button under a
+   narrow login/register form */
 .btn-block {
   width: 100%;
   justify-content: center;

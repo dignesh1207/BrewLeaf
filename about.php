@@ -1,8 +1,5 @@
 <?php
-/**
- * about.php -- Static page. Contains the required business-case description
- * (rubric item 1) plus company story content.
- */
+// about page - just the company story and business blurb
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';

@@ -1,12 +1,10 @@
 <?php
-/**
- * contact.php -- Static contact page with a simple inquiry form.
- */
+// contact.php -- just a static page with a basic form
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
-// No contact_messages table in this skeleton; just log and show success.
+// didn't make a table for messages, just log it and pretend it sent
 $sent = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     error_log('Contact form submission: ' . json_encode($_POST));

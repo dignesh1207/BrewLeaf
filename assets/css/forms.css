@@ -1,10 +1,4 @@
-/* =============================================================================
-   assets/css/forms.css
-   -----------------------------------------------------------------------------
-   Styling for form elements: labels, text inputs, dropdowns, layout helpers
-   for form rows, hint/error text, and the colored "alert" boxes used for
-   success/error messages (e.g. after login or checkout).
-   ============================================================================= */
+/* form styles - labels, inputs, form-row helpers, hint/error text, alert boxes */
 
 label {
   display: block;
@@ -94,13 +88,20 @@ textarea:focus {
   gap: .4rem;
 }
 
+/* cart.js disables these while its ajax request is running, so you can't
+   fire a second change before the first one finishes saving */
+.qty-stepper button:disabled,
+.qty-stepper input:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
 .qty-input {
   width: 60px;
   text-align: center;
 }
 
-/* A checkbox sitting next to its label instead of the label above it
-   (labels are "display: block" by default -- this overrides that). */
+/* checkbox next to its label instead of above it (labels are block by default) */
 .checkbox-row {
   font-weight: normal;
   display: flex;
@@ -108,8 +109,8 @@ textarea:focus {
   gap: .5rem;
 }
 
-/* Lines up a .form-grid's fields along their bottom edge, e.g. when one
-   field has a hint line under it and the other doesn't. */
+/* lines up form-grid fields on their bottom edge, for when one has a
+   hint line under it and the other doesn't */
 .form-grid-end {
   align-items: end;
 }

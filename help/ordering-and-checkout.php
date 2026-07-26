@@ -1,6 +1,5 @@
 <?php
 
-// Help page for shoppers on ordering and checkout; viewable by anyone.
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';

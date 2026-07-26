@@ -1,11 +1,4 @@
-/**
- * assets/js/product-options.js
- * ---------------------------------------------------------------------------
- * Runs only on the product detail page (product.php). Clicking a size/grind
- * "pill" selects it (and un-selects the other pills in its group), then
- * recalculates the live price shown on the page.
- * ---------------------------------------------------------------------------
- */
+// product page -- clicking a size/grind pill selects it and updates the price
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.option-group').forEach(function (group) {
     var pills = group.querySelectorAll('.option-pill');
@@ -14,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         pills.forEach(function (p) { p.classList.remove('selected'); });
         pill.classList.add('selected');
 
-        // The group's hidden input actually gets submitted with the add-to-cart form.
+        // hidden input is what actually gets sent when add-to-cart form submits
         var hiddenInput = group.querySelector('input[type="hidden"]');
         if (hiddenInput) hiddenInput.value = pill.dataset.optionId;
 
@@ -24,8 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-/** Adds up the base price + every selected option's price change, and
- *  writes the total into the #livePrice element. */
+// adds base price + all the selected options together, updates #livePrice
 function recalcPrice() {
   var priceEl = document.getElementById('livePrice');
   if (!priceEl) return;

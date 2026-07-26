@@ -1,9 +1,6 @@
-/* =============================================================================
-   theme-white.css -- Clean, minimal light theme.
-   Bright white surfaces, near-black text, and a warm copper accent. The hero
-   swaps the gradient for a full-bleed photo with a dark overlay so the
-   heading and button stay readable.
-   ============================================================================= */
+/* white theme - clean minimal light look, copper accent color.
+   hero uses a photo bg instead of a gradient, dark overlay keeps the
+   heading/button readable on top of it */
 :root {
   --color-bg: #fafaf8;
   --color-surface: #ffffff;

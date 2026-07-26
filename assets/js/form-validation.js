@@ -1,14 +1,5 @@
-/**
- * assets/js/form-validation.js
- * ---------------------------------------------------------------------------
- * Simple, beginner-level client-side checks: required fields, a valid-looking
- * email, and "password" matching "password_confirm". Only runs on forms
- * marked with data-validate (login/register/contact/checkout forms).
- *
- * This is just a nicer experience before the page reloads -- the real,
- * trustworthy checks still happen in PHP on the server.
- * ---------------------------------------------------------------------------
- */
+// basic client side checks -- required fields, email looks valid, passwords match
+// only runs on forms with data-validate. php still checks everything again on submit
 
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('form[data-validate]').forEach(function (form) {
@@ -32,13 +23,13 @@ document.addEventListener('DOMContentLoaded', function () {
         valid = false;
       }
 
-      // Cosmetic only -- the PHP backend re-validates everything server-side.
+      // just for ux, php re-checks all of this anyway
       if (!valid) e.preventDefault();
     });
   });
 });
 
-/** Adds a red error message under a field and marks the field itself red. */
+// shows the red error text under a field
 function showFieldError(field, message) {
   var err = document.createElement('div');
   err.className = 'form-error field-error';
@@ -47,7 +38,7 @@ function showFieldError(field, message) {
   field.classList.add('field-invalid');
 }
 
-/** Removes the red error message/border added by showFieldError above. */
+// undoes showFieldError
 function clearFieldError(field) {
   field.classList.remove('field-invalid');
   var next = field.nextElementSibling;

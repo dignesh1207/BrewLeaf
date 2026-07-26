@@ -1,6 +1,6 @@
 <?php
 
-// Wiki landing page, linked from "Help" in the main nav.
+// this is the help page linked from the nav bar
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
@@ -11,7 +11,7 @@ $pageDescription = 'Step-by-step guides for shopping, checkout, account manageme
 require_once __DIR__ . '/../includes/header.php';
 
 
-// [filename, card title, card description] for each help article.
+// each item here is [file, title, short description] for the cards below
 $articles = [
     ['getting-started.php', 'Getting Started', 'Create an account, browse the catalogue, and place your first order.'],
     ['ordering-and-checkout.php', 'Ordering & Checkout', 'How product options, cart, and checkout work.'],

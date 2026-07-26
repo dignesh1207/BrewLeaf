@@ -1,16 +1,13 @@
 <?php
-/**
- * set-theme.php -- Lets any visitor change the site-wide theme from the
- * footer switcher, no login needed. Writes the same site_settings row
- * that admin/theme.php does.
- */
+// set-theme.php -- switches the site theme from the footer, anyone can use
+// it, no login needed. writes to the same site_settings row as admin/theme.php
 require_once __DIR__ . '/config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
     $chosen = $_POST['theme'];
-    // Whitelisted theme names only; anything else is silently ignored.
+    // only these 4 theme names are allowed, anything else just gets ignored
     if (in_array($chosen, ['white', 'regular', 'autumn', 'winter'], true)) {
-        // Upsert: site_settings only ever has one active_theme row.
+        // insert or update, there's only ever one active_theme row in site_settings
         $stmt = $conn->prepare('INSERT INTO site_settings (setting_key, setting_value) VALUES ("active_theme", ?)
                                  ON DUPLICATE KEY UPDATE setting_value = ?');
         $stmt->bind_param('ss', $chosen, $chosen);
@@ -19,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
     }
 }
 
-// Redirect back to the referring page. Must start with "/" -- prevents
-// this endpoint being used as an open redirect to another site.
+// go back to whatever page sent us here. has to start with "/" or someone
+// could use this to redirect people off to some other site
 $backTo = $_POST['redirect_to'] ?? '';
 if (!str_starts_with($backTo, '/')) {
     $backTo = '/index.php';

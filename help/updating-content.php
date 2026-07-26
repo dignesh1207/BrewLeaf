@@ -1,6 +1,6 @@
 <?php
 
-// Help page for admins on updating content. No is_admin() gate -- purely instructional, no sensitive data.
+// didn't bother with an is_admin() check here, it's just instructions and nothing sensitive
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
