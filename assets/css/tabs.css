@@ -11,6 +11,7 @@
   padding: 1.75rem;
 }
 
+/* the buttons that switch between the two tabs */
 .tab-buttons {
   display: flex;
   gap: .5rem;
@@ -20,9 +21,13 @@
   padding: .3rem;
 }
 
+/* the two tab panels, one for coffee and one for tea */
 .tab-btn {
   flex: 1;
   padding: .6rem 1rem;
+  height: 2.5rem;
+  text-align: center;
+  width: 10%;
   border: none;
   background: transparent;
   border-radius: 999px;
@@ -36,4 +41,17 @@
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: #fff;
   box-shadow: var(--shadow-sm);
+}
+
+/* no display:flex on .tab-panel needed at all -- .btn is already
+   inline-flex (buttons.css), so in normal block flow it just sizes to
+   its own text and sits on the left by default. that's Coffee, done,
+   zero extra rules. Tea's button sits on the right instead -- the plain
+   old margin-left:auto trick, which needs display:block so the margin
+   has a full-width row to push against. one rule, doesn't touch or
+   depend on anything else on the page. */
+#tab-tea .btn {
+  display: block;
+  width: fit-content;
+  margin-left: auto;
 }

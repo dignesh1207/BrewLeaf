@@ -1,6 +1,6 @@
 <?php
 // index.php -- the home page. pulls featured products + category stats from
-// the db, has the hero video, the category tabs, and a chart.js graph
+// the db, has the hero video, the category tabs, and a little bar chart
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -18,7 +18,7 @@ $catStats = $conn->query(
     "SELECT category, COUNT(*) AS n, ROUND(AVG(rating_avg),2) AS avg_rating
      FROM products WHERE is_active = 1 GROUP BY category"
 );
-// splitting into 3 separate arrays bc that's the format chart.js wants
+// splitting into 3 separate arrays, one per bar chart series
 $chartLabels = [];
 $chartCounts = [];
 $chartRatings = [];
@@ -105,14 +105,33 @@ require_once __DIR__ . '/includes/header.php';
     <p>Live data straight from our product database.</p>
   </div>
   <div class="chart-card">
-    <?php // the actual chart drawing happens in assets/js/catalogue-chart.js, it reads these data- attrs ?>
-    <canvas
-      id="catalogueChart"
-      height="90"
-      data-labels="<?= h(json_encode($chartLabels)) ?>"
-      data-counts="<?= h(json_encode($chartCounts)) ?>"
-      data-ratings="<?= h(json_encode($chartRatings)) ?>"
-    ></canvas>
+    <?php
+    // plain html/css bar chart, no chart library needed -- php works out the
+    // bar heights as a percentage and the browser just draws them as divs.
+    // two bars per category: how many products, and the avg rating out of 5.
+    $maxCount = max($chartCounts) ?: 1;
+    ?>
+    <div class="mini-chart" role="img" aria-label="Product count and average rating by category">
+      <div class="mini-chart-groups">
+        <?php foreach ($chartLabels as $i => $label): ?>
+          <div class="mini-chart-group">
+            <div class="mini-chart-bars">
+              <div class="mini-chart-bar mini-chart-bar-count" style="height: <?= round($chartCounts[$i] / $maxCount * 100) ?>%">
+                <span class="mini-chart-value"><?= (int) $chartCounts[$i] ?></span>
+              </div>
+              <div class="mini-chart-bar mini-chart-bar-rating" style="height: <?= round($chartRatings[$i] / 5 * 100) ?>%">
+                <span class="mini-chart-value"><?= h($chartRatings[$i]) ?></span>
+              </div>
+            </div>
+            <div class="mini-chart-label"><?= h($label) ?></div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <div class="mini-chart-legend">
+        <span><i class="mini-chart-swatch mini-chart-swatch-count"></i> Products</span>
+        <span><i class="mini-chart-swatch mini-chart-swatch-rating"></i> Avg. Rating (out of 5)</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -127,8 +146,5 @@ require_once __DIR__ . '/includes/header.php';
     <div class="feature-box"><span class="icon">&#11088;</span><h3>Loved by Customers</h3><p>4.5+ average rating across our full catalogue.</p></div>
   </div>
 </section>
-
-<!-- using chart.js straight from CDN, no build step needed. rest of the setup is in assets/js/catalogue-chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

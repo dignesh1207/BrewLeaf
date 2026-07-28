@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_option']) && $
 $existingOptions = $id ? get_product_options($conn, $id) : [];
 
 $pageTitle = ($id ? 'Edit' : 'Add') . ' Product | BrewLeaf Admin';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'products';
 require_once __DIR__ . '/../includes/admin-nav.php';
@@ -139,24 +140,26 @@ require_once __DIR__ . '/../includes/admin-nav.php';
   <?php if ($id): ?>
     <h2 id="options" class="mt-xxl">Options (Size, Grind/Style, etc.)</h2>
     <p class="form-hint">Every product needs at least 2 option groups (e.g. Size + Grind) so shoppers can customize their order.</p>
-    <table class="mb-lg">
-      <thead><tr><th>Group</th><th>Value</th><th>Price Modifier</th><th></th></tr></thead>
-      <tbody>
-        <?php foreach ($existingOptions as $group => $rows): foreach ($rows as $opt): ?>
-          <tr>
-            <td><?= h($group) ?></td>
-            <td><?= h($opt['option_value']) ?></td>
-            <td><?= h($opt['price_modifier']) >= 0 ? '+' . money((float) $opt['price_modifier']) : money((float) $opt['price_modifier']) ?></td>
-            <td>
-              <form method="post" action="product-edit.php?id=<?= $id ?>" data-confirm="Remove this option?">
-                <input type="hidden" name="delete_option" value="<?= (int) $opt['id'] ?>">
-                <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-              </form>
-            </td>
-          </tr>
-        <?php endforeach; endforeach; ?>
-      </tbody>
-    </table>
+    <div class="table-scroll mb-lg">
+      <table>
+        <thead><tr><th>Group</th><th>Value</th><th>Price Modifier</th><th></th></tr></thead>
+        <tbody>
+          <?php foreach ($existingOptions as $group => $rows): foreach ($rows as $opt): ?>
+            <tr>
+              <td><?= h($group) ?></td>
+              <td><?= h($opt['option_value']) ?></td>
+              <td><?= h($opt['price_modifier']) >= 0 ? '+' . money((float) $opt['price_modifier']) : money((float) $opt['price_modifier']) ?></td>
+              <td>
+                <form method="post" action="product-edit.php?id=<?= $id ?>" data-confirm="Remove this option?">
+                  <input type="hidden" name="delete_option" value="<?= (int) $opt['id'] ?>">
+                  <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                </form>
+              </td>
+            </tr>
+          <?php endforeach; endforeach; ?>
+        </tbody>
+      </table>
+    </div>
 
     <form method="post" action="product-edit.php?id=<?= $id ?>#options" class="form-grid form-grid-end">
       <div class="form-row">

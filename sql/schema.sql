@@ -10,6 +10,8 @@
 -- an admin account (admin / Admin123!), 20 products, 3 themes, and the
 -- service_status rows for the monitor page
 
+
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

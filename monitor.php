@@ -68,18 +68,20 @@ require_once __DIR__ . '/includes/header.php';
     <?= $allOnline ? 'All systems operational.' : 'Some services are currently experiencing issues.' ?>
   </div>
 
-  <table>
-    <thead><tr><th>Service</th><th>Status</th><th>Checked At</th></tr></thead>
-    <tbody>
-      <?php foreach ($checks as $name => $isOnline): ?>
-        <tr>
-          <td><?= h($name) ?></td>
-          <td><span class="status-pill status-<?= $isOnline ? 'online' : 'offline' ?>"><span class="status-dot"></span> <?= $isOnline ? 'Online' : 'Offline' ?></span></td>
-          <td><?= h(date('M j, Y g:i A')) ?></td>
-        </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Service</th><th>Status</th><th>Checked At</th></tr></thead>
+      <tbody>
+        <?php foreach ($checks as $name => $isOnline): ?>
+          <tr>
+            <td><?= h($name) ?></td>
+            <td><span class="status-pill status-<?= $isOnline ? 'online' : 'offline' ?>"><span class="status-dot"></span> <?= $isOnline ? 'Online' : 'Offline' ?></span></td>
+            <td><?= h(date('M j, Y g:i A')) ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
 
   <p class="form-hint mt-lg">This page runs live checks on every load (database ping, table availability, session status) rather than showing stale, hard-coded data.</p>
 </section>

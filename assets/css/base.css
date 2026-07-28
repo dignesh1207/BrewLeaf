@@ -8,37 +8,52 @@
   box-sizing: border-box;
 }
 
+/* gap under the badge before the product name.
+   without align-self the badge stretches full width -- .body is a flex
+   column and flex items stretch by default. this keeps it a small pill */
 html {
   scroll-behavior: smooth;
 }
 
+
+/* page defaults */
 html,
 body {
   margin: 0;
   padding: 0;
 }
 
-img {
+/* make images and videos responsive by default */
+
+img,
+video {
   max-width: 100%;
   display: block;
 }
 
+/* make form elements inherit the font from their parent, and remove the default
+   spacing around them. this makes it easier to style them consistently with the
+   rest of the page */
 a {
   color: inherit;
   text-decoration: none;
 }
 
+/* remove the default spacing around form elements and make them inherit the font */
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+/* remove the default spacing around form elements and make them inherit the font */
+
 button {
   font: inherit;
   cursor: pointer;
 }
 
+/* remove the default spacing around form elements and make them inherit the font */
 ::selection {
   background: var(--color-accent);
   color: #fff;
@@ -109,7 +124,13 @@ p {
   border-radius: var(--radius-sm);
 }
 
-/* respect the "reduce motion" accessibility setting */
+/* media query for small phones, shrinks the skip link so it doesn't cover too much of the page */
+@media (max-width: 480px) {
+  .skip-link {
+    font-size: .8rem;
+    padding: .4rem .8rem;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

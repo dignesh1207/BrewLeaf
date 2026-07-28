@@ -27,9 +27,13 @@
     </div>
     <div class="footer-col">
       <h3>Find Our Roastery</h3>
-      <!-- using OpenStreetMap here since it doesn't need an api key like google maps does -->
-      <div class="map-embed">
-        <iframe title="BrewLeaf Roastery Location" src="https://www.openstreetmap.org/export/embed.html?bbox=-83.0670%2C42.2980%2C-83.0430%2C42.3160&layer=mapnik" loading="lazy"></iframe>
+      <!-- plain address card, no map embed -- keeps this page from calling out to any map service -->
+      <div class="footer-address">
+        <span class="footer-address-icon" aria-hidden="true">&#128205;</span>
+        <address>
+          401 Sunset Ave<br>
+          Windsor, ON, Canada
+        </address>
       </div>
     </div>
     <div class="footer-col">
@@ -74,8 +78,6 @@
 <script src="<?= h(SITE_BASE_URL) ?>/assets/js/form-validation.js"></script>
 <script src="<?= h(SITE_BASE_URL) ?>/assets/js/tabs.js"></script>
 <script src="<?= h(SITE_BASE_URL) ?>/assets/js/hero-video.js"></script>
-<script src="<?= h(SITE_BASE_URL) ?>/assets/js/catalogue-chart.js"></script>
-<script src="<?= h(SITE_BASE_URL) ?>/assets/js/revenue-chart.js"></script>
 <script src="<?= h(SITE_BASE_URL) ?>/assets/js/auto-submit.js"></script>
 <script src="<?= h(SITE_BASE_URL) ?>/assets/js/confirm-submit.js"></script>
 </body>

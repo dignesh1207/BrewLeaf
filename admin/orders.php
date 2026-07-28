@@ -27,6 +27,7 @@ $orders = $conn->query(
 );
 
 $pageTitle = 'Manage Orders | BrewLeaf Admin';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'orders';
 require_once __DIR__ . '/../includes/admin-nav.php';
@@ -39,29 +40,31 @@ require_once __DIR__ . '/../includes/admin-nav.php';
   <?php if ($orders->num_rows === 0): ?>
     <p>No orders placed yet.</p>
   <?php else: ?>
-    <table>
-      <thead><tr><th>Order #</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
-      <tbody>
-        <?php while ($o = $orders->fetch_assoc()): ?>
-          <tr>
-            <td>#<?= (int) $o['id'] ?></td>
-            <td><?= h($o['full_name']) ?><br><small class="text-muted-sm"><?= h($o['email']) ?></small></td>
-            <td><?= h(date('M j, Y', strtotime($o['created_at']))) ?></td>
-            <td><?= money((float) $o['total']) ?></td>
-            <td>
-              <form method="post" action="orders.php" class="table-actions">
-                <input type="hidden" name="order_id" value="<?= (int) $o['id'] ?>">
-                <select name="status" class="auto-submit">
-                  <?php foreach (['pending', 'processing', 'shipped', 'delivered', 'cancelled'] as $s): ?>
-                    <option value="<?= $s ?>" <?= $o['status'] === $s ? 'selected' : '' ?>><?= ucfirst($s) ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </form>
-            </td>
-          </tr>
-        <?php endwhile; ?>
-      </tbody>
-    </table>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Order #</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+        <tbody>
+          <?php while ($o = $orders->fetch_assoc()): ?>
+            <tr>
+              <td>#<?= (int) $o['id'] ?></td>
+              <td><?= h($o['full_name']) ?><br><small class="text-muted-sm"><?= h($o['email']) ?></small></td>
+              <td><?= h(date('M j, Y', strtotime($o['created_at']))) ?></td>
+              <td><?= money((float) $o['total']) ?></td>
+              <td>
+                <form method="post" action="orders.php" class="table-actions">
+                  <input type="hidden" name="order_id" value="<?= (int) $o['id'] ?>">
+                  <select name="status" class="auto-submit">
+                    <?php foreach (['pending', 'processing', 'shipped', 'delivered', 'cancelled'] as $s): ?>
+                      <option value="<?= $s ?>" <?= $o['status'] === $s ? 'selected' : '' ?>><?= ucfirst($s) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </form>
+              </td>
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
   <?php endif; ?>
 </section>
 

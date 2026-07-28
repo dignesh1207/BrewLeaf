@@ -92,11 +92,36 @@ td.actions-td {
   padding-right: 24px;
 }
 
-/* The little order-total box under the cart table. */
+/* The little order-total box under the cart table. Used to be a plain
+   <table>, which inherited the sitewide table{} card look (bg/border/
+   shadow) automatically -- now it's a plain div, so that look is given
+   explicitly here instead. */
 .cart-summary {
   max-width: 320px;
   margin-left: auto;
   margin-top: 1.5rem;
+  padding: 1.1rem 1.3rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Subtotal/Shipping/Total rows -- same flex layout on every row so the
+   label and value always line up the same way, regardless of how long
+   the label text is or whether the row is bold. */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .6rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.summary-row-total {
+  border-bottom: none;
+  padding-top: .8rem;
+  font-size: 1.05rem;
 }
 
 /* cart table (cart.php)
@@ -105,12 +130,15 @@ td.actions-td {
    Product column has no fixed width so it grabs the leftover space */
 .cart-table {
   table-layout: fixed;
-  min-width: 760px; /* below this, .table-scroll scrolls instead of crushing columns */
+  min-width: 820px; /* below this, .table-scroll scrolls instead of crushing columns */
 }
 
 .cart-col-options { width: 190px; }
 .cart-col-price   { width: 100px; }
-.cart-col-qty     { width: 160px; }
+/* 160px used to be too narrow -- the stepper's buttons + input actually
+   need ~160px on their own, which left zero room for the cell's own
+   padding and pushed the + button into the Line Total column next door */
+.cart-col-qty     { width: 210px; }
 .cart-col-total   { width: 100px; }
 .cart-col-actions { width: 130px; }
 /* .cart-col-product has no width on purpose, see above */

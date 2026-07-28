@@ -2,6 +2,8 @@
    .btn-accent, etc) get added on top to change the color, e.g.
    <a class="btn btn-accent">Shop Now</a> */
 
+   /* base button style, used for all buttons. */  
+      
 .btn {
   display: inline-flex;
   align-items: center;
@@ -16,6 +18,11 @@
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-slow), box-shadow var(--transition-slow), background var(--transition);
 }
+
+/* hover/active states for all buttons. the transform/box-shadow combo makes
+   the button look like it lifts up a bit on hover, then goes back down on
+   click. the background transition is for the accent button, which changes
+   to a slightly lighter shade on hover */
 
 .btn:hover {
   transform: translateY(-2px);
@@ -62,7 +69,7 @@
 }
 
 /* Sign up button in the nav bar.
-   border-radius:999px makes it a pill -- rounds the corners as much as
+   border-radius:999px makes it a pill, rounds the corners as much as
    the button's height allows. only looks right if the padding stays
    small, like the plain text links next to it -- too much padding and
    the button grows taller than the bar and looks like a blob instead of

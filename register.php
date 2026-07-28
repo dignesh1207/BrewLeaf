@@ -51,9 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Create Account | BrewLeaf';
 $pageDescription = 'Create a free BrewLeaf account to track orders, save favorites, and leave reviews.';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- main content -->
 <section class="section container page-narrow-sm">
   <h1>Create Your Account</h1>
   <?php if ($error): ?><div class="alert alert-error"><?= h($error) ?></div><?php endif; ?>

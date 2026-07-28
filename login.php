@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Log In | BrewLeaf';
 $pageDescription = 'Log in to your BrewLeaf account.';
+$pageRobots = 'noindex, nofollow'; // no reason for this to show up in search results
 require_once __DIR__ . '/includes/header.php';
 ?>
 

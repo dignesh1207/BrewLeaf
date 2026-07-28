@@ -9,6 +9,8 @@ $pageDescription = 'Learn about BrewLeaf Artisan Coffee & Tea Co., an online cat
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+
+
 <section class="hero">
   <div class="container"><h1>About BrewLeaf</h1></div>
 </section>
@@ -49,7 +51,8 @@ require_once __DIR__ . '/includes/header.php';
 
   <h2 class="text-center">See BrewLeaf in Action</h2>
   <div class="video-gallery">
-
+    
+    <!-- this one is BrewLeaf footage, shows the roasting process -->
     <div class="video-card">
       <video controls controlsList="nodownload" preload="metadata" poster="assets/images/video-roastery-tour.jpg">
         <source src="assets/videos/roastery-tour.mp4" type="video/mp4">
@@ -62,6 +65,7 @@ require_once __DIR__ . '/includes/header.php';
       </div>
     </div>
 
+    <!-- this one is a stock video, not BrewLeaf footage, but it shows the roasting process well -->
     <div class="video-card">
       <video controls controlsList="nodownload" preload="metadata" poster="assets/images/video-roasting-process.jpg">
         <source src="assets/videos/roasting-process.mp4" type="video/mp4">
@@ -74,6 +78,7 @@ require_once __DIR__ . '/includes/header.php';
       </div>
     </div>
 
+    <!-- this one is a stock video, not BrewLeaf footage, but it shows the brewing process well -->
     <div class="video-card">
       <video controls controlsList="nodownload" preload="metadata" poster="assets/images/video-brewing-guide.jpg">
         <source src="assets/videos/brewing-guide.mp4" type="video/mp4">
@@ -87,7 +92,7 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 
   </div>
-  <p class="text-muted-sm text-center mt-sm">&copy; <?= date('Y') ?> BrewLeaf Artisan Coffee &amp; Tea Co. All rights reserved.</p>
+ 
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

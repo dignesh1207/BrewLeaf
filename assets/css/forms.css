@@ -81,11 +81,30 @@ textarea:focus {
   border-left-color: var(--color-danger);
 }
 
-/* Quantity +/- stepper next to a number input (used on the cart page). */
+/* Quantity +/- stepper next to a number input (used on the cart page).
+   margin-right keeps it from crowding whatever column comes after it
+   (the cart table's Line Total column) -- the column itself also has
+   room to spare, see .cart-col-qty in tables.css, this is just extra
+   insurance since button rendering width varies a bit by font/browser. */
 .qty-stepper {
   display: flex;
   align-items: center;
   gap: .4rem;
+  margin-right: .5rem;
+}
+
+/* fixed circular size instead of the usual pill-button padding -- keeps
+   both buttons exactly the same size regardless of the -/+ character's
+   own width, and takes up less room than the default .btn-sm padding did
+   (that's what was overflowing into the next column before) */
+.qty-minus,
+.qty-plus {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
 }
 
 /* cart.js disables these while its ajax request is running, so you can't
@@ -97,6 +116,7 @@ textarea:focus {
 }
 
 .qty-input {
+  flex-shrink: 0;
   width: 60px;
   text-align: center;
 }

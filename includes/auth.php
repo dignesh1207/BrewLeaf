@@ -43,10 +43,12 @@ function require_admin(): void
 // returns the user row if it worked, null if it didn't
 function attempt_login(mysqli $conn, string $identifier, string $password): ?array
 {
+    // this is a prepared statement so we don't have to worry about SQL injection
     $stmt = $conn->prepare(
         'SELECT id, username, email, password_hash, full_name, role, status
          FROM users WHERE username = ? OR email = ? LIMIT 1'
     );
+    // bind the same $identifier to both placeholders, so they can log in with either username or email
     $stmt->bind_param('ss', $identifier, $identifier);
     $stmt->execute();
     $user = $stmt->get_result()->fetch_assoc();
@@ -70,6 +72,7 @@ function attempt_login(mysqli $conn, string $identifier, string $password): ?arr
     return $user;
 }
 
+//
 function logout(): void
 {
     $_SESSION = [];

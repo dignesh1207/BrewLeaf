@@ -1,6 +1,5 @@
 <?php
-// sitemap.php -- generates the xml sitemap, lists static pages plus every
-// active product page. linked from robots.txt so search engines find it
+// sitemap.php -- generates the xml sitemap, lists static pages plus every active product page
 require_once __DIR__ . '/config/db.php';
 
 header('Content-Type: application/xml; charset=utf-8');

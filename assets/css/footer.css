@@ -45,16 +45,25 @@
   margin-bottom: .5rem;
 }
 
-.map-embed {
+/* plain address card instead of an embedded map -- no external service call */
+.footer-address {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
   border-radius: var(--radius);
-  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .04);
+  padding: .9rem 1rem;
 }
 
-.map-embed iframe {
-  width: 100%;
-  height: 130px;
-  border: 0;
+.footer-address-icon {
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.footer-address address {
+  font-style: normal;
+  line-height: 1.5;
 }
 
 .footer-bottom {

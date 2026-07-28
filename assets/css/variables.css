@@ -2,6 +2,11 @@
    theme-*.css files reuse these same names with different values, and
    whichever theme file loads last wins -- that's how the theme picker
    in admin/theme.php swaps the whole site's look */
+
+   /* THis was originally in base.css, but moved to its own file so the theme files
+   can override it without having to copy/paste all of base.css */
+
+
 :root {
   /* Page colors */
   --color-bg: #faf7f2;

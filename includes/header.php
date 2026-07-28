@@ -2,11 +2,15 @@
 // this is the top of every page - head tags, meta stuff, all the css links, and the nav bar
 // pages need to set $pageTitle and $pageDescription before including this one ($pageKeywords is optional)
 // also needs config/db.php and auth.php to already be included before this
+// $pageRobots is optional too -- set it to 'noindex, nofollow' on pages that
+// shouldn't show up in search results (account/cart/admin pages etc), see
+// the pages that do this for examples. defaults to letting search engines index the page.
 
 // fall back to these if the page didn't set its own
 $pageTitle       = $pageTitle ?? 'BrewLeaf Artisan Coffee & Tea Co.';
 $pageDescription = $pageDescription ?? 'BrewLeaf is an online artisan coffee and tea shop offering ethically sourced coffee beans and loose leaf teas from around the world.';
 $pageKeywords    = $pageKeywords ?? 'coffee, tea, artisan coffee, loose leaf tea, online coffee shop, specialty tea';
+$pageRobots      = $pageRobots ?? 'index, follow';
 // which theme css to load down below, see get_active_theme() in functions.php
 $activeTheme     = get_active_theme($conn);
 
@@ -42,7 +46,7 @@ if (!is_admin()) {
 <title><?= h($pageTitle) ?></title>
 <meta name="description" content="<?= h($pageDescription) ?>">
 <meta name="keywords" content="<?= h($pageKeywords) ?>">
-<meta name="robots" content="index, follow">
+<meta name="Student" content="Dignesh Solanki">
 <meta name="author" content="BrewLeaf Artisan Coffee & Tea Co.">
 <link rel="canonical" href="<?= h(SITE_BASE_URL . $_SERVER['REQUEST_URI']) ?>">
 <!-- these are for when a link gets shared on social media -->

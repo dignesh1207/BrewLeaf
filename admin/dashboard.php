@@ -1,4 +1,6 @@
 <?php
+
+
 // admin/dashboard.php - the main admin page, shows the stat cards, revenue chart and status list
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
@@ -18,22 +20,35 @@ $salesData = $conn->query(
      FROM orders WHERE created_at >= (CURDATE() - INTERVAL 14 DAY)
      GROUP BY DATE(created_at) ORDER BY d"
 );
-// split into two separate arrays since that's what the chart wants
-$salesLabels = [];
-$salesRevenue = [];
-while ($row = $salesData->fetch_assoc()) {
-    $salesLabels[] = $row['d'];
-    $salesRevenue[] = (float) $row['revenue'];
+// the query above only returns rows for days that actually had an order, so
+// days with no orders would just be missing entirely -- fill every day in
+// the 14-day window in first (defaulting to 0), then overwrite with the
+// real numbers. that way the chart always shows all 14 days, not just
+// whichever ones happened to have a sale.
+$revenueByDay = [];
+for ($i = 13; $i >= 0; $i--) {
+    $revenueByDay[date('Y-m-d', strtotime("-$i days"))] = 0.0;
 }
+while ($row = $salesData->fetch_assoc()) {
+    $revenueByDay[$row['d']] = (float) $row['revenue'];
+}
+// split into two separate arrays since that's what the chart wants
+$salesLabels = array_keys($revenueByDay);
+$salesRevenue = array_values($revenueByDay);
 
 // just the latest status per service here, monitor.php has the full history
 $services = $conn->query('SELECT service_name, status FROM service_status ORDER BY id');
 
 $pageTitle = 'Admin Dashboard | BrewLeaf';
+
+// admin pages don't need to be searchable
+
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'dashboard';
 require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
+
+<!-- HTML Code -->
 
 <section class="section container">
   <h1>Admin Dashboard</h1>
@@ -47,15 +62,23 @@ require_once __DIR__ . '/../includes/admin-nav.php';
 
   <div class="chart-card chart-card-spaced">
     <h2>Revenue -- Last 14 Days</h2>
-    <?php // stuffing the arrays into data attributes as JSON so revenue-chart.js can grab them
-    // and JSON.parse() them for chart.js. h() is just to escape it safely for the attribute ?>
-    <canvas
-      id="revenueChart"
-      height="90"
-      data-labels="<?= h(json_encode($salesLabels)) ?>"
-      data-revenue="<?= h(json_encode($salesRevenue)) ?>"
-    ></canvas>
-    <?php if (empty($salesLabels)): ?><p class="form-hint">No orders yet in this window -- place a demo order to see this chart populate.</p><?php endif; ?>
+    <?php if (array_sum($salesRevenue) == 0): ?>
+      <p class="form-hint">No orders yet in this window -- place a demo order to see this chart populate.</p>
+    <?php else: ?>
+      <?php
+      // plain html/css bar chart, no chart library -- just work out each bar's
+      // height as a % of the highest day and let the browser draw the divs
+      $maxRevenue = max($salesRevenue) ?: 1;
+      ?>
+      <div class="bar-chart" role="img" aria-label="Revenue for each of the last 14 days">
+        <?php foreach ($salesLabels as $i => $label): ?>
+          <div class="bar-chart-col" title="<?= h(date('M j', strtotime($label))) ?>: <?= h(money($salesRevenue[$i])) ?>">
+            <div class="bar-chart-bar" style="height: <?= round($salesRevenue[$i] / $maxRevenue * 100) ?>%"></div>
+            <div class="bar-chart-col-label"><?= h(date('j', strtotime($label))) ?></div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
   </div>
 
   <div class="chart-card">
@@ -70,8 +93,5 @@ require_once __DIR__ . '/../includes/admin-nav.php';
     </ul>
   </div>
 </section>
-
-<!-- the actual chart.js setup is in assets/js/revenue-chart.js, footer.php loads it -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

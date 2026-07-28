@@ -85,6 +85,14 @@
   animation: spin .7s linear infinite;
 }
 
+/* .spinner's own display:inline-block above has the same specificity as
+   the browser's built-in [hidden]{display:none} rule, and wins just by
+   being declared later -- so the hidden attribute alone wasn't actually
+   hiding it. This is more specific than plain .spinner, so it wins for real. */
+.spinner[hidden] {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .spinner {
     animation: none;

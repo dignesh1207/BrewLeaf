@@ -46,6 +46,7 @@ $total = $subtotal + $shipping;
 
 $pageTitle = 'Your Cart | BrewLeaf';
 $pageDescription = 'Review the items in your BrewLeaf shopping cart before checkout.';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
@@ -103,13 +104,18 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 
     <div class="cart-summary">
-      <table>
-        <tbody>
-          <tr><td>Subtotal</td><td class="text-right" id="cartSubtotal"><?= money($subtotal) ?></td></tr>
-          <tr><td>Shipping</td><td class="text-right" id="cartShipping"><?= $shipping > 0 ? money($shipping) : 'Free' ?></td></tr>
-          <tr><td><strong>Total</strong></td><td class="text-right"><strong id="cartTotal"><?= money($total) ?></strong></td></tr>
-        </tbody>
-      </table>
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="cartSubtotal"><?= money($subtotal) ?></span>
+      </div>
+      <div class="summary-row">
+        <span>Shipping</span>
+        <span id="cartShipping"><?= $shipping > 0 ? money($shipping) : 'Free' ?></span>
+      </div>
+      <div class="summary-row summary-row-total">
+        <strong>Total</strong>
+        <strong id="cartTotal"><?= money($total) ?></strong>
+      </div>
       <a href="checkout.php" class="btn btn-accent btn-block mt-md">Proceed to Checkout</a>
     </div>
   </div>

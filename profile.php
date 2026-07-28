@@ -41,6 +41,7 @@ $orders = $ordersStmt->get_result();
 
 $pageTitle = 'My Account | BrewLeaf';
 $pageDescription = 'Manage your BrewLeaf account and view your order history.';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
@@ -79,19 +80,21 @@ require_once __DIR__ . '/includes/header.php';
       <?php if ($orders->num_rows === 0): ?>
         <p>You haven't placed any orders yet. <a href="products.php">Start shopping</a>.</p>
       <?php else: ?>
-        <table>
-          <thead><tr><th>Order #</th><th>Date</th><th>Status</th><th>Total</th></tr></thead>
-          <tbody>
-            <?php while ($o = $orders->fetch_assoc()): ?>
-              <tr>
-                <td>#<?= (int) $o['id'] ?></td>
-                <td><?= h(date('M j, Y', strtotime($o['created_at']))) ?></td>
-                <td><span class="badge badge-capitalize"><?= h($o['status']) ?></span></td>
-                <td><?= money((float) $o['total']) ?></td>
-              </tr>
-            <?php endwhile; ?>
-          </tbody>
-        </table>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Order #</th><th>Date</th><th>Status</th><th>Total</th></tr></thead>
+            <tbody>
+              <?php while ($o = $orders->fetch_assoc()): ?>
+                <tr>
+                  <td>#<?= (int) $o['id'] ?></td>
+                  <td><?= h(date('M j, Y', strtotime($o['created_at']))) ?></td>
+                  <td><span class="badge badge-capitalize"><?= h($o['status']) ?></span></td>
+                  <td><?= money((float) $o['total']) ?></td>
+                </tr>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
+        </div>
       <?php endif; ?>
     </div>
   </div>

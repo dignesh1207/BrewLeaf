@@ -89,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Checkout | BrewLeaf';
 $pageDescription = 'Complete your BrewLeaf order.';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
@@ -130,6 +131,7 @@ require_once __DIR__ . '/includes/header.php';
 
       <div>
         <h2>Order Summary</h2>
+        <div class="table-scroll">
         <table>
           <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
           <tbody>
@@ -145,6 +147,7 @@ require_once __DIR__ . '/includes/header.php';
             <tr><td colspan="2"><strong>Total</strong></td><td><strong><?= money($total) ?></strong></td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   <?php endif; ?>

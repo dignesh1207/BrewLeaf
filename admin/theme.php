@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
 }
 
 $pageTitle = 'Site Template | BrewLeaf Admin';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'theme';
 require_once __DIR__ . '/../includes/admin-nav.php';
