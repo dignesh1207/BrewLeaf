@@ -7,6 +7,8 @@ require_once __DIR__ . '/../includes/functions.php';
 // non-admins get sent away
 require_admin();
 
+
+// handle the delete form submission, which is just a POST with a product id. 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $id = (int) $_POST['delete_id'];
     $del = $conn->prepare('DELETE FROM products WHERE id = ?');
@@ -29,6 +31,7 @@ $where = [];
 $params = [];
 $types = '';
 
+// only add a search filter if the user actually typed something in the search box
 if ($search !== '') {
     $where[] = 'name LIKE ?';
     $params[] = '%' . $search . '%';
@@ -88,11 +91,13 @@ function admin_products_page_url(int $page, string $search, string $category, st
 }
 
 $pageTitle = 'Manage Products | BrewLeaf Admin';
+
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'products';
 require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
 
+<!-- HTML for the product list page -->
 <section class="section">
 <div class="container">
   <div class="header-row">
