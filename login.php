@@ -14,6 +14,7 @@ $error = '';
 // wanted originally, so we know where to send them back after they log in
 $redirect = $_GET['redirect'] ?? 'profile.php';
 
+// if the user is already logged in, we don't want to show them the login form again. Instead, we redirect them to their profile page or the page they were trying to access before being prompted to log in.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $identifier = trim($_POST['identifier'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -30,9 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Log In | BrewLeaf';
 $pageDescription = 'Log in to your BrewLeaf account.';
+$pageRobots = 'noindex, nofollow'; // no reason for this to show up in search results
 require_once __DIR__ . '/includes/header.php';
 ?>
-
+<!--HTML for the login page, including a form for username/email and password, and links to register or reset password -->
 <section class="section container page-narrow-sm">
   <h1>Log In</h1>
   <?php if ($error): ?><div class="alert alert-error"><?= h($error) ?></div><?php endif; ?>

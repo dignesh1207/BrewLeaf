@@ -12,6 +12,7 @@ $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
 $product = ['name' => '', 'slug' => '', 'category' => 'coffee', 'origin' => '', 'description' => '', 'base_price' => '', 'image' => 'assets/images/product-01.jpg', 'is_active' => 1];
 $error = '';
 
+// if an id was passed, try to load that product from the db so we can edit it. if not found, just keep the empty defaults and let the form show "Add New Product"
 if ($id) {
     $s = $conn->prepare('SELECT * FROM products WHERE id = ?');
     $s->bind_param('i', $id);
@@ -21,6 +22,7 @@ if ($id) {
     if ($found) $product = $found;
 }
 
+// handle the form submission for saving the product, adding an option, or deleting an option
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_product'])) {
     $name = trim($_POST['name'] ?? '');
     // only coffee or tea are allowed, anything else defaults back to coffee
@@ -86,10 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_option']) && $
 $existingOptions = $id ? get_product_options($conn, $id) : [];
 
 $pageTitle = ($id ? 'Edit' : 'Add') . ' Product | BrewLeaf Admin';
+
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'products';
 require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
+
+<!-- HTML for the product edit page -->
 
 <section class="section container">
   <h1><?= $id ? 'Edit Product' : 'Add New Product' ?></h1>

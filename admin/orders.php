@@ -21,16 +21,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'])) {
     exit;
 }
 
+// get all orders, join with users to get the customer name/email
 $orders = $conn->query(
     'SELECT o.id, o.status, o.total, o.created_at, u.full_name, u.email
      FROM orders o JOIN users u ON u.id = o.user_id ORDER BY o.created_at DESC'
 );
 
+
 $pageTitle = 'Manage Orders | BrewLeaf Admin';
+
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'orders';
 require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
+
+<!-- HTML for the orders page -->
 
 <section class="section container">
   <h1>Manage Orders</h1>
@@ -41,6 +46,7 @@ require_once __DIR__ . '/../includes/admin-nav.php';
   <?php else: ?>
     <div class="table-scroll">
       <table>
+        <!-- table header -->
         <thead><tr><th>Order #</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
         <tbody>
           <?php while ($o = $orders->fetch_assoc()): ?>
