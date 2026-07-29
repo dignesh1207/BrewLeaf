@@ -9,7 +9,7 @@ require_once __DIR__ . '/includes/functions.php';
 // each check just sets true/false in $checks. wrapped in try/catch so one
 // broken check doesn't crash the whole page
 $checks = [];
-
+// check the database connection first, if that fails the other checks will fail too
 try {
     $conn->query('SELECT 1');
     $checks['Database Connection'] = true;
@@ -17,7 +17,7 @@ try {
     error_log('Health check failed: ' . $e->getMessage());
     $checks['Database Connection'] = false;
 }
-
+// check that the products table has at least one row, if not the catalogue is broken
 try {
     $result = $conn->query('SELECT id FROM products LIMIT 1');
     $checks['Product Catalogue'] = $result->num_rows > 0;
@@ -25,9 +25,9 @@ try {
     error_log('Health check failed: ' . $e->getMessage());
     $checks['Product Catalogue'] = false;
 }
-
+// check that the session is active, if not the cart service is broken
 $checks['Shopping Cart'] = session_status() === PHP_SESSION_ACTIVE;
-
+// check that the orders table exists, if not the checkout service is broken
 try {
     $result = $conn->query("SHOW TABLES LIKE 'orders'");
     $checks['Checkout Service'] = $result->num_rows === 1;
@@ -35,7 +35,7 @@ try {
     error_log('Health check failed: ' . $e->getMessage());
     $checks['Checkout Service'] = false;
 }
-
+// check that the users table exists, if not the authentication service is broken
 try {
     $result = $conn->query("SHOW TABLES LIKE 'users'");
     $checks['User Authentication'] = $result->num_rows === 1;
@@ -61,7 +61,7 @@ $pageTitle = 'System Status | BrewLeaf';
 $pageDescription = 'Live status of BrewLeaf website services: database, catalogue, cart, checkout, authentication, and search.';
 require_once __DIR__ . '/includes/header.php';
 ?>
-
+<!-- HTML for the system status page, including a table of services and their current status -->
 <section class="section container">
   <h1>System Status</h1>
   <div class="alert <?= $allOnline ? 'alert-success' : 'alert-error' ?>">

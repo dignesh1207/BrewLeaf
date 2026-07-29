@@ -57,6 +57,7 @@ $pageDescription = 'Browse our full catalogue of artisan coffee and specialty te
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- HTML for the product list page, including search/filter form and product grid -->
 <section class="section container">
   <div class="section-title">
     <h1><?= $category ? h(ucfirst($category)) : 'Shop All Products' ?></h1>

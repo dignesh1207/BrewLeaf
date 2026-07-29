@@ -30,7 +30,7 @@ while ($row = $catStats->fetch_assoc()) {
 
 require_once __DIR__ . '/includes/header.php';
 ?>
-
+<!-- HTML for the home page, including hero video, category tabs, featured products, and a bar chart of product stats -->
 <section class="hero">
   <div class="container">
     <h1>Small-Batch Coffee &amp; Tea, Roasted With Care</h1>

@@ -10,6 +10,7 @@ require_once __DIR__ . '/../includes/header.php';
 
 ?>
 
+<!-- HTML for the getting started help page -->
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Getting Started</h1>

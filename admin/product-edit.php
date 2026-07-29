@@ -86,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_option']) && $
 $existingOptions = $id ? get_product_options($conn, $id) : [];
 
 $pageTitle = ($id ? 'Edit' : 'Add') . ' Product | BrewLeaf Admin';
-$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'products';
 require_once __DIR__ . '/../includes/admin-nav.php';

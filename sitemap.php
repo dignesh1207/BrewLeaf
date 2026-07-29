@@ -10,10 +10,12 @@ $staticPages = ['index.php', 'products.php', 'about.php', 'contact.php', 'help/i
 echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 
+// add the static pages first
 foreach ($staticPages as $page) {
     echo '  <url><loc>' . htmlspecialchars(SITE_BASE_URL . '/' . $page) . '</loc><changefreq>weekly</changefreq></url>' . "\n";
 }
 
+// add the product pages, using the slug and created_at date for lastmod
 $result = $conn->query('SELECT slug, created_at FROM products WHERE is_active = 1');
 while ($row = $result->fetch_assoc()) {
     echo '  <url><loc>' . htmlspecialchars(SITE_BASE_URL . '/product.php?slug=' . $row['slug']) . '</loc>'

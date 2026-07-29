@@ -32,7 +32,7 @@ function respond(bool $ok, string $message, bool $isAjax, mysqli $conn, ?int $us
     header('Location: ' . $redirect);
     exit;
 }
-
+// admins can't add to cart. role comes from the session (set when they logged in) not from the request, so nobody can fake this from the client.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(false, 'Invalid request method.', $isAjax, $conn, is_logged_in() ? (int) $_SESSION['user_id'] : null, is_logged_in() ? null : get_guest_session_id());
 }
@@ -57,6 +57,7 @@ $prodStmt->close();
 $userId = is_logged_in() ? (int) $_SESSION['user_id'] : null;
 $guestId = is_logged_in() ? null : get_guest_session_id();
 
+// if the product doesn't exist or is inactive, don't add it to the cart
 if (!$product) {
     respond(false, 'Product not found.', $isAjax, $conn, $userId, $guestId);
 }

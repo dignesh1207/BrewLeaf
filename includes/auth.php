@@ -8,6 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// checks if a user is logged in by looking for a user_id in the session
 function is_logged_in(): bool
 {
     return !empty($_SESSION['user_id']);
@@ -72,7 +73,7 @@ function attempt_login(mysqli $conn, string $identifier, string $password): ?arr
     return $user;
 }
 
-//
+// clears the session and logs the user out
 function logout(): void
 {
     $_SESSION = [];

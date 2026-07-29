@@ -10,7 +10,7 @@ $pageDescription = 'How product options, the shopping cart, and checkout work on
 require_once __DIR__ . '/../includes/header.php';
 
 ?>
-
+<!-- HTML for the ordering and checkout help page -->
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Ordering &amp; Checkout</h1>

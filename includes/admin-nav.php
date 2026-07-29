@@ -15,7 +15,7 @@ $adminLinks = [
 
 ?>
 
-
+<!-- HTML for the admin nav bar -->
 <div class="admin-bar">
   <nav class="container" aria-label="Admin section">
     <ul>

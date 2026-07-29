@@ -13,6 +13,7 @@ $stmt->execute();
 $product = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
+// if the product doesn't exist or is inactive, show a 404 page.
 if (!$product) {
     http_response_code(404);
     $pageTitle = 'Product Not Found | BrewLeaf';
@@ -73,6 +74,7 @@ $pageDescription = substr($product['description'], 0, 155);
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- HTML for the product page, including product details, options, add to cart form, and reviews -->
 <section class="section container">
   <nav aria-label="Breadcrumb" class="breadcrumb">
     <a href="products.php">Shop</a> &rsaquo;
@@ -153,6 +155,7 @@ require_once __DIR__ . '/includes/header.php';
     <?php endwhile; ?>
   <?php endif; ?>
 
+  // the review form is only shown to logged in users, otherwise we prompt them to log in first
   <?php if (is_logged_in()): ?>
     <h3>Write a Review</h3>
     <form method="post" action="product.php?slug=<?= h($slug) ?>#reviews" data-validate>

@@ -1,6 +1,8 @@
 <?php
 // footer that goes on the bottom of every page, plus the closing html tags
 ?>
+
+<!-- HTML for the footer, including site links, address, and theme switcher -->
 </main>
 
 <footer class="site-footer">
@@ -23,7 +25,7 @@
         <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.php">Help &amp; Wiki</a></li>
         <li><a href="<?= h(SITE_BASE_URL) ?>/contact.php">Contact Us</a></li>
         <li><a href="<?= h(SITE_BASE_URL) ?>/monitor.php">System Status</a></li>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/project-docs.php">Project Docs</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/project-docs.html">Project Docs</a></li>
       </ul>
     </div>
     <div class="footer-col">

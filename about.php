@@ -10,7 +10,7 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 
-
+<!-- HTML for the about page, including company story, values, and videos -->
 <section class="hero">
   <div class="container"><h1>About BrewLeaf</h1></div>
 </section>
@@ -51,7 +51,7 @@ require_once __DIR__ . '/includes/header.php';
 
   <h2 class="text-center">See BrewLeaf in Action</h2>
   <div class="video-gallery">
-    
+
     <!-- this one is BrewLeaf footage, shows the roasting process -->
     <div class="video-card">
       <video controls controlsList="nodownload" preload="metadata" poster="assets/images/video-roastery-tour.jpg">

@@ -2,9 +2,13 @@
 
 
 // admin/dashboard.php - the main admin page, shows the stat cards, revenue chart and status list
+
+
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+
+
 // kick out anyone who isn't an admin
 require_admin();
 
@@ -66,8 +70,8 @@ require_once __DIR__ . '/../includes/admin-nav.php';
       <p class="form-hint">No orders yet in this window -- place a demo order to see this chart populate.</p>
     <?php else: ?>
       <?php
-      // plain html/css bar chart, no chart library -- just work out each bar's
-      // height as a % of the highest day and let the browser draw the divs
+      
+     
       $maxRevenue = max($salesRevenue) ?: 1;
       ?>
       <div class="bar-chart" role="img" aria-label="Revenue for each of the last 14 days">

@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
 $users = $conn->query('SELECT id, username, email, full_name, role, status, created_at FROM users ORDER BY created_at DESC');
 
 $pageTitle = 'Manage Users | BrewLeaf Admin';
-$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'users';
 require_once __DIR__ . '/../includes/admin-nav.php';

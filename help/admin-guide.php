@@ -16,7 +16,6 @@ if (!is_admin()) {
 $pageTitle = 'Admin Guide | BrewLeaf Help';
 
 $pageDescription = 'How BrewLeaf site administrators manage products, orders, users, and the site template.';
-$pageRobots = 'noindex, nofollow';
 
 require_once __DIR__ . '/../includes/header.php';
 

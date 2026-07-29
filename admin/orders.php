@@ -27,7 +27,6 @@ $orders = $conn->query(
 );
 
 $pageTitle = 'Manage Orders | BrewLeaf Admin';
-$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'orders';
 require_once __DIR__ . '/../includes/admin-nav.php';

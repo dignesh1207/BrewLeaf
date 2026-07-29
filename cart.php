@@ -46,7 +46,6 @@ $total = $subtotal + $shipping;
 
 $pageTitle = 'Your Cart | BrewLeaf';
 $pageDescription = 'Review the items in your BrewLeaf shopping cart before checkout.';
-$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 

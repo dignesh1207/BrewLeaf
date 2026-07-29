@@ -83,6 +83,7 @@ $owns->execute();
 $ownsRow = $owns->get_result()->fetch_assoc();
 $owns->close();
 
+// if the row doesn't exist or doesn't belong to this user/guest, don't let them update it. 
 if (!$ownsRow) {
     if ($isAjax) {
         header('Content-Type: application/json');
@@ -96,6 +97,7 @@ if (!$ownsRow) {
 $lineTotal = null;
 $quantity = null;
 
+// if the action is remove, delete the row. if it's update, change the quantity.
 if ($action === 'remove') {
     $del = $conn->prepare('DELETE FROM cart_items WHERE id = ?');
     $del->bind_param('i', $itemId);
@@ -116,6 +118,7 @@ if ($action === 'remove') {
     $lineTotal = $unitPrice * $quantity;
 }
 
+// send back a JSON response if this was an AJAX request, otherwise just redirect to the cart page
 if ($isAjax) {
     header('Content-Type: application/json');
     echo json_encode(array_merge(

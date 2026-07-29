@@ -12,7 +12,7 @@ require_once __DIR__ . '/../includes/header.php';
 
 ?>
 
-
+<!-- this page is just static instructions, no dynamic content -->
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Updating Site Content (No Coding Required)</h1>

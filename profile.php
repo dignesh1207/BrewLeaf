@@ -41,7 +41,6 @@ $orders = $ordersStmt->get_result();
 
 $pageTitle = 'My Account | BrewLeaf';
 $pageDescription = 'Manage your BrewLeaf account and view your order history.';
-$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
