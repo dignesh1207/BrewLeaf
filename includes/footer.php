@@ -23,6 +23,7 @@
         <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.php">Help &amp; Wiki</a></li>
         <li><a href="<?= h(SITE_BASE_URL) ?>/contact.php">Contact Us</a></li>
         <li><a href="<?= h(SITE_BASE_URL) ?>/monitor.php">System Status</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/project-docs.php">Project Docs</a></li>
       </ul>
     </div>
     <div class="footer-col">

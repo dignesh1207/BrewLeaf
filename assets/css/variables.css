@@ -18,6 +18,7 @@
   --color-primary: #6f4e37;
   --color-primary-dark: #4a3225;
   --color-accent: #c98a3b;
+  
   /* darker shade of accent, for buttons with white text (plain accent is
      sometimes too light to stay readable). each theme has its own version */
   --color-accent-dark: #966732;
