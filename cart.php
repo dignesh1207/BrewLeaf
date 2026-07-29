@@ -46,9 +46,11 @@ $total = $subtotal + $shipping;
 
 $pageTitle = 'Your Cart | BrewLeaf';
 $pageDescription = 'Review the items in your BrewLeaf shopping cart before checkout.';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- HTML for the cart page, including a table of items, quantity controls, and a summary of totals -->
 <section class="section container">
   <h1>Your Cart</h1>
 
