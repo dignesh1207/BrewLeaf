@@ -38,6 +38,7 @@ $themes = [
     ],
 ];
 
+// handle the form submission for changing the theme. this is just a POST with a theme key, no login needed because the admin check is done in header.php on every page load and only admins can see the theme.php page
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
     $chosen = $_POST['theme'];
     // make sure $chosen is actually one of our theme keys and not something random
@@ -55,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
 }
 
 $pageTitle = 'Site Template | BrewLeaf Admin';
+
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'theme';
 require_once __DIR__ . '/../includes/admin-nav.php';

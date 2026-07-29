@@ -28,12 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     }
 }
 
+// get the user info and their orders to display on the page
 $userStmt = $conn->prepare('SELECT username, email, full_name, created_at FROM users WHERE id = ?');
 $userStmt->bind_param('i', $userId);
 $userStmt->execute();
 $user = $userStmt->get_result()->fetch_assoc();
 $userStmt->close();
 
+// get the user's orders, join with order_items to get the product names and quantities
 $ordersStmt = $conn->prepare('SELECT id, status, total, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC');
 $ordersStmt->bind_param('i', $userId);
 $ordersStmt->execute();
@@ -41,6 +43,7 @@ $orders = $ordersStmt->get_result();
 
 $pageTitle = 'My Account | BrewLeaf';
 $pageDescription = 'Manage your BrewLeaf account and view your order history.';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 

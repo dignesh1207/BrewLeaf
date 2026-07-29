@@ -89,9 +89,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Checkout | BrewLeaf';
 $pageDescription = 'Complete your BrewLeaf order.';
+$pageRobots = 'noindex, nofollow';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- HTML for the checkout page, including a form for shipping details and payment info, and an order summary -->
 <section class="section container">
   <h1>Checkout</h1>
 

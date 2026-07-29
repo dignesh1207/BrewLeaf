@@ -3,9 +3,10 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
-// send non-admins away
+// Kick out non-admins away
 require_admin();
 
+// handle the delete form submission, which is just a POST with a product id.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
     $targetId = (int) $_POST['toggle_id'];
     if ($targetId !== (int) $_SESSION['user_id']) { // don't let an admin disable their own account
@@ -22,11 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
 $users = $conn->query('SELECT id, username, email, full_name, role, status, created_at FROM users ORDER BY created_at DESC');
 
 $pageTitle = 'Manage Users | BrewLeaf Admin';
+
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'users';
 require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
 
+<!-- HTML for the user management page -->
 <section class="section container">
   <h1>Manage User Accounts</h1>
   <div class="table-scroll">
