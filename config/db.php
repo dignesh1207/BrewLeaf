@@ -14,6 +14,7 @@ define('SITE_BASE_URL', '');
 // make mysqli throw errors instead of failing silently
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+// connect to the database, set utf8mb4 for proper unicode support
 try {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     $conn->set_charset('utf8mb4');

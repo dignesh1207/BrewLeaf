@@ -139,6 +139,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="section-title">
     <h2>Why BrewLeaf</h2>
   </div>
+  // four feature boxes with icons and text, explaining the benefits of shopping at BrewLeaf(I tried using emoji but they don't render consistently across browsers, so I used unicode characters instead)
   <div class="feature-grid">
     <div class="feature-box"><span class="icon">&#127793;</span><h3>Ethically Sourced</h3><p>Direct-trade relationships with growers across 10+ countries.</p></div>
     <div class="feature-box"><span class="icon">&#128293;</span><h3>Small-Batch Roasted</h3><p>Roasted weekly in small batches for peak freshness.</p></div>

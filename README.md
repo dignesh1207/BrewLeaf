@@ -5,7 +5,7 @@ products with a shopping cart, checkout, user accounts, product reviews, an
 admin panel (product/order/user management + switchable site templates), and
 a live backend status monitor.
 
-Plain PHP + MySQLi, no framework, no build step — every `.php` file is
+Plain PHP + MySQLi, no framework, no build step -- every `.php` file is
 requested directly by the web server, so this deploys to any standard
 PHP/MySQL host (Apache or Nginx) including university shared hosting like
 `myweb.cs.uwindsor.ca`.
@@ -14,7 +14,7 @@ PHP/MySQL host (Apache or Nginx) including university shared hosting like
 
 - PHP 8.0+ with the `mysqli` extension enabled (standard on most shared hosts).
 - MySQL 5.7+ or MariaDB 10.x.
-- No Composer packages, no Node build step — nothing to compile.
+- No Composer packages, no Node build step -- nothing to compile.
 
 ## Install on a new host (step by step)
 
@@ -81,11 +81,11 @@ brewleaf/
 ### assets/css/ -- one file per job
 
 Every page loads all of these (see the list in `includes/header.php`), in
-this order: `variables.css` (colors/fonts as reusable values) → the active
-`theme-*.css` (overrides some of those colors) → `base.css` (page-wide
-defaults) → one file per component (`buttons.css`, `forms.css`,
+this order: `variables.css` (colors/fonts as reusable values) -> the active
+`theme-*.css` (overrides some of those colors) -> `base.css` (page-wide
+defaults) -> one file per component (`buttons.css`, `forms.css`,
 `header.css`, `footer.css`, `hero.css`, `sections.css`, `product-card.css`,
-`tabs.css`, `tables.css`, `dashboard.css`, `admin.css`) → `utilities.css`
+`tabs.css`, `tables.css`, `dashboard.css`, `admin.css`) -> `utilities.css`
 (small helper classes, loaded last). Want to change how something looks?
 The file names say what they own.
 
@@ -93,8 +93,8 @@ The file names say what they own.
 
 `nav.js` (mobile menu), `product-options.js` (size/grind picker),
 `cart.js` (add to cart + quantity steppers), `form-validation.js`,
-`tabs.js` (home page category tabs), `hero-video.js`, `catalogue-chart.js`,
-`revenue-chart.js`, `auto-submit.js` (theme picker + order status dropdown),
+`tabs.js` (home page category tabs), `hero-video.js`,
+`auto-submit.js` (theme picker + order status dropdown),
 `confirm-submit.js` ("are you sure?" delete confirmations). Every file
 checks whether the element it needs is on the page before doing anything,
 so it's safe to load all of them everywhere.

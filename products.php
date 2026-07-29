@@ -51,7 +51,7 @@ $stmt->execute();
 $products = $stmt->get_result();
 $resultCount = $products->num_rows;
 
-$pageTitle = ($category ? ucfirst($category) . ' — ' : '') . 'Shop All Products | BrewLeaf';
+$pageTitle = ($category ? ucfirst($category) . ' - ' : '') . 'Shop All Products | BrewLeaf';
 $pageDescription = 'Browse our full catalogue of artisan coffee and specialty tea. Filter by category, search by origin, and sort by price or rating.';
 
 require_once __DIR__ . '/includes/header.php';
