@@ -22,7 +22,7 @@
     <div class="footer-col">
       <h3>Support</h3>
       <ul>
-        <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.php">Help &amp; Wiki</a></li>
+        <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.html">Help &amp; Wiki</a></li>
         <li><a href="<?= h(SITE_BASE_URL) ?>/contact.php">Contact Us</a></li>
         <li><a href="<?= h(SITE_BASE_URL) ?>/monitor.php">System Status</a></li>
         <li><a href="<?= h(SITE_BASE_URL) ?>/project-docs.html">Project Docs</a></li>
@@ -30,13 +30,23 @@
     </div>
     <div class="footer-col">
       <h3>Find Our Roastery</h3>
-      <!-- plain address card, no map embed, keeps this page from calling out to any map service -->
-      <div class="footer-address">
+
+      <!-- address is commented out because the map is more useful, but leaving it here in case we want to show it later -->
+      <!-- <div class="footer-address">
         <span class="footer-address-icon" aria-hidden="true">&#128205;</span>
         <address>
-          401 Sunset Ave<br>
-          Windsor, ON, Canada
+          <?= h(BUSINESS_ADDRESS_LINE1) ?><br>
+          <?= h(BUSINESS_ADDRESS_LINE2) ?>
         </address>
+      </div> -->
+      <!-- no api key needed for this basic embed, visitor can pan/zoom right from the footer -->
+      <div class="footer-map">
+        <iframe
+          src="https://www.google.com/maps?q=<?= urlencode(BUSINESS_ADDRESS_LINE1 . ', ' . BUSINESS_ADDRESS_LINE2) ?>&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Map showing the BrewLeaf roastery at <?= h(BUSINESS_ADDRESS_LINE1) ?>, <?= h(BUSINESS_ADDRESS_LINE2) ?>"
+        ></iframe>
       </div>
     </div>
     <div class="footer-col">

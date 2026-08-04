@@ -68,6 +68,7 @@ $reviews = $reviewsStmt->get_result();
 
 $pageTitle = $product['name'] . ' | BrewLeaf';
 $pageDescription = substr($product['description'], 0, 155);
+$pageImage = '/' . $product['image'];
 
 require_once __DIR__ . '/includes/header.php';
 ?>

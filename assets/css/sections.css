@@ -158,3 +158,18 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow-md);
 }
+
+/* embedded google map, Contact page roastery location */
+.map-embed {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin: 1rem 0;
+}
+
+.map-embed iframe {
+  display: block;
+  width: 100%;
+  height: 320px;
+  border: 0;
+}

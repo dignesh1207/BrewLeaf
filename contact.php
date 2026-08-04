@@ -42,8 +42,17 @@ require_once __DIR__ . '/includes/header.php';
 
   <div class="mt-xl">
     <h2>Roastery Address</h2>
-    <p>401 Sunset Ave, Windsor, ON, Canada</p>
-    <p>Email: hello@brewleaf.test &middot; Phone: (519) 555-0142</p>
+    <p><?= h(BUSINESS_ADDRESS_LINE1) ?>, <?= h(BUSINESS_ADDRESS_LINE2) ?></p>
+    <p>Email: <?= h(BUSINESS_EMAIL) ?> &middot; Phone: <?= h(BUSINESS_PHONE) ?></p>
+    <!-- no api key needed for this basic embed, visitor can pan/zoom/click through to google maps -->
+    <div class="map-embed">
+      <iframe
+        src="https://www.google.com/maps?q=<?= urlencode(BUSINESS_ADDRESS_LINE1 . ', ' . BUSINESS_ADDRESS_LINE2) ?>&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Map showing the BrewLeaf roastery at <?= h(BUSINESS_ADDRESS_LINE1) ?>, <?= h(BUSINESS_ADDRESS_LINE2) ?>"
+      ></iframe>
+    </div>
   </div>
 </section>
 

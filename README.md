@@ -68,7 +68,7 @@ brewleaf/
 ├── config/db.php     # DB connection + site base URL -- edit this per host
 ├── includes/         # Shared header, footer, auth, helper functions
 ├── admin/            # Admin panel (products, orders, users, theme, dashboard)
-├── help/             # End-user + admin wiki pages
+├── help/             # Wiki: 5 static .html pages + admin-guide.php (admin-only, needs PHP)
 ├── assets/
 │   ├── css/          # One small file per part of the page (see below)
 │   ├── js/           # One small file per behaviour (see below)
@@ -101,7 +101,7 @@ so it's safe to load all of them everywhere.
 
 ## Updating content without touching code
 
-See the in-app guide at `help/updating-content.php` (linked from the site's
+See the in-app guide at `help/updating-content.html` (linked from the site's
 **Help** menu) for step-by-step, non-technical instructions on adding
 products, photos, and videos through the Admin panel.
 

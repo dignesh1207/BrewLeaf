@@ -11,6 +11,12 @@ define('DB_PASS', '');
 // 'https://myweb.cs.uwindsor.ca/~yourusername(solank86)/brewleaf'
 define('SITE_BASE_URL', '');
 
+// roastery contact info, shown on the footer and contact page
+define('BUSINESS_ADDRESS_LINE1', '401 Sunset Ave');
+define('BUSINESS_ADDRESS_LINE2', 'Windsor, ON, Canada');
+define('BUSINESS_EMAIL', 'hello@brewleaf.test');
+define('BUSINESS_PHONE', '(519) 555-0142');
+
 // make mysqli throw errors instead of failing silently
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 

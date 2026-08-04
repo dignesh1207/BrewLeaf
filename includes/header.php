@@ -6,6 +6,9 @@
 $pageTitle       = $pageTitle ?? 'BrewLeaf Artisan Coffee & Tea Co.';
 $pageDescription = $pageDescription ?? 'BrewLeaf is an online artisan coffee and tea shop offering ethically sourced coffee beans and loose leaf teas from around the world.';
 $pageKeywords    = $pageKeywords ?? 'coffee, tea, artisan coffee, loose leaf tea, online coffee shop, specialty tea';
+$pageRobots      = $pageRobots ?? 'index, follow';
+// page-specific pages (e.g. product.php) can set this before including header.php for a better social preview
+$pageImage       = $pageImage ?? '/assets/images/hero-banner.jpg';
 // which theme css to load down below, see get_active_theme() in functions.php
 $activeTheme     = get_active_theme($conn);
 
@@ -39,12 +42,14 @@ if (!is_admin()) {
 <title><?= h($pageTitle) ?></title>
 <meta name="description" content="<?= h($pageDescription) ?>">
 <meta name="keywords" content="<?= h($pageKeywords) ?>">
+<meta name="robots" content="<?= h($pageRobots) ?>">
 <meta name="Student" content="Dignesh Solanki">
 <meta name="author" content="BrewLeaf Artisan Coffee & Tea Co.">
 <link rel="canonical" href="<?= h(SITE_BASE_URL . $_SERVER['REQUEST_URI']) ?>">
 <!-- these are for when a link gets shared on social media -->
 <meta property="og:title" content="<?= h($pageTitle) ?>">
 <meta property="og:description" content="<?= h($pageDescription) ?>">
+<meta property="og:image" content="<?= h(SITE_BASE_URL . $pageImage) ?>">
 <meta property="og:type" content="website">
 <!-- favicon -->
 <link rel="icon" type="image/png" href="<?= h(SITE_BASE_URL) ?>/assets/images/favicon.png">
@@ -105,7 +110,7 @@ if (!is_admin()) {
           <li><a href="<?= h(SITE_BASE_URL) ?>/products.php?category=coffee" class="<?= $navCategory === 'coffee' ? 'active' : '' ?>">Coffee</a></li>
           <li><a href="<?= h(SITE_BASE_URL) ?>/products.php?category=tea" class="<?= $navCategory === 'tea' ? 'active' : '' ?>">Tea</a></li>
           <li><a href="<?= h(SITE_BASE_URL) ?>/about.php" class="<?= $navScript === 'about.php' ? 'active' : '' ?>">About</a></li>
-          <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.php" class="<?= $navIsHelp ? 'active' : '' ?>">Help</a></li>
+          <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.html" class="<?= $navIsHelp ? 'active' : '' ?>">Help</a></li>
           <li><a href="<?= h(SITE_BASE_URL) ?>/contact.php" class="<?= $navScript === 'contact.php' ? 'active' : '' ?>">Contact</a></li>
         </ul>
         <ul class="nav-utility">

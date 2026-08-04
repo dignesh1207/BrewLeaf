@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 if (!is_admin()) {
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit;
 }
 
@@ -16,7 +16,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 <!-- Admin Guide -->
 <section class="section container page-narrow-lg">
-  <p><a href="index.php">&larr; Back to Help</a></p>
+  <p><a href="index.html">&larr; Back to Help</a></p>
   <h1>Admin Guide</h1>
   <p>This guide is for site administrators (role = <code>admin</code>). Log in at <code>login.php</code>
   with an admin account to access <code>/admin/</code>.</p>
