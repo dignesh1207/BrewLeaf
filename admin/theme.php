@@ -8,13 +8,14 @@ require_once __DIR__ . '/../includes/functions.php';
 // non-admins get redirected out
 require_admin();
 
+
 // these colors need to match the :root vars in each theme-*.css file, they're
 // just here so the little preview cards below look right. if the css changes
 // update these too or the preview will be wrong
 $themes = [
     'white' => [
         'label' => 'Clean White',
-        'desc'  => 'Bright white surfaces, near-black text, and a full-bleed photo hero -- the year-round default.',
+        'desc'  => 'Bright white surfaces, near-black text, and a full-bleed photo hero. The year-round default.',
         'bg' => '#fafaf8', 'surface' => '#ffffff', 'border' => '#eaeae6',
         'primary' => '#2a2a27', 'primary_dark' => '#141412', 'accent' => '#ffffff',
     ],
@@ -43,8 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['theme'])) {
     $chosen = $_POST['theme'];
     // make sure $chosen is actually one of our theme keys and not something random
     if (array_key_exists($chosen, $themes)) {
-        // ON DUPLICATE KEY UPDATE does insert-or-update in one go, so we don't
-        // have to first select and check if the setting row is already there
+        // insert or update, there's only ever one active_theme row in site_settings. if it doesn't exist yet, insert it, otherwise update the existing row. this is a prepared statement so no sql injection risk here.
         $stmt = $conn->prepare('INSERT INTO site_settings (setting_key, setting_value) VALUES ("active_theme", ?)
                                  ON DUPLICATE KEY UPDATE setting_value = ?');
         $stmt->bind_param('ss', $chosen, $chosen);
@@ -63,6 +63,7 @@ require_once __DIR__ . '/../includes/admin-nav.php';
 
 $active = get_active_theme($conn);
 ?>
+<!-- HTML for the theme selection page -->
 
 <section class="section container">
   <h1>Site Template</h1>

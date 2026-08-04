@@ -3,18 +3,18 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
-// Kick out non-admins away
+// kick out non-admins
 require_admin();
 
-// handle the delete form submission, which is just a POST with a product id.
+// handle the enable/disable form submission, which is just a POST with a user id
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
     $targetId = (int) $_POST['toggle_id'];
     if ($targetId !== (int) $_SESSION['user_id']) { // don't let an admin disable their own account
-        // note to self: this one isn't a prepared statement like everywhere else,
-        // just building the query string directly. it's only "safe" because $targetId
-        // got cast to (int) above so nothing but a number can end up in the query.
-        // should probably fix this to use bind_param like the rest of the app does.
-        $conn->query('UPDATE users SET status = IF(status="active","disabled","active") WHERE id = ' . $targetId);
+        // flip active <-> disabled
+        $stmt = $conn->prepare('UPDATE users SET status = IF(status="active","disabled","active") WHERE id = ?');
+        $stmt->bind_param('i', $targetId);
+        $stmt->execute();
+        $stmt->close();
     }
     header('Location: users.php');
     exit;

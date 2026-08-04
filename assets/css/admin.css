@@ -67,9 +67,7 @@
   border-color: var(--color-primary);
 }
 
-/* swatch is a mini mockup of the page (header bar, hero, 3 little cards)
-   made out of divs/spans, colored per theme -- used instead of a real
-   screenshot so it can't go out of date. markup is in admin/theme.php */
+/* mini mockup of the page, so the preview can't go out of date like a screenshot would */
 .theme-swatch {
   height: 118px;
   display: flex;
@@ -151,18 +149,10 @@
   gap: .8rem;
 }
 
-/* Manage Products table (admin/products.php)
-   table-layout: fixed + the .col-* widths below make header and rows line
-   up exactly (browser's default "auto" layout sizes columns per row based
-   on content, can't rely on that). name column has no fixed width so it's
-   the one that grabs whatever space is left. widths below are eyeballed
-   against the real content -- .col-actions used to be 150px and that was
-   like 8px too narrow, clipped the Delete button */
+/* Manage Products table (admin/products.php)*/
 .product-table {
   table-layout: fixed;
-  /* sum of the fixed .col-* widths below + ~260px so name column has room
-     for most product names without truncating. below this width
-     .table-scroll kicks in and scrolls sideways instead of squishing cols */
+
   min-width: 970px;
 }
 
@@ -180,8 +170,7 @@
   vertical-align: middle;
 }
 
-/* long names truncate with ... instead of wrapping so rows stay one line
-   tall -- full name still shows up as a tooltip via title="" in the php */
+/* long names truncate with ... instead of wrapping */
 .product-table .col-name-cell {
   overflow: hidden;
   white-space: nowrap;
@@ -199,10 +188,7 @@
   padding: 4px;
 }
 
-/* the <td> itself stays a normal table-cell so its height/border match
-   the rest of the row -- setting display:flex right on the td was
-   breaking that (border ended up ~33px too high). flex lives on this
-   inner wrapper div instead */
+
 .actions-cell {
   display: flex;
   align-items: center;
@@ -214,8 +200,7 @@
   flex-shrink: 0;
 }
 
-/* td.actions-td padding-right (room after Delete button) is shared in
-   tables.css -- cart table uses it too */
+/* td.actions-td padding-right is shared in tables.css, cart table uses it too */
 
 .pager {
   display: flex;
@@ -225,16 +210,13 @@
   margin-top: 1.5rem;
 }
 
-/* disabled Prev/Next becomes a plain <span> in the php (not a real
-   disabled <a>) -- this just dims it so it looks inactive */
+/* dims the disabled Prev/Next so it looks inactive */
 .pager [aria-disabled="true"] {
   opacity: .45;
   box-shadow: none;
 }
 
-/* sitewide :focus outline (base.css) uses --color-accent, but that's
-   pure white in the White theme so it's invisible on this light bg.
-   using --color-primary-dark instead since it's dark in every theme */
+/* darker focus outline, stays visible even on the White theme */
 .filter-bar :focus-visible,
 .product-table :focus-visible,
 .pager :focus-visible {

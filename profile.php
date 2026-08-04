@@ -1,6 +1,5 @@
 <?php
-// profile.php -- needs login. shows account info, lets you edit your
-// profile, and lists your past orders with status
+// profile.php, needs login. shows account info, edit form, and order history
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';

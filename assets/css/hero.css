@@ -1,5 +1,4 @@
-/* hero banner at top of Home/About/Help pages. bg image/gradient is set
-   per theme (see .hero in each theme-*.css) -- this file is just the layout */
+/* hero banner layout - bg image/gradient itself is set per theme */
 
 .hero {
   position: relative;
@@ -9,10 +8,7 @@
   text-align: center;
 }
 
-/* blurred circles for bg decoration -- some themes hide these with
-   display:none if they use a photo instead (theme-white.css). using
-   opacity instead of baking transparency into the color since there's
-   no text in these to worry about fading */
+/* blurred decoration circles, themes with a photo bg hide these */
 .hero::before,
 .hero::after {
   content: '';

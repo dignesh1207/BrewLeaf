@@ -1,7 +1,6 @@
 <?php
-// this is the top of every page - head tags, meta stuff, all the css links, and the nav bar
-// pages need to set $pageTitle and $pageDescription before including this one ($pageKeywords is optional)
-// also needs config/db.php and auth.php to already be included before this
+// top of every page - head tags, css links, nav bar
+// pages should set $pageTitle and $pageDescription first ($pageKeywords is optional)
 
 // fall back to these if the page didn't set its own
 $pageTitle       = $pageTitle ?? 'BrewLeaf Artisan Coffee & Tea Co.';
@@ -15,9 +14,7 @@ $navScript   = basename($_SERVER['SCRIPT_NAME']);
 $navCategory = $_GET['category'] ?? '';
 $navIsHelp   = str_contains($_SERVER['SCRIPT_NAME'], '/help/');
 
-// counting cart items - logged in users use their user_id, guests use the session id instead.
-// admins don't have a cart since they don't shop, so just skip this whole query for them
-// (cart.php also blocks admins from the cart page itself, this is just for the nav badge)
+// cart count for the nav badge, skipped for admins since they don't shop
 $cartCount = 0;
 if (!is_admin()) {
     if (is_logged_in()) {
@@ -51,13 +48,7 @@ if (!is_admin()) {
 <meta property="og:type" content="website">
 <!-- favicon -->
 <link rel="icon" type="image/png" href="<?= h(SITE_BASE_URL) ?>/assets/images/favicon.png">
-<!--
-  the order of these css files actually matters, learned this the hard way.
-  variables.css sets up the css variables first, then the theme-*.css file
-  overrides some of them for whichever theme is active, then base.css resets
-  everything, then all the component css files, and utilities.css has to go
-  last so it can override stuff from the files above it
--->
+<!-- order matters here: variables, then theme, then base, then components, utilities last -->
 <link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/variables.css">
 <link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/theme-<?= h($activeTheme) ?>.css">
 <link rel="stylesheet" href="<?= h(SITE_BASE_URL) ?>/assets/css/base.css">
@@ -90,8 +81,7 @@ if (!is_admin()) {
     </button>
 
     <?php if (is_admin()): ?>
-      <!-- admins get their own nav, no shop/cart links since admins manage products,
-           they don't buy stuff as a customer (cart.php redirects them away too, just in case) -->
+      <!-- admins get their own nav, no shop/cart links since they don't buy as a customer -->
       <nav class="primary-nav" id="primaryNav" aria-label="Primary">
         <ul>
           <li><a href="<?= h(SITE_BASE_URL) ?>/index.php" class="<?= $navScript === 'index.php' ? 'active' : '' ?>">Storefront</a></li>

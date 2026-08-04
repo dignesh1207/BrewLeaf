@@ -1,7 +1,5 @@
 <?php
-// handles the add-to-cart form from product.php
-// works two ways: AJAX (fetch, sends back JSON) and normal form submit
-// (just redirects to cart.php) in case JS is off, main.js upgrades the form
+// handles the add-to-cart form from product.php - works via AJAX or a normal redirect
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -32,13 +30,11 @@ function respond(bool $ok, string $message, bool $isAjax, mysqli $conn, ?int $us
     header('Location: ' . $redirect);
     exit;
 }
-// admins can't add to cart. role comes from the session (set when they logged in) not from the request, so nobody can fake this from the client.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(false, 'Invalid request method.', $isAjax, $conn, is_logged_in() ? (int) $_SESSION['user_id'] : null, is_logged_in() ? null : get_guest_session_id());
 }
 
-// admins can't add to cart. role comes from the session (set when they
-// logged in) not from the request, so nobody can fake this from the client
+// admins can't add to cart, role comes from the session not the request
 if (is_admin()) {
     respond(false, 'Admin accounts cannot add items to a cart.', $isAjax, $conn, (int) $_SESSION['user_id'], null, SITE_BASE_URL . '/admin/dashboard.php');
 }
@@ -46,8 +42,7 @@ if (is_admin()) {
 $productId = (int) ($_POST['product_id'] ?? 0);
 $quantity  = max(1, (int) ($_POST['quantity'] ?? 1));
 
-// grab the real product from the db instead of trusting whatever came from the form
-// is_active = 1 also blocks adding a product that got delisted
+// grab the real product from the db, is_active = 1 also blocks delisted products
 $prodStmt = $conn->prepare('SELECT id, name, base_price FROM products WHERE id = ? AND is_active = 1');
 $prodStmt->bind_param('i', $productId);
 $prodStmt->execute();

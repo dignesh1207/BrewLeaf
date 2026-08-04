@@ -32,8 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_product'])) {
     $basePrice = (float) ($_POST['base_price'] ?? 0);
     $image = trim($_POST['image'] ?? '');
     $isActive = isset($_POST['is_active']) ? 1 : 0;
-    // if we're editing, keep the old slug so the url doesn't change on us.
-    // for new products, make one from the name (lowercase, spaces/symbols -> dashes)
+    // editing keeps the old slug, new products get one made from the name
     $slug = $id ? $product['slug'] : preg_replace('/[^a-z0-9]+/', '-', strtolower($name));
     $slug = trim($slug, '-');
 
@@ -73,8 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_option']) && $id)
     exit;
 }
 
-// added "AND product_id = ?" here so you can't delete an option that belongs to
-// some other product just by guessing its id in the form
+// checking product_id too stops deleting an option that belongs to a different product
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_option']) && $id) {
     $optId = (int) $_POST['delete_option'];
     $del = $conn->prepare('DELETE FROM product_options WHERE id = ? AND product_id = ?');

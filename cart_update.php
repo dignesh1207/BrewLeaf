@@ -7,8 +7,7 @@ require_once __DIR__ . '/includes/functions.php';
 
 $isAjax = ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest';
 
-// re-adds up the whole cart from the db after any change, so the JSON we
-// send back is correct and not just based on the one row that changed
+// re-totals the whole cart from the db, not just the row that changed
 function cart_update_summary(mysqli $conn, ?int $userId, ?string $guestId): array
 {
     if ($userId) {
@@ -83,7 +82,7 @@ $owns->execute();
 $ownsRow = $owns->get_result()->fetch_assoc();
 $owns->close();
 
-// if the row doesn't exist or doesn't belong to this user/guest, don't let them update it. 
+// not their row, or it's already gone
 if (!$ownsRow) {
     if ($isAjax) {
         header('Content-Type: application/json');

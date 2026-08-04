@@ -13,8 +13,7 @@ function money(float $amount): string
     return '$' . number_format($amount, 2);
 }
 
-// gets the options for a product (like Size, Grind) and groups them by option_group
-// so you get something like ['Size' => [...], 'Grind' => [...]]
+// gets a product's options grouped by name, e.g. ['Size' => [...], 'Grind' => [...]]
 function get_product_options(mysqli $conn, int $productId): array
 {
     // ordering by option_group so rows in the same group end up next to each other for the loop below
@@ -34,10 +33,7 @@ function get_product_options(mysqli $conn, int $productId): array
     return $grouped;
 }
 
-// figures out which theme should be active. checks ?preview_theme= first (so people can preview
-// a theme without changing it for everyone), otherwise reads it from site_settings in the db.
-// only letting the 4 real theme names through here on purpose -- this value ends up in a css
-// filename below, so if I let literally any string through someone could probably mess with the path
+// figures out which theme is active - ?preview_theme= first, then site_settings in the db
 function get_active_theme(mysqli $conn): string
 {
     // only allow these exact values, don't want a random ?preview_theme= messing with the file path
@@ -61,8 +57,7 @@ function render_stars(float $rating): string
     return str_repeat('&#9733;', $full) . ($half ? '&#189;' : '') . str_repeat('&#9734;', $empty);
 }
 
-// gives a guest (not logged in) a random id we can store in the session, so their
-// cart_items rows can use session_id instead of user_id since they don't have an account
+// gives a logged-out guest a random id, so their cart_items can use session_id
 function get_guest_session_id(): string
 {
     if (empty($_SESSION['guest_id'])) {
@@ -72,9 +67,7 @@ function get_guest_session_id(): string
     return $_SESSION['guest_id'];
 }
 
-// takes the option ids that got posted from the form and turns them into full rows we can
-// save as json, plus adds up the total price modifier. $optionIds is raw form data so it might
-// have junk/zeros/duplicates in it, that gets cleaned up here first
+// turns posted option ids into full rows to save as json, plus the total price modifier
 function resolve_selected_options(mysqli $conn, array $optionIds): array
 {
     // make everything an int and drop zeros/dupes
@@ -117,8 +110,7 @@ function resolve_selected_options(mysqli $conn, array $optionIds): array
     return ['options' => $options, 'modifierTotal' => $modifierTotal];
 }
 
-// takes the json we saved from resolve_selected_options() and turns it into something
-// readable, like "Size: Large, Grind: Whole Bean"
+// turns the saved json back into readable text, e.g. "Size: Large, Grind: Whole Bean"
 function format_selected_options(?string $json): string
 {
     // if json_decode fails for some reason just treat it as empty instead of erroring

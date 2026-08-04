@@ -60,32 +60,21 @@ textarea:focus {
   border-color: var(--color-danger);
 }
 
-/* Colored banner for page-level messages, e.g. "Order placed!" */
-.alert {
+/* banner for page-level messages, e.g. "Order placed!" */
+.alert,
+.alert-success,
+.alert-error {
   padding: .9rem 1.1rem;
   border-radius: var(--radius-sm);
   margin-bottom: 1.2rem;
   font-size: .95rem;
-  border-left: 3px solid transparent;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
 }
 
-.alert-success {
-  background: var(--color-success-bg);
-  color: var(--color-success);
-  border-left-color: var(--color-success);
-}
-
-.alert-error {
-  background: var(--color-danger-bg);
-  color: var(--color-danger);
-  border-left-color: var(--color-danger);
-}
-
-/* Quantity +/- stepper next to a number input (used on the cart page).
-   margin-right keeps it from crowding whatever column comes after it
-   (the cart table's Line Total column) -- the column itself also has
-   room to spare, see .cart-col-qty in tables.css, this is just extra
-   insurance since button rendering width varies a bit by font/browser. */
+/* qty +/- stepper next to a number input, used on the cart page */
 .qty-stepper {
   display: flex;
   align-items: center;
@@ -93,10 +82,7 @@ textarea:focus {
   margin-right: .5rem;
 }
 
-/* fixed circular size instead of the usual pill-button padding -- keeps
-   both buttons exactly the same size regardless of the -/+ character's
-   own width, and takes up less room than the default .btn-sm padding did
-   (that's what was overflowing into the next column before) */
+/* fixed circular size instead of pill-button padding */
 .qty-minus,
 .qty-plus {
   flex-shrink: 0;
@@ -107,8 +93,7 @@ textarea:focus {
   justify-content: center;
 }
 
-/* cart.js disables these while its ajax request is running, so you can't
-   fire a second change before the first one finishes saving */
+/* disabled while cart.js's ajax request is running */
 .qty-stepper button:disabled,
 .qty-stepper input:disabled {
   opacity: .5;
@@ -129,8 +114,7 @@ textarea:focus {
   gap: .5rem;
 }
 
-/* lines up form-grid fields on their bottom edge, for when one has a
-   hint line under it and the other doesn't */
+/* lines up form-grid fields on their bottom edge */
 .form-grid-end {
   align-items: end;
 }

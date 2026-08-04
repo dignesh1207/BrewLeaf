@@ -1,7 +1,5 @@
 <?php
-// this file starts the session and has all my login-related functions
-// needs config/db.php loaded before this one
-
+// starts the session and has all the login-related functions
 
 // don't want to call session_start() twice or php throws a warning
 if (session_status() === PHP_SESSION_NONE) {
@@ -20,8 +18,7 @@ function is_admin(): bool
     return is_logged_in() && ($_SESSION['role'] ?? '') === 'admin';
 }
 
-// use this at the top of a page to force someone to log in first
-// sends them to login.php and keeps track of where they were trying to go
+// force someone to log in first, remembers where they were trying to go
 function require_login(): void
 {
     if (!is_logged_in()) {
@@ -40,8 +37,7 @@ function require_admin(): void
     }
 }
 
-// checks username or email + password, logs them in if it matches
-// returns the user row if it worked, null if it didn't
+// checks username/email + password, returns the user row if it worked, null if not
 function attempt_login(mysqli $conn, string $identifier, string $password): ?array
 {
     // this is a prepared statement so we don't have to worry about SQL injection

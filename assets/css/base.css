@@ -1,5 +1,4 @@
-/* base page-wide rules - reset, body/heading defaults, .container, skip link.
-   needs variables.css loaded first since this uses var(--color-...) a lot */
+/* base page-wide rules - reset, body/heading defaults, .container, skip link */
 
 /* reset - strip the browser's default spacing/styles */
 *,
@@ -8,13 +7,10 @@
   box-sizing: border-box;
 }
 
-/* gap under the badge before the product name.
-   without align-self the badge stretches full width -- .body is a flex
-   column and flex items stretch by default. this keeps it a small pill */
+/* smooth-scroll for anchor links */
 html {
   scroll-behavior: smooth;
 }
-
 
 /* page defaults */
 html,
@@ -23,37 +19,31 @@ body {
   padding: 0;
 }
 
-/* make images and videos responsive by default */
-
+/* responsive images/videos by default */
 img,
 video {
   max-width: 100%;
   display: block;
 }
 
-/* make form elements inherit the font from their parent, and remove the default
-   spacing around them. this makes it easier to style them consistently with the
-   rest of the page */
+/* links don't inherit blue/underline */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* remove the default spacing around form elements and make them inherit the font */
+/* strip default list spacing/bullets */
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* remove the default spacing around form elements and make them inherit the font */
-
 button {
   font: inherit;
   cursor: pointer;
 }
 
-/* remove the default spacing around form elements and make them inherit the font */
 ::selection {
   background: var(--color-accent);
   color: #fff;
@@ -96,8 +86,7 @@ p {
   margin: 0 0 1em;
 }
 
-/* centers content and stops it stretching too wide on big screens.
-   almost every section wraps its content in this */
+/* centers content, caps its width on big screens */
 .container {
   width: 100%;
   max-width: 1180px;
@@ -105,8 +94,7 @@ p {
   padding: 0 1.25rem;
 }
 
-/* "skip to main content" link -- hidden off screen until a keyboard user
-   tabs to it, then it pops into view so they can skip the nav menu */
+/* "skip to main content" link, hidden until a keyboard user tabs to it */
 .skip-link {
   position: absolute;
   left: -999px;
@@ -124,7 +112,7 @@ p {
   border-radius: var(--radius-sm);
 }
 
-/* media query for small phones, shrinks the skip link so it doesn't cover too much of the page */
+/* shrink skip link on small phones */
 @media (max-width: 480px) {
   .skip-link {
     font-size: .8rem;

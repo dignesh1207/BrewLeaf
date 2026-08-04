@@ -45,7 +45,7 @@
   margin-bottom: .5rem;
 }
 
-/* plain address card instead of an embedded map -- no external service call */
+/* plain address card instead of an embedded map, no external service call */
 .footer-address {
   display: flex;
   align-items: flex-start;
@@ -73,8 +73,7 @@
   border-top: 1px solid rgba(255, 255, 255, .12);
 }
 
-/* public theme switcher - any visitor, not just admins. see footer.php
-   and set-theme.php */
+/* public theme switcher - any visitor, not just admins */
 .theme-switcher {
   display: flex;
   gap: .6rem;

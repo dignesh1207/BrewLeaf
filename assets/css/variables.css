@@ -1,12 +1,4 @@
-/* css variables (custom properties) - colors/fonts/etc reused everywhere.
-   theme-*.css files reuse these same names with different values, and
-   whichever theme file loads last wins -- that's how the theme picker
-   in admin/theme.php swaps the whole site's look */
-
-   /* THis was originally in base.css, but moved to its own file so the theme files
-   can override it without having to copy/paste all of base.css */
-
-
+/* css variables - theme-*.css files override these to swap the site's look */
 :root {
   /* Page colors */
   --color-bg: #faf7f2;
@@ -19,9 +11,7 @@
   --color-primary-dark: #4a3225;
   --color-accent: #c98a3b;
   
-  /* darker shade of accent, for buttons with white text (plain accent is
-     sometimes too light to stay readable). each theme has its own version */
-  --color-accent-dark: #966732;
+  --color-accent-dark: #966732; /* darker accent, for white text on top */
   --color-border: #e7ddd2;
 
   /* Alert colors (success / error messages) */
@@ -41,8 +31,7 @@
   --radius: 14px;
   --radius-lg: 22px;
 
-  /* drop shadows: black at different opacity (last number = how opaque)
-     for small/medium/large */
+  /* drop shadows, small/medium/large */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, .1);
   --shadow-md: 0 10px 28px -8px rgba(0, 0, 0, .22);
   --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, .28);

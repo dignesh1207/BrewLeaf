@@ -1,39 +1,36 @@
 /* general section layout - padding wrapper, titles, feature grid, shared card look */
 
-/* each section has top/bottom padding, e.g. Featured Products on home page, About, Help, Contact, Login, Register */
+/* top/bottom padding for a page section */
 .section {
   padding: 4rem 0;
 }
 
-/* section title, e.g. "Featured Products" on home page, "Why BrewLeaf" on home page, "About BrewLeaf" on About page */
+/* centered section heading, e.g. "Featured Products" */
 .section-title {
   text-align: center;
   margin-bottom: 2.25rem;
 }
 
-/* section title subtitle, e.g. "Why BrewLeaf" on home page, "About BrewLeaf" on About page */
+/* section subtitle text under the heading */
 .section-title p {
   color: var(--color-text-muted);
   max-width: 560px;
   margin-inline: auto;
 }
 
-/* slightly diff bg + top/bottom borders to separate it from sections
-   above/below, e.g. Featured Products on home page */
+/* alt bg + borders to set a section apart from its neighbors */
 .section-alt {
   background: var(--color-surface);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
 }
 
-/* narrower column so text isn't full width - About, Help, Contact, Login, Register */
+/* narrower column so text isn't full width */
 .page-narrow-sm { max-width: 480px; margin-inline: auto; }
 .page-narrow-md { max-width: 600px; margin-inline: auto; }
 .page-narrow-lg { max-width: 800px; margin-inline: auto; }
 
-/* shared "raised card" look - feature boxes, product cards, dash tiles,
-   charts and the filter bar all use this. each file just adds whatever
-   makes it different */
+/* shared "raised card" look */
 .feature-box,
 .product-card,
 .dash-card,
@@ -136,9 +133,7 @@
   background: rgba(0, 0, 0, .06);
 }
 
-/* centers the Our Values cards on About page only (.page-narrow-lg wraps
-   that section) -- home's grid and the help article list also use
-   .feature-box so had to scope this or it'd affect those too */
+/* centers the Our Values cards on About page only */
 .page-narrow-lg .feature-box {
   text-align: center;
 }

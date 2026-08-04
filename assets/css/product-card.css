@@ -46,9 +46,7 @@
   flex: 1;
 }
 
-/* gap under the badge before the product name.
-   without align-self the badge stretches full width -- .body is a flex
-   column and flex items stretch by default. this keeps it a small pill */
+/* keeps the badge a small pill instead of stretching full width */
 .product-card .badge {
   align-self: flex-start;
   margin-bottom: .6rem;
@@ -83,9 +81,7 @@
   gap: .5rem;
 }
 
-/* rounded label like "COFFEE"/"TEA"/order status. using --color-primary
-   not --color-accent here bc accent can be really light in some themes
-   and then white text on it is unreadable */
+/* rounded label, e.g. "COFFEE"/"TEA"/order status */
 .badge {
   display: inline-block;
   font-size: .7rem;
@@ -124,8 +120,7 @@
   flex: 0;
 }
 
-/* two 160px fields side by side is too cramped on a small phone (search
-   box placeholder gets cut off), so just stack them full width */
+/* stack filter fields full width on small phones, too cramped side by side */
 @media (max-width: 560px) {
   .filter-bar .form-row,
   .filter-bar .form-row-auto {

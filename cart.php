@@ -1,11 +1,10 @@
 <?php
-// cart.php -- shows the cart, works for guests too not just logged in users
+// cart.php, shows the cart, works for guests too not just logged in users
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
-// admins shouldn't be shopping, kick them to their dashboard instead.
-// this checks the session role on the server so someone can't just fake it in the browser
+// admins shouldn't be shopping, send them to their dashboard instead
 if (is_admin()) {
     header('Location: ' . SITE_BASE_URL . '/admin/dashboard.php');
     exit;

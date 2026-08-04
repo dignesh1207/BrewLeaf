@@ -14,12 +14,10 @@
 
 .hero {
   background:
-    radial-gradient(circle at 20% 20%, #e0a52b 0%, transparent 45%),
-    linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    url('../images/hero-banner.jpg') center / cover no-repeat;
 }
 
-/* already has its own radial texture above, hide the generic blur blobs
-   so they don't fight each other */
+/* hide the blur blobs, the radial texture above is enough */
 .hero::before,
 .hero::after {
   display: none;

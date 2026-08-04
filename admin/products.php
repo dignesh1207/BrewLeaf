@@ -7,8 +7,7 @@ require_once __DIR__ . '/../includes/functions.php';
 // non-admins get sent away
 require_admin();
 
-
-// handle the delete form submission, which is just a POST with a product id. 
+// handle the delete form submission, which is just a POST with a product id
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $id = (int) $_POST['delete_id'];
     $del = $conn->prepare('DELETE FROM products WHERE id = ?');
@@ -25,8 +24,7 @@ $status   = $_GET['status'] ?? '';
 $page     = max(1, (int) ($_GET['page'] ?? 1));
 $perPage  = 10;
 
-// building $where, $params and $types together so they all stay in the same
-// order -- the ?'s need to line up with what goes in bind_param() below
+// $where, $params and $types all build up together so they stay in sync
 $where = [];
 $params = [];
 $types = '';
@@ -51,6 +49,7 @@ if ($status === 'active') {
 
 $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
 
+// count total products matching the filters, so we can work out total pages
 $countStmt = $conn->prepare("SELECT COUNT(*) AS n FROM products $whereSql");
 if ($params) {
     $countStmt->bind_param($types, ...$params);
@@ -59,6 +58,7 @@ $countStmt->execute();
 $total = (int) $countStmt->get_result()->fetch_assoc()['n'];
 $countStmt->close();
 
+// total pages, current page, and the offset for the LIMIT clause
 $totalPages = max(1, (int) ceil($total / $perPage));
 $page = min($page, $totalPages);
 $offset = ($page - 1) * $perPage;

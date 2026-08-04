@@ -1,5 +1,5 @@
 <?php
-// register.php -- signup form for new customers
+// register.php, signup form for new customers
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -54,7 +54,7 @@ $pageDescription = 'Create a free BrewLeaf account to track orders, save favorit
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- HTML content -->
+<!-- HTML for the register page -->
 <section class="section container page-narrow-sm">
   <h1>Create Your Account</h1>
   <?php if ($error): ?><div class="alert alert-error"><?= h($error) ?></div><?php endif; ?>

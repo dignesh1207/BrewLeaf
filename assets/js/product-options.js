@@ -1,4 +1,4 @@
-// product page -- clicking a size/grind pill selects it and updates the price
+// product page, clicking a size/grind pill selects it and updates the price
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.option-group').forEach(function (group) {
     var pills = group.querySelectorAll('.option-pill');

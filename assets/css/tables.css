@@ -1,14 +1,10 @@
 /* styles for the cart/checkout/admin tables, plus a few cell helpers */
 
-/* display:block + overflow-x:auto lets a table wider than its column
-   (cart table on a phone, lots of columns) scroll sideways inside its
-   own box instead of blowing out the whole page width. rows/cells keep
-   normal table layout, just the outer <table> becomes scrollable.
-   fixes every table on the site, no extra markup needed anywhere */
+/* lets a wide table scroll sideways instead of blowing out the page */
 table {
   display: block;
   overflow-x: auto;
-  overflow-y: hidden; /* keeps rounded corners clipping the header row like before */
+  overflow-y: hidden; /* keeps the rounded corners clipped */
   -webkit-overflow-scrolling: touch;
   width: 100%;
   border-collapse: collapse;
@@ -17,14 +13,7 @@ table {
   box-shadow: var(--shadow-sm);
 }
 
-/* opt-in wrapper for tables that need real table-layout (e.g. fixed col
-   widths that have to line up between thead and tbody).
-   table{display:block} above is a quick fix for every table, but it also
-   makes the table shrink-to-content instead of filling the container in
-   some browsers, which leaves empty space on the right. wrap a <table>
-   in <div class="table-scroll"> to get around that -- the wrapper takes
-   over scrolling/bg/shadow and the table goes back to being a real table
-   filling 100%. only affects tables that use this wrapper */
+/* opt-in wrapper for tables that need fixed column widths to fill 100% */
 .table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -73,8 +62,7 @@ tr:last-child td {
   text-align: right;
 }
 
-/* cell whose contents need to be in a row - thumbnail next to name, or
-   a group of action buttons next to each other */
+/* cell contents in a row, e.g. thumbnail next to name */
 .table-cell-flex {
   display: flex;
   align-items: center;
@@ -86,16 +74,12 @@ tr:last-child td {
   gap: .4rem;
 }
 
-/* space after the last button in the Actions column, used by both the
-   admin products table and the cart table */
+/* space after the last button in the Actions column */
 td.actions-td {
   padding-right: 24px;
 }
 
-/* The little order-total box under the cart table. Used to be a plain
-   <table>, which inherited the sitewide table{} card look (bg/border/
-   shadow) automatically -- now it's a plain div, so that look is given
-   explicitly here instead. */
+/* order-total box under the cart table */
 .cart-summary {
   max-width: 320px;
   margin-left: auto;
@@ -107,9 +91,7 @@ td.actions-td {
   box-shadow: var(--shadow-sm);
 }
 
-/* Subtotal/Shipping/Total rows -- same flex layout on every row so the
-   label and value always line up the same way, regardless of how long
-   the label text is or whether the row is bold. */
+/* Subtotal/Shipping/Total rows, label and value always line up */
 .summary-row {
   display: flex;
   justify-content: space-between;
@@ -124,10 +106,7 @@ td.actions-td {
   font-size: 1.05rem;
 }
 
-/* cart table (cart.php)
-   table-layout: fixed + .cart-col-* widths so header and rows share the
-   same columns (same trick as .product-table on admin products list).
-   Product column has no fixed width so it grabs the leftover space */
+/* cart table - fixed columns so header and rows line up */
 .cart-table {
   table-layout: fixed;
   min-width: 820px; /* below this, .table-scroll scrolls instead of crushing columns */
@@ -135,9 +114,7 @@ td.actions-td {
 
 .cart-col-options { width: 190px; }
 .cart-col-price   { width: 100px; }
-/* 160px used to be too narrow -- the stepper's buttons + input actually
-   need ~160px on their own, which left zero room for the cell's own
-   padding and pushed the + button into the Line Total column next door */
+/* 160px was too narrow, the stepper's buttons + input need that much on their own */
 .cart-col-qty     { width: 210px; }
 .cart-col-total   { width: 100px; }
 .cart-col-actions { width: 130px; }

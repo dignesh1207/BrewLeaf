@@ -13,5 +13,11 @@
 }
 
 .hero {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background:
+    url('../images/hero-banner.jpg') center / cover no-repeat;
+}
+
+.hero::before,
+.hero::after {
+  display: none;
 }

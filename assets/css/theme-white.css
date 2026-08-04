@@ -1,6 +1,4 @@
-/* white theme - clean minimal light look, copper accent color.
-   hero uses a photo bg instead of a gradient, dark overlay keeps the
-   heading/button readable on top of it */
+/* white theme - clean minimal light look, copper accent color */
 :root {
   --color-bg: #fafaf8;
   --color-surface: #ffffff;

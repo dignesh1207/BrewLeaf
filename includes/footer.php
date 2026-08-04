@@ -30,7 +30,7 @@
     </div>
     <div class="footer-col">
       <h3>Find Our Roastery</h3>
-      <!-- plain address card, no map embed -- keeps this page from calling out to any map service -->
+      <!-- plain address card, no map embed, keeps this page from calling out to any map service -->
       <div class="footer-address">
         <span class="footer-address-icon" aria-hidden="true">&#128205;</span>
         <address>
@@ -51,8 +51,7 @@
           'winter'  => ['label' => 'Frost (Winter)',    'color' => '#2b5a72'],
       ];
       ?>
-      <!-- this theme switcher works for anyone, you don't need to be logged in for it, that's on purpose.
-           it posts to set-theme.php which is different from admin/theme.php (that one needs admin login) -->
+      <!-- anyone can use this, no login needed - posts to set-theme.php, not admin/theme.php -->
       <form method="post" action="<?= h(SITE_BASE_URL) ?>/set-theme.php" class="theme-switcher">
         <input type="hidden" name="redirect_to" value="<?= h($_SERVER['REQUEST_URI']) ?>">
         <?php foreach ($themeDots as $key => $dot): ?>

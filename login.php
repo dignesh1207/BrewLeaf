@@ -1,5 +1,5 @@
 <?php
-// login.php -- one form for both customers and admins, role decides where they go after
+// login.php, one form for both customers and admins, role decides where they go after
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -10,11 +10,9 @@ if (is_logged_in()) {
 }
 
 $error = '';
-// require_login() sends people here with ?redirect= set to whatever page they
-// wanted originally, so we know where to send them back after they log in
+// require_login() sends people here with ?redirect= set to where they wanted to go
 $redirect = $_GET['redirect'] ?? 'profile.php';
 
-// if the user is already logged in, we don't want to show them the login form again. Instead, we redirect them to their profile page or the page they were trying to access before being prompted to log in.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $identifier = trim($_POST['identifier'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -34,7 +32,7 @@ $pageDescription = 'Log in to your BrewLeaf account.';
 $pageRobots = 'noindex, nofollow'; // no reason for this to show up in search results
 require_once __DIR__ . '/includes/header.php';
 ?>
-<!--HTML for the login page, including a form for username/email and password, and links to register or reset password -->
+<!-- HTML for the login page, including a form for username/email and password, and links to register or reset password -->
 <section class="section container page-narrow-sm">
   <h1>Log In</h1>
   <?php if ($error): ?><div class="alert alert-error"><?= h($error) ?></div><?php endif; ?>
@@ -51,7 +49,8 @@ require_once __DIR__ . '/includes/header.php';
     <button type="submit" class="btn btn-accent btn-block">Log In</button>
   </form>
   <p class="mt-md">New here? <a href="register.php">Create an account</a>.</p>
-  <p class="form-hint">Demo admin: <code>admin</code> / <code>Admin123!</code> &middot; Demo customer: <code>jsmith</code> / <code>Admin123!</code></p>
+  <p class="mt-sm"><a href="contact.php">Forgot your password? Please contact admin</a></p>
+  <p class="mt-sm"><a href="index.php">Back to home</a></p>
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -27,7 +27,6 @@ $orders = $conn->query(
      FROM orders o JOIN users u ON u.id = o.user_id ORDER BY o.created_at DESC'
 );
 
-
 $pageTitle = 'Manage Orders | BrewLeaf Admin';
 
 require_once __DIR__ . '/../includes/header.php';
@@ -46,7 +45,6 @@ require_once __DIR__ . '/../includes/admin-nav.php';
   <?php else: ?>
     <div class="table-scroll">
       <table>
-        <!-- table header -->
         <thead><tr><th>Order #</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
         <tbody>
           <?php while ($o = $orders->fetch_assoc()): ?>

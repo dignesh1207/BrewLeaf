@@ -1,5 +1,5 @@
 <?php
-// checkout.php -- turns the cart into an actual order
+// checkout.php, turns the cart into an actual order
 // has to be logged in, otherwise there's no account to attach the order history to (see profile.php)
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
@@ -16,8 +16,7 @@ $userId = (int) $_SESSION['user_id'];
 $error = '';
 $success = false;
 
-// order_items saves its own copy of the product name/options so if the
-// product gets changed or deleted later, old orders still show what was bought
+// order_items keeps its own copy of the name/options in case the product changes later
 $stmt = $conn->prepare(
     'SELECT ci.id, ci.quantity, ci.unit_price, ci.selected_options, p.id AS product_id, p.name
      FROM cart_items ci JOIN products p ON p.id = ci.product_id WHERE ci.user_id = ?'
@@ -42,8 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($cartRows)) {
         $error = 'Your cart is empty.';
     } else {
-        // wrapped in a transaction bc creating the order + copying items + clearing
-        // the cart all need to happen together, if one fails rollback() undoes everything
+        // transaction so the order, its items, and the cart clear all succeed or fail together
         $conn->begin_transaction();
         try {
             // new orders always start as "pending"
@@ -125,7 +123,7 @@ require_once __DIR__ . '/includes/header.php';
               <input type="text" id="card_exp" name="card_exp" placeholder="MM/YY" required>
             </div>
           </div>
-          <p class="form-hint">This is a school project demo -- no real payment is processed.</p>
+          <p class="form-hint">This is a school project demo, no real payment is processed.</p>
           <button type="submit" class="btn btn-accent">Place Order (<?= money($total) ?>)</button>
         </form>
       </div>

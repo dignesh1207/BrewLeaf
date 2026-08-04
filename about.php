@@ -20,13 +20,13 @@ require_once __DIR__ . '/includes/header.php';
   <p>
     BrewLeaf Artisan Coffee &amp; Tea Co. is an online catalogue and storefront for small-batch,
     ethically sourced coffee beans and loose-leaf teas. We work directly with growers and
-    cooperatives across ten countries -- including Ethiopia, Colombia, Kenya, China, India, and
-    Japan -- to bring customers a rotating catalogue of twenty single-origin coffees and specialty
+    cooperatives across ten countries, including Ethiopia, Colombia, Kenya, China, India, and
+    Japan, to bring customers a rotating catalogue of twenty single-origin coffees and specialty
     teas. Each product can be customized by size (from 50g sample bags up to 1kg) and by
     preparation style (whole bean, ground, loose leaf, or tea bags), so customers can order exactly
     what suits their brewing routine. Shoppers can browse and search the catalogue, read and leave
     star ratings and reviews, add items to a cart with live price calculation, check out, and track
-    their order status from a personal account -- while our team manages the catalogue, order
+    their order status from a personal account, while our team manages the catalogue, order
     fulfillment, and customer accounts from an administrative dashboard.
   </p>
 

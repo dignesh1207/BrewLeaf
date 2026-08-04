@@ -45,9 +45,7 @@
   }
 }
 
-/* ---- revenue bar chart (admin dashboard) --------------------------------
-   plain divs, no chart library -- php works out each bar's height as a %
-   and this just draws them. */
+/* revenue bar chart - plain divs, php sets each bar's height as a % */
 .bar-chart {
   display: flex;
   align-items: flex-end;
@@ -86,12 +84,7 @@
   color: var(--color-text-muted);
 }
 
-/* ---- catalogue mini chart (home page "Catalogue at a Glance") ----------- */
-/* justify-content:center (not space-around) on purpose -- with only a
-   couple of categories, space-around shoves them out toward the edges of
-   the card and leaves a big dead gap in the middle. centering with a
-   fixed gap keeps it looking intentional instead of sparse, and still
-   scales fine if more categories get added later. */
+/* home page "Catalogue at a Glance" mini chart */
 .mini-chart-groups {
   display: flex;
   justify-content: center;

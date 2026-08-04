@@ -1,5 +1,4 @@
 <?php
-
 // didn't bother with an is_admin() check here, it's just instructions and nothing sensitive
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
@@ -9,14 +8,13 @@ $pageTitle = 'Updating Site Content | BrewLeaf Help';
 $pageDescription = 'A non-programmer guide to adding products, images, and video to BrewLeaf without touching code.';
 
 require_once __DIR__ . '/../includes/header.php';
-
 ?>
 
 <!-- this page is just static instructions, no dynamic content -->
 <section class="section container page-narrow-lg">
   <p><a href="index.php">&larr; Back to Help</a></p>
   <h1>Updating Site Content (No Coding Required)</h1>
-  <p>Everything below can be done from your web browser through the Admin area -- no code editing needed.</p>
+  <p>Everything below can be done from your web browser through the Admin area, no code editing needed.</p>
 
   <h2>Add or Remove a Product</h2>
   <ol>
@@ -42,7 +40,7 @@ require_once __DIR__ . '/../includes/header.php';
 
   <h2>Switching the Look of the Whole Site</h2>
   <p>Go to <strong>Admin &rarr; Site Template</strong> and click any of the three theme cards
-  (Regular, Autumn, Winter). The whole site updates immediately -- no file editing needed.</p>
+  (Regular, Autumn, Winter). The whole site updates immediately, no file editing needed.</p>
 
   <h2>Need More Help?</h2>
   <p>See the <a href="admin-guide.php">Admin Guide</a> for a full walkthrough of every admin screen.</p>

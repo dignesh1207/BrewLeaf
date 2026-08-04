@@ -1,6 +1,5 @@
 <?php
-// index.php -- the home page. pulls featured products + category stats from
-// the db, has the hero video, the category tabs, and a little bar chart
+// index.php, the home page, pulls featured products + category stats from the db
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -8,7 +7,7 @@ require_once __DIR__ . '/includes/functions.php';
 $pageTitle = 'BrewLeaf Artisan Coffee & Tea Co. | Ethically Sourced, Small-Batch Roasted';
 $pageDescription = 'Shop small-batch artisan coffee and specialty loose-leaf tea. Ethically sourced from Ethiopia, Colombia, Japan and more. Free shipping over $40.';
 
-// top 8 by rating, rating_count breaks ties -- shows the popular stuff on homepage
+// top 8 by rating, rating_count breaks ties, shows the popular stuff on homepage
 $featured = $conn->query(
     'SELECT id, name, slug, category, origin, base_price, image, rating_avg, rating_count
      FROM products WHERE is_active = 1 ORDER BY rating_avg DESC, rating_count DESC LIMIT 8'
@@ -45,8 +44,7 @@ require_once __DIR__ . '/includes/header.php';
     <h2>Watch How We Roast</h2>
     <p>A quick look inside the BrewLeaf roastery.</p>
   </div>
-  <!-- has to be muted for autoplay to work, visitor can unmute with the volume control.
-       speed is set to 1.5x somewhere in assets/js/hero-video.js -->
+  <!-- muted so autoplay works, visitor can unmute with the volume control -->
   <video autoplay muted playsinline controls controlsList="nodownload" preload="auto" poster="assets/images/about-roastery.jpg" class="section-video">
     <source src="assets/videos/roasting-process.mp4" type="video/mp4">
     Your browser does not support embedded video.
@@ -66,7 +64,7 @@ require_once __DIR__ . '/includes/header.php';
       <button class="tab-btn" role="tab" aria-selected="false" data-target="tab-tea">Tea</button>
     </div>
     <div class="tab-panel" id="tab-coffee">
-      <p>Bold, bright, and everything in between -- ten single-origin and blended roasts, from washed Ethiopian florals to syrupy espresso blends.</p>
+      <p>Bold, bright, and everything in between: ten single-origin and blended roasts, from washed Ethiopian florals to syrupy espresso blends.</p>
       <a href="products.php?category=coffee" class="btn btn-outline btn-sm">Browse Coffee</a>
     </div>
     <div class="tab-panel" id="tab-tea" hidden>
@@ -106,9 +104,7 @@ require_once __DIR__ . '/includes/header.php';
   </div>
   <div class="chart-card">
     <?php
-    // plain html/css bar chart, no chart library needed -- php works out the
-    // bar heights as a percentage and the browser just draws them as divs.
-    // two bars per category: how many products, and the avg rating out of 5.
+    // plain html/css bar chart, php works out the bar heights as a percentage
     $maxCount = max($chartCounts) ?: 1;
     ?>
     <div class="mini-chart" role="img" aria-label="Product count and average rating by category">
@@ -139,7 +135,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="section-title">
     <h2>Why BrewLeaf</h2>
   </div>
-  // four feature boxes with icons and text, explaining the benefits of shopping at BrewLeaf(I tried using emoji but they don't render consistently across browsers, so I used unicode characters instead)
+  <!-- unicode symbols instead of emoji, those don't render consistently across browsers -->
   <div class="feature-grid">
     <div class="feature-box"><span class="icon">&#127793;</span><h3>Ethically Sourced</h3><p>Direct-trade relationships with growers across 10+ countries.</p></div>
     <div class="feature-box"><span class="icon">&#128293;</span><h3>Small-Batch Roasted</h3><p>Roasted weekly in small batches for peak freshness.</p></div>

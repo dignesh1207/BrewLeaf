@@ -1,25 +1,18 @@
 <?php
-
 // this page is only for admins, kicks non-admins out below
-
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
 
-
-// send them back to login if they're not an admin, don't want randoms seeing this page
 if (!is_admin()) {
     header('Location: login.php');
     exit;
 }
 
 $pageTitle = 'Admin Guide | BrewLeaf Help';
-
 $pageDescription = 'How BrewLeaf site administrators manage products, orders, users, and the site template.';
 
 require_once __DIR__ . '/../includes/header.php';
-
-
 ?>
 <!-- Admin Guide -->
 <section class="section container page-narrow-lg">
@@ -35,7 +28,7 @@ require_once __DIR__ . '/../includes/header.php';
   <h2>Managing Products</h2>
   <p><code>admin/products.php</code> lists every product. Click <strong>Add New Product</strong> or
   <strong>Edit</strong> to open <code>admin/product-edit.php</code>, where you can set the name,
-  category, origin, price, description, image path, and visibility -- and add or remove its
+  category, origin, price, description, image path, and visibility, and add or remove its
   Size/Grind option rows.</p>
 
   <h2>Managing Orders</h2>
@@ -47,8 +40,8 @@ require_once __DIR__ . '/../includes/header.php';
   block a user from logging in (their password stays intact in case you re-enable them later).</p>
 
   <h2>Switching the Site Template</h2>
-  <p><code>admin/theme.php</code> lets you switch the whole site between three templates --
-  Regular, Harvest (Autumn), and Frost (Winter) -- with one click. The change applies to every
+  <p><code>admin/theme.php</code> lets you switch the whole site between three templates:
+  Regular, Harvest (Autumn), and Frost (Winter), with one click. The change applies to every
   visitor immediately.</p>
 </section>
 

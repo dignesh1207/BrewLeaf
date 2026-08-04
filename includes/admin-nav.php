@@ -1,6 +1,5 @@
 <?php
-// this is the little nav bar for admin pages, goes right after header.php
-// set $adminActive before including this (dashboard/products/orders/users/theme) so it knows what to highlight
+// admin sub-nav, goes right after header.php - set $adminActive before including this
 
 $adminActive = $adminActive ?? '';
 

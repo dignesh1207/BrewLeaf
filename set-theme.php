@@ -1,5 +1,5 @@
 <?php
-// set-theme.php -- switches the site theme from the footer, anyone can use
+// set-theme.php, switches the site theme from the footer, anyone can use
 // it, no login needed. writes to the same site_settings row as admin/theme.php
 require_once __DIR__ . '/config/db.php';
 

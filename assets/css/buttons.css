@@ -1,9 +1,4 @@
-/* button styles. .btn is the base look, other classes (.btn-outline,
-   .btn-accent, etc) get added on top to change the color, e.g.
-   <a class="btn btn-accent">Shop Now</a> */
-
-   /* base button style, used for all buttons. */  
-      
+/* button styles - .btn is the base look, other classes layer color on top */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -19,11 +14,7 @@
   transition: transform var(--transition-slow), box-shadow var(--transition-slow), background var(--transition);
 }
 
-/* hover/active states for all buttons. the transform/box-shadow combo makes
-   the button look like it lifts up a bit on hover, then goes back down on
-   click. the background transition is for the accent button, which changes
-   to a slightly lighter shade on hover */
-
+/* lifts up on hover, settles back down on click */
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
@@ -33,7 +24,7 @@
   transform: translateY(0);
 }
 
-/* Outlined button: just a border, no fill, used for secondary actions. */
+/* border only, no fill - secondary actions */
 .btn-outline {
   background: transparent;
   border-color: var(--color-border);
@@ -46,9 +37,7 @@
   background: rgba(0, 0, 0, .05);
 }
 
-/* accent button - uses --color-accent-dark for the main CTA. plain accent
-   is too light in some themes for white text to stay readable, see
-   variables.css */
+/* main CTA - uses the darker accent shade so white text stays readable */
 .btn-accent {
   background: var(--color-accent-dark);
 }
@@ -57,26 +46,18 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Danger button: red, for destructive actions like "Delete" or "Remove". */
+/* red, for destructive actions like "Delete" */
 .btn-danger {
   background: var(--color-danger);
 }
 
-/* Smaller button, e.g. inside a product card. */
+/* smaller button, e.g. inside a product card */
 .btn-sm {
   padding: .45rem 1rem;
   font-size: .85rem;
 }
 
-/* Sign up button in the nav bar.
-   border-radius:999px makes it a pill, rounds the corners as much as
-   the button's height allows. only looks right if the padding stays
-   small, like the plain text links next to it -- too much padding and
-   the button grows taller than the bar and looks like a blob instead of
-   a pill. keep vertical padding small (under ~1rem) for anything using
-   999px radius in a nav bar */
-/* uses --color-accent-dark not plain accent so white text stays
-   readable, same reason as .btn-accent above */
+/* nav bar's "Shop Now" style button */
 .btn-nav {
   background: var(--color-accent-dark);
   color: #fff;
@@ -86,8 +67,7 @@
   font-size: .92rem;
 }
 
-/* makes a button fill full width -- handy for the submit button under a
-   narrow login/register form */
+/* full-width button, e.g. login/register submit */
 .btn-block {
   width: 100%;
   justify-content: center;

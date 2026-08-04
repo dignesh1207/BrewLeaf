@@ -7,7 +7,6 @@ $pageTitle = 'Getting Started | BrewLeaf Help';
 $pageDescription = 'How to create a BrewLeaf account and place your first order.';
 
 require_once __DIR__ . '/../includes/header.php';
-
 ?>
 
 <!-- HTML for the getting started help page -->

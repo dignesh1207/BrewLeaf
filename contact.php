@@ -1,5 +1,5 @@
 <?php
-// contact.php -- just a static page with a basic form
+// contact.php, just a static page with a basic form
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -21,7 +21,7 @@ require_once __DIR__ . '/includes/header.php';
   <p>Questions about an order, wholesale inquiries, or just want to say hi? Reach out below.</p>
 
   <?php if ($sent): ?>
-    <div class="alert alert-success">Thanks! Your message has been received -- we'll reply within 1-2 business days.</div>
+    <div class="alert alert-success">Thanks! Your message has been received. We'll reply within 1-2 business days.</div>
   <?php endif; ?>
 
   <form method="post" action="contact.php" data-validate>

@@ -1,13 +1,8 @@
 <?php
-
-
 // admin/dashboard.php - the main admin page, shows the stat cards, revenue chart and status list
-
-
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
-
 
 // kick out anyone who isn't an admin
 require_admin();
@@ -24,11 +19,7 @@ $salesData = $conn->query(
      FROM orders WHERE created_at >= (CURDATE() - INTERVAL 14 DAY)
      GROUP BY DATE(created_at) ORDER BY d"
 );
-// the query above only returns rows for days that actually had an order, so
-// days with no orders would just be missing entirely -- fill every day in
-// the 14-day window in first (defaulting to 0), then overwrite with the
-// real numbers. that way the chart always shows all 14 days, not just
-// whichever ones happened to have a sale.
+// fill in every day as 0 first, so days with no orders still show up on the chart
 $revenueByDay = [];
 for ($i = 13; $i >= 0; $i--) {
     $revenueByDay[date('Y-m-d', strtotime("-$i days"))] = 0.0;
@@ -45,14 +36,12 @@ $services = $conn->query('SELECT service_name, status FROM service_status ORDER 
 
 $pageTitle = 'Admin Dashboard | BrewLeaf';
 
-// admin pages don't need to be searchable
-
 require_once __DIR__ . '/../includes/header.php';
 $adminActive = 'dashboard';
 require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
 
-<!-- HTML Code -->
+<!-- HTML for the admin dashboard -->
 
 <section class="section container">
   <h1>Admin Dashboard</h1>
@@ -65,15 +54,11 @@ require_once __DIR__ . '/../includes/admin-nav.php';
   </div>
 
   <div class="chart-card chart-card-spaced">
-    <h2>Revenue -- Last 14 Days</h2>
+    <h2>Revenue (Last 14 Days)</h2>
     <?php if (array_sum($salesRevenue) == 0): ?>
-      <p class="form-hint">No orders yet in this window -- place a demo order to see this chart populate.</p>
+      <p class="form-hint">No orders yet in this window. Place a demo order to see this chart populate.</p>
     <?php else: ?>
-      <?php
-      
-     
-      $maxRevenue = max($salesRevenue) ?: 1;
-      ?>
+      <?php $maxRevenue = max($salesRevenue) ?: 1; ?>
       <div class="bar-chart" role="img" aria-label="Revenue for each of the last 14 days">
         <?php foreach ($salesLabels as $i => $label): ?>
           <div class="bar-chart-col" title="<?= h(date('M j', strtotime($label))) ?>: <?= h(money($salesRevenue[$i])) ?>">

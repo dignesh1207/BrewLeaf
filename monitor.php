@@ -1,13 +1,10 @@
 <?php
-// monitor.php -- public status page, actually runs live checks instead of
-// just reading old db rows, then saves the result to service_status so
-// admin/dashboard.php has something to show too
+// monitor.php, public status page, runs live checks and saves them to service_status
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
-// each check just sets true/false in $checks. wrapped in try/catch so one
-// broken check doesn't crash the whole page
+// each check just sets true/false, try/catch so one broken check doesn't crash the page
 $checks = [];
 // check the database connection first, if that fails the other checks will fail too
 try {

@@ -1,5 +1,4 @@
-/* top nav bar (includes/header.php) - logo, menu links, cart icon, hamburger.
-   mobile menu open/close logic is in assets/js/nav.js */
+/* top nav bar - logo, menu links, cart icon, hamburger */
 
 .site-header {
   background: var(--color-surface);
@@ -39,9 +38,7 @@
   flex-wrap: wrap;
 }
 
-/* grey pill highlight on hover. the active page link (class added by
-   header.php) gets a solid filled pill instead -- kept grey/black not
-   the accent color so it doesn't compete with the accent buttons */
+/* grey pill on hover, active page link gets a solid filled pill instead */
 .primary-nav a {
   display: inline-block;
   padding: .5rem .9rem;
@@ -62,11 +59,7 @@
   font-weight: 700;
 }
 
-/* .btn-nav (sign up button) is inside .primary-nav too, so the hover
-   rules above would leak onto it otherwise -- primary-nav a:hover would
-   swap the copper bg for a near-white tint and the white text would
-   basically vanish. same specificity as those rules, so this only wins
-   because it's written after them in the file */
+/* keeps the sign-up button's own colors from getting overridden by the hover rules above */
 .primary-nav a.btn-nav,
 .primary-nav a.btn-nav:hover {
   color: #fff;
@@ -90,10 +83,7 @@
   gap: .4rem;
 }
 
-/* little number bubble on the cart icon -- position: relative on
-   .cart-link above anchors this to the icon, not the whole nav bar.
-   using --color-primary-dark not --color-accent bc accent is pure white
-   in the White theme (white text on a white circle = invisible) */
+/* number bubble on the cart icon */
 .cart-badge {
   position: absolute;
   top: -8px;
@@ -113,7 +103,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* hamburger menu button, hidden until screen gets narrow - see media query below */
+/* hamburger button, hidden until screen gets narrow */
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -168,8 +158,8 @@
     display: block;
     width: 100%;
   }
-/* utility links (cart, login, signup) move into the dropdown too so they
-     don't get cut off on small screens */
+
+  /* utility links move into the dropdown too on small screens */
   .nav-utility {
     border-left: none;
     padding-left: 0;

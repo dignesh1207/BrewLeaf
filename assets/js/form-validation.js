@@ -1,6 +1,4 @@
-// basic client side checks -- required fields, email looks valid, passwords match
-// only runs on forms with data-validate. php still checks everything again on submit
-
+// basic client side checks - required fields, email format, matching passwords
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('form[data-validate]').forEach(function (form) {
     form.addEventListener('submit', function (e) {

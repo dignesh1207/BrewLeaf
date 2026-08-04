@@ -1,12 +1,10 @@
-// cart stuff. add to cart forms submit with fetch and show a toast,
-// and on the cart page the qty +/- buttons and remove button also save with fetch
+// cart stuff - add-to-cart forms and the cart page qty/remove buttons all save via fetch
 document.addEventListener('DOMContentLoaded', function () {
   initAddToCartForms();
   initCartPage();
 });
 
-// submits the add-to-cart forms with fetch instead of reloading the page,
-// then shows a toast and updates the cart badge count
+// submits add-to-cart forms via fetch, then shows a toast and updates the cart badge
 function initAddToCartForms() {
   document.querySelectorAll('form.add-to-cart-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
@@ -15,7 +13,7 @@ function initAddToCartForms() {
       e.preventDefault();
 
       var formData = new FormData(form);
-      // posting in the background -- X-Requested-With header tells the php
+      // posting in the background, X-Requested-With header tells the php
       // endpoint to send back json instead of the whole html page
       fetch(form.action, { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(function (res) { return res.json(); })
@@ -45,8 +43,7 @@ function showToast(message) {
   }, 2500);
 }
 
-// updates the little number bubble on the cart icon in the header
-// used both after add-to-cart and after the cart page updates below
+// updates the number bubble on the cart icon in the header
 function updateCartBadge(count) {
   var badge = document.querySelector('.cart-badge');
   var cartLink = document.querySelector('.cart-link');
@@ -64,8 +61,7 @@ function updateCartBadge(count) {
   }
 }
 
-// this is for cart.php -- the +/- buttons and typed qty save via cart_update.php,
-// remove button asks to confirm first. does nothing if #cartItemsBody isn't on the page
+// cart.php's +/- buttons and typed qty save via cart_update.php, remove asks to confirm first
 function initCartPage() {
   var itemsBody = document.getElementById('cartItemsBody');
   if (!itemsBody || !window.fetch) return;
@@ -108,9 +104,7 @@ function initCartPage() {
   itemsBody.querySelectorAll('.remove-item-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      // doing the confirm() prompt right here instead of letting confirm-submit.js
-      // handle it, otherwise the fetch below could fire before the user even answers.
-      // stopImmediatePropagation so confirm-submit.js doesn't ALSO try to confirm this form
+      // confirming here instead of confirm-submit.js so the fetch below waits for the answer
       e.stopImmediatePropagation();
       if (form.dataset.confirm && !window.confirm(form.dataset.confirm)) return;
 
@@ -120,9 +114,7 @@ function initCartPage() {
   });
 }
 
-// sends a qty update or remove to cart_update.php. disables the row's buttons
-// and shows a spinner while it's loading, then updates the totals/badge on
-// success or shows an error and calls onFailure (e.g to undo the qty change)
+// sends a qty update or remove to cart_update.php, updates totals/badge or shows an error
 function saveCartChange(context, payload, onFailure) {
   var row = context.closest('tr');
   var controls = row.querySelectorAll('button, input');

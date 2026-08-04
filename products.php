@@ -1,7 +1,5 @@
 <?php
-// products.php -- product list with search, category filter, and sort
-// query gets built dynamically but still uses prepared statements so it's
-// safe from sql injection even though most of the where clause is optional
+// products.php, product list with search, category filter, and sort
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -10,8 +8,7 @@ $category = $_GET['category'] ?? '';
 $search   = trim($_GET['q'] ?? '');
 $sort     = $_GET['sort'] ?? 'popular';
 
-// $params and $types need to stay in the same order as $where or the
-// bind_param below will match the wrong values to the wrong placeholders
+// $params and $types need to stay in the same order as $where
 $where = ['is_active = 1'];
 $params = [];
 $types = '';
@@ -29,8 +26,7 @@ if ($search !== '') {
     $types .= 'sss';
 }
 
-// match() turns ?sort= into one of these fixed ORDER BY strings, so the raw
-// user input never actually touches the query
+// match() turns ?sort= into a fixed ORDER BY string, raw input never touches the query
 $orderBy = match ($sort) {
     'price_low'  => 'base_price ASC',
     'price_high' => 'base_price DESC',

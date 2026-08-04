@@ -1,5 +1,4 @@
-/* coffee/tea tab switcher on home page (shop by category section)
-   the show/hide logic is in assets/js/tabs.js */
+/* coffee/tea tab switcher on home page */
 
 .category-tabs {
   max-width: 640px;
@@ -21,7 +20,7 @@
   padding: .3rem;
 }
 
-/* the two tab panels, one for coffee and one for tea */
+/* the coffee/tea toggle buttons */
 .tab-btn {
   flex: 1;
   padding: .6rem 1rem;
@@ -43,13 +42,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* no display:flex on .tab-panel needed at all -- .btn is already
-   inline-flex (buttons.css), so in normal block flow it just sizes to
-   its own text and sits on the left by default. that's Coffee, done,
-   zero extra rules. Tea's button sits on the right instead -- the plain
-   old margin-left:auto trick, which needs display:block so the margin
-   has a full-width row to push against. one rule, doesn't touch or
-   depend on anything else on the page. */
+/* pushes the Tea panel's button to the right */
 #tab-tea .btn {
   display: block;
   width: fit-content;
