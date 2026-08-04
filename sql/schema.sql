@@ -140,7 +140,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- should probably change this password after logging in the first time
 INSERT INTO users (username, email, password_hash, full_name, role, status) VALUES
 ('admin', 'admin@brewleaf.test', '$2y$10$i3ISeOLC0fQyhpeZ5X2vT.HqPjIMwrEVez0Pqd.FGdJOGRhYrgSwC', 'Site Administrator', 'admin', 'active'),
-('jsmith', 'jsmith@example.com', '$2y$10$i3ISeOLC0fQyhpeZ5X2vT.HqPjIMwrEVez0Pqd.FGdJOGRhYrgSwC', 'Jane Smith', 'customer', 'active');
+('dsolanki', 'dsolanki@example.com', '$2y$10$i3ISeOLC0fQyhpeZ5X2vT.HqPjIMwrEVez0Pqd.FGdJOGRhYrgSwC', 'Dignesh Solanki', 'customer', 'active');
 
 -- white theme is the default
 INSERT INTO site_settings (setting_key, setting_value) VALUES
