@@ -17,6 +17,20 @@ $navScript   = basename($_SERVER['SCRIPT_NAME']);
 $navCategory = $_GET['category'] ?? '';
 $navIsHelp   = str_contains($_SERVER['SCRIPT_NAME'], '/help/');
 
+// context-sensitive Help link: jumps to whichever wiki article best matches
+// the current page instead of always the hub, falls back to the hub otherwise
+$helpArticle = 'index.html';
+if (str_contains($_SERVER['SCRIPT_NAME'], '/admin/')) {
+    $helpArticle = 'admin-guide.php';
+} elseif (in_array($navScript, ['cart.php', 'checkout.php'], true)) {
+    $helpArticle = 'ordering-and-checkout.html';
+} elseif ($navScript === 'profile.php') {
+    $helpArticle = 'managing-account.html';
+} elseif (in_array($navScript, ['login.php', 'register.php', 'products.php', 'product.php'], true)) {
+    $helpArticle = 'getting-started.html';
+}
+$contextHelpUrl = SITE_BASE_URL . '/help/' . $helpArticle;
+
 // cart count for the nav badge, skipped for admins since they don't shop
 $cartCount = 0;
 if (!is_admin()) {
@@ -94,6 +108,7 @@ if (!is_admin()) {
           <li><a href="<?= h(SITE_BASE_URL) ?>/admin/products.php" class="<?= $navScript === 'products.php' && str_contains($_SERVER['SCRIPT_NAME'], '/admin/') ? 'active' : '' ?>">Products</a></li>
           <li><a href="<?= h(SITE_BASE_URL) ?>/admin/orders.php" class="<?= $navScript === 'orders.php' ? 'active' : '' ?>">Orders</a></li>
           <li><a href="<?= h(SITE_BASE_URL) ?>/admin/users.php" class="<?= $navScript === 'users.php' ? 'active' : '' ?>">Customers</a></li>
+          <li><a href="<?= h($contextHelpUrl) ?>">Help</a></li>
         </ul>
         <ul class="nav-utility">
           <!-- just one link here instead of a greeting + separate admin link, seemed redundant -->
@@ -110,7 +125,7 @@ if (!is_admin()) {
           <li><a href="<?= h(SITE_BASE_URL) ?>/products.php?category=coffee" class="<?= $navCategory === 'coffee' ? 'active' : '' ?>">Coffee</a></li>
           <li><a href="<?= h(SITE_BASE_URL) ?>/products.php?category=tea" class="<?= $navCategory === 'tea' ? 'active' : '' ?>">Tea</a></li>
           <li><a href="<?= h(SITE_BASE_URL) ?>/about.php" class="<?= $navScript === 'about.php' ? 'active' : '' ?>">About</a></li>
-          <li><a href="<?= h(SITE_BASE_URL) ?>/help/index.html" class="<?= $navIsHelp ? 'active' : '' ?>">Help</a></li>
+          <li><a href="<?= h($contextHelpUrl) ?>" class="<?= $navIsHelp ? 'active' : '' ?>">Help</a></li>
           <li><a href="<?= h(SITE_BASE_URL) ?>/contact.php" class="<?= $navScript === 'contact.php' ? 'active' : '' ?>">Contact</a></li>
         </ul>
         <ul class="nav-utility">

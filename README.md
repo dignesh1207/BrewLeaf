@@ -114,3 +114,7 @@ remote:
 git remote add origin <your-repo-url>
 git push -u origin main
 ```
+
+## License
+
+MIT, see [LICENSE](LICENSE).

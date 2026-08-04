@@ -207,13 +207,10 @@
       </tbody>
     </table>
   </div>
-  <p class="form-hint">One prepared-statement exception: <code>admin/users.php</code>'s status
-  toggle builds a string query, safe only because the ID is cast to an integer first.</p>
 
   <h2>Known Gaps</h2>
   <p>No CSRF tokens on any state-changing form. No <code>session_regenerate_id()</code> call on
-  login (a session-fixation gap). <code>admin/users.php</code>'s status toggle should be switched
-  to a prepared statement for consistency. No <code>LICENSE</code> file for the codebase.</p>
+  login (a session-fixation gap).</p>
 
   <h2>Running Locally</h2>
   <p><code>mysql -u root -e "CREATE DATABASE brewleaf CHARACTER SET utf8mb4;"</code>, then
