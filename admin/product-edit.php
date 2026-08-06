@@ -1,94 +1,203 @@
 <?php
-// admin/product-edit.php - add or edit a product depending on if ?id= is set
-// also handles the option rows (size, grind..) further down the page
+// admin/product-edit.php
+// This page is used to add a new product or edit an existing one.
+// If a product ID is provided in the URL, its details are loaded.
+
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
-// kick non-admins out
+
+// Only administrators can access this page
 require_admin();
 
-// no id means we're adding a new product, so $product just has empty defaults for the form
+// If no ID is given, we'll show an empty form for creating a new product.
 $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
-$product = ['name' => '', 'slug' => '', 'category' => 'coffee', 'origin' => '', 'description' => '', 'base_price' => '', 'image' => 'assets/images/product-01.jpg', 'is_active' => 1];
+
+$product = [
+    'name' => '',
+    'slug' => '',
+    'category' => 'coffee',
+    'origin' => '',
+    'description' => '',
+    'base_price' => '',
+    'image' => 'assets/images/product-01.jpg',
+    'is_active' => 1
+];
+
 $error = '';
 
-// if an id was passed, try to load that product from the db so we can edit it. if not found, just keep the empty defaults and let the form show "Add New Product"
+// If we're editing an existing product,
+// load its information from the database.
+// Otherwise the empty values above will be used.
 if ($id) {
     $s = $conn->prepare('SELECT * FROM products WHERE id = ?');
     $s->bind_param('i', $id);
     $s->execute();
+
     $found = $s->get_result()->fetch_assoc();
+
     $s->close();
-    if ($found) $product = $found;
+
+    if ($found) {
+        $product = $found;
+    }
 }
 
-// handle the form submission for saving the product, adding an option, or deleting an option
+// Handle the main product form when the Save button is pressed.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_product'])) {
+
     $name = trim($_POST['name'] ?? '');
-    // only coffee or tea are allowed, anything else defaults back to coffee
-    $category = in_array($_POST['category'] ?? '', ['coffee', 'tea'], true) ? $_POST['category'] : 'coffee';
+
+    // Only allow the supported categories.
+    // If something unexpected is submitted,
+    // use "coffee" as the default.
+    $category = in_array($_POST['category'] ?? '', ['coffee', 'tea'], true)
+        ? $_POST['category']
+        : 'coffee';
+
     $origin = trim($_POST['origin'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $basePrice = (float) ($_POST['base_price'] ?? 0);
     $image = trim($_POST['image'] ?? '');
     $isActive = isset($_POST['is_active']) ? 1 : 0;
-    // editing keeps the old slug, new products get one made from the name
-    $slug = $id ? $product['slug'] : preg_replace('/[^a-z0-9]+/', '-', strtolower($name));
+
+    // Keep the existing slug when editing.
+    // New products create a slug from the product name.
+    $slug = $id
+        ? $product['slug']
+        : preg_replace('/[^a-z0-9]+/', '-', strtolower($name));
+
     $slug = trim($slug, '-');
 
+    // Basic validation
     if ($name === '' || $basePrice <= 0) {
+
         $error = 'Name and a positive price are required.';
+
     } elseif ($id) {
-        $upd = $conn->prepare('UPDATE products SET name=?, category=?, origin=?, description=?, base_price=?, image=?, is_active=? WHERE id=?');
-        $upd->bind_param('ssssdsii', $name, $category, $origin, $description, $basePrice, $image, $isActive, $id);
+
+        // Update the existing product
+        $upd = $conn->prepare(
+            'UPDATE products
+             SET name=?, category=?, origin=?, description=?, base_price=?, image=?, is_active=?
+             WHERE id=?'
+        );
+
+        $upd->bind_param(
+            'ssssdsii',
+            $name,
+            $category,
+            $origin,
+            $description,
+            $basePrice,
+            $image,
+            $isActive,
+            $id
+        );
+
         $upd->execute();
         $upd->close();
+
         header('Location: products.php?saved=1');
         exit;
+
     } else {
-        $ins = $conn->prepare('INSERT INTO products (name, slug, category, origin, description, base_price, image, is_active) VALUES (?,?,?,?,?,?,?,?)');
-        $ins->bind_param('sssssdsi', $name, $slug, $category, $origin, $description, $basePrice, $image, $isActive);
+
+        // Create a new product
+        $ins = $conn->prepare(
+            'INSERT INTO products
+            (name, slug, category, origin, description, base_price, image, is_active)
+            VALUES (?,?,?,?,?,?,?,?)'
+        );
+
+        $ins->bind_param(
+            'sssssdsi',
+            $name,
+            $slug,
+            $category,
+            $origin,
+            $description,
+            $basePrice,
+            $image,
+            $isActive
+        );
+
         $ins->execute();
-        // grab the new id so we can send them straight to the edit page for it
+
+        // Save the new product ID so we can
+        // redirect to the edit page afterwards.
         $id = $conn->insert_id;
+
         $ins->close();
+
         header('Location: product-edit.php?id=' . $id . '&saved=1');
         exit;
     }
 }
 
-// adding an option row, product has to already exist for this to work
+// Add a new product option such as Size or Grind.
+// This only works after the product has been created.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_option']) && $id) {
+
     $group = trim($_POST['option_group'] ?? '');
     $value = trim($_POST['option_value'] ?? '');
     $modifier = (float) ($_POST['price_modifier'] ?? 0);
+
     if ($group !== '' && $value !== '') {
-        $ins = $conn->prepare('INSERT INTO product_options (product_id, option_group, option_value, price_modifier) VALUES (?,?,?,?)');
-        $ins->bind_param('issd', $id, $group, $value, $modifier);
+
+        $ins = $conn->prepare(
+            'INSERT INTO product_options
+            (product_id, option_group, option_value, price_modifier)
+            VALUES (?,?,?,?)'
+        );
+
+        $ins->bind_param(
+            'issd',
+            $id,
+            $group,
+            $value,
+            $modifier
+        );
+
         $ins->execute();
         $ins->close();
     }
+
     header('Location: product-edit.php?id=' . $id . '#options');
     exit;
 }
 
-// checking product_id too stops deleting an option that belongs to a different product
+// Remove an option from this product.
+// The extra product_id check makes sure we only
+// delete options that belong to the current product.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_option']) && $id) {
+
     $optId = (int) $_POST['delete_option'];
-    $del = $conn->prepare('DELETE FROM product_options WHERE id = ? AND product_id = ?');
+
+    $del = $conn->prepare(
+        'DELETE FROM product_options WHERE id = ? AND product_id = ?'
+    );
+
     $del->bind_param('ii', $optId, $id);
+
     $del->execute();
     $del->close();
+
     header('Location: product-edit.php?id=' . $id . '#options');
     exit;
 }
 
-$existingOptions = $id ? get_product_options($conn, $id) : [];
+// Load the existing product options for display.
+$existingOptions = $id
+    ? get_product_options($conn, $id)
+    : [];
 
 $pageTitle = ($id ? 'Edit' : 'Add') . ' Product | BrewLeaf Admin';
 
 require_once __DIR__ . '/../includes/header.php';
+
 $adminActive = 'products';
+
 require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
 

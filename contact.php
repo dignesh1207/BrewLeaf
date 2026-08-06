@@ -15,6 +15,9 @@ $pageTitle = 'Contact Us | BrewLeaf';
 $pageDescription = 'Get in touch with BrewLeaf Artisan Coffee & Tea Co.';
 require_once __DIR__ . '/includes/header.php';
 ?>
+
+
+
 <!-- HTML for the contact page, including a form for name, email, and message -->
 <section class="section container page-narrow-md">
   <h1>Contact Us</h1>

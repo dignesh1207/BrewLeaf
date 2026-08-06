@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Page information -->
 <title>Updating Site Content | BrewLeaf Help</title>
 <meta name="description" content="A non-programmer guide to adding products, images, and video to BrewLeaf without touching code.">
 <meta name="keywords" content="coffee, tea, artisan coffee, loose leaf tea, online coffee shop, specialty tea, help, guide">
 <meta name="Student" content="Dignesh Solanki">
 <meta name="author" content="BrewLeaf Artisan Coffee & Tea Co.">
+
+<!-- Social media preview information -->
 <meta property="og:title" content="Updating Site Content | BrewLeaf Help">
 <meta property="og:description" content="A non-programmer guide to adding products, images, and video to BrewLeaf without touching code.">
 <meta property="og:image" content="../assets/images/hero-banner.jpg">
 <meta property="og:type" content="website">
+
+<!-- Website icon -->
 <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+
+<!-- CSS files used throughout the website -->
 <link rel="stylesheet" href="../assets/css/variables.css">
 <link rel="stylesheet" href="../assets/css/theme-white.css">
 <link rel="stylesheet" href="../assets/css/base.css">
@@ -28,21 +37,33 @@
 <link rel="stylesheet" href="../assets/css/dashboard.css">
 <link rel="stylesheet" href="../assets/css/admin.css">
 <link rel="stylesheet" href="../assets/css/utilities.css">
+
+<!-- Google fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
 </head>
+
 <body class="theme-white">
 
+<!-- Accessibility shortcut -->
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
+<!-- Website header -->
 <header class="site-header">
   <div class="container header-inner">
+
+    <!-- Website logo -->
     <a class="logo" href="../index.php">BrewLeaf</a>
 
+    <!-- Mobile menu button -->
     <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation menu">
-      <span></span><span></span><span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
 
+    <!-- Main navigation -->
     <nav class="primary-nav" id="primaryNav" aria-label="Primary">
       <ul>
         <li><a href="../index.php">Home</a></li>
@@ -53,60 +74,105 @@
         <li><a href="index.html" class="active">Help</a></li>
         <li><a href="../contact.php">Contact</a></li>
       </ul>
+
+      <!-- User navigation -->
       <ul class="nav-utility">
-        <li><a href="../cart.php" class="cart-link" aria-label="View cart">&#128722; Cart</a></li>
+        <li><a href="../cart.php" class="cart-link">&#128722; Cart</a></li>
         <li><a href="../login.php">Log in</a></li>
         <li><a href="../register.php" class="btn-nav">Sign up</a></li>
       </ul>
     </nav>
+
   </div>
 </header>
 
 <main id="main-content">
 
+<!-- Help article content -->
 <section class="section container page-narrow-lg">
+
   <p><a href="index.html">&larr; Back to Help</a></p>
+
   <h1>Updating Site Content (No Coding Required)</h1>
-  <p>Everything below can be done from your web browser through the Admin area, no code editing needed.</p>
+
+  <p>
+    Everything below can be done from your web browser through the Admin area,
+    no code editing needed.
+  </p>
 
   <h2>Add or Remove a Product</h2>
+
   <ol>
     <li>Log in as an admin and go to <strong>Admin &rarr; Products</strong>.</li>
-    <li>Click <strong>+ Add New Product</strong>, fill in the name, category, origin, price, and description, then click <strong>Save Product</strong>.</li>
-    <li>Once saved, scroll to the <strong>Options</strong> section and add at least two option groups (e.g. "Size" / "500g" and "Grind" / "Whole Bean").</li>
-    <li>To remove a product, click <strong>Delete</strong> next to it on the Products list.</li>
+    <li>
+      Click <strong>+ Add New Product</strong>, fill in the name, category,
+      origin, price, and description, then click <strong>Save Product</strong>.
+    </li>
+    <li>
+      After saving, add product options such as size or grind from the
+      <strong>Options</strong> section.
+    </li>
+    <li>
+      To remove a product, click <strong>Delete</strong> beside the product
+      from the Products list.
+    </li>
   </ol>
 
   <h2>Adding a New Product Photo</h2>
+
   <ol>
-    <li>Save your photo as a <code>.jpg</code> or <code>.png</code> file.</li>
-    <li>Upload it into the <code>assets/images/</code> folder on the server (via your hosting file manager or FTP client).</li>
-    <li>On the product's Edit page, set the <strong>Image Path</strong> field to <code>assets/images/your-file-name.jpg</code> and save.</li>
+    <li>Save your image as a <code>.jpg</code> or <code>.png</code> file.</li>
+    <li>
+      Upload the image into the <code>assets/images/</code> folder using the
+      hosting file manager or FTP.
+    </li>
+    <li>
+      Update the product's <strong>Image Path</strong> field with the new file
+      location and save.
+    </li>
   </ol>
 
   <h2>Adding a New Video</h2>
+
   <ol>
-    <li>Export your video as an <code>.mp4</code> file (keep it under ~20MB for fast loading).</li>
-    <li>Upload it into <code>assets/videos/</code>.</li>
-    <li>Update the <code>&lt;source src="..."&gt;</code> path on the relevant page (e.g. the home page video), or ask a site maintainer to point a new <code>&lt;video&gt;</code> block at it.</li>
+    <li>
+      Export the video as an <code>.mp4</code> file for better browser support.
+    </li>
+    <li>Upload the video into the <code>assets/videos/</code> folder.</li>
+    <li>
+      Update the video source path on the required page or add a new video
+      block.
+    </li>
   </ol>
 
   <h2>Switching the Look of the Whole Site</h2>
-  <p>Go to <strong>Admin &rarr; Site Template</strong> and click any of the three theme cards
-  (Regular, Autumn, Winter). The whole site updates immediately, no file editing needed.</p>
+
+  <p>
+    Go to <strong>Admin &rarr; Site Template</strong> and select a theme.
+    The website appearance will update without editing files.
+  </p>
 
   <h2>Need More Help?</h2>
-  <p>See the <a href="admin-guide.php">Admin Guide</a> for a full walkthrough of every admin screen.</p>
+
+  <p>
+    Visit the <a href="admin-guide.php">Admin Guide</a> for more information
+    about managing the website.
+  </p>
+
 </section>
 
 </main>
 
+<!-- Website footer -->
 <footer class="site-footer">
+
   <div class="container footer-inner">
+
     <div class="footer-col">
       <h3>BrewLeaf</h3>
       <p>Ethically sourced artisan coffee &amp; tea, roasted and blended in small batches.</p>
     </div>
+
     <div class="footer-col">
       <h3>Shop</h3>
       <ul>
@@ -115,6 +181,7 @@
         <li><a href="../cart.php">Your Cart</a></li>
       </ul>
     </div>
+
     <div class="footer-col">
       <h3>Support</h3>
       <ul>
@@ -124,23 +191,31 @@
         <li><a href="../project-docs.html">Project Docs</a></li>
       </ul>
     </div>
+
     <div class="footer-col">
       <h3>Find Our Roastery</h3>
+
+      <!-- Embedded Google map -->
       <div class="footer-map">
         <iframe
           src="https://www.google.com/maps?q=401+Sunset+Ave%2C+Windsor%2C+ON%2C+Canada&output=embed"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          title="Map showing the BrewLeaf roastery at 401 Sunset Ave, Windsor, ON"
-        ></iframe>
+          title="Map showing the BrewLeaf roastery at 401 Sunset Ave, Windsor, ON">
+        </iframe>
       </div>
     </div>
+
   </div>
+
   <div class="container footer-bottom">
     <p>&copy; 2026 BrewLeaf Artisan Coffee &amp; Tea Co. All rights reserved.</p>
   </div>
+
 </footer>
 
+<!-- Website JavaScript -->
 <script src="../assets/js/nav.js"></script>
+
 </body>
 </html>

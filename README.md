@@ -5,7 +5,7 @@ products with a shopping cart, checkout, user accounts, product reviews, an
 admin panel (product/order/user management + switchable site templates), and
 a live backend status monitor.
 
-Plain PHP + MySQLi, no framework, no build step -- every `.php` file is
+Plain PHP + MySQLi, no framework, no build step, every `.php` file is
 requested directly by the web server, so this deploys to any standard
 PHP/MySQL host (Apache or Nginx) including university shared hosting like
 `myweb.cs.uwindsor.ca`.
@@ -14,7 +14,7 @@ PHP/MySQL host (Apache or Nginx) including university shared hosting like
 
 - PHP 8.0+ with the `mysqli` extension enabled (standard on most shared hosts).
 - MySQL 5.7+ or MariaDB 10.x.
-- No Composer packages, no Node build step -- nothing to compile.
+- No Composer packages, no Node build step, nothing to compile.
 
 ## Install on a new host (step by step)
 
@@ -30,7 +30,7 @@ PHP/MySQL host (Apache or Nginx) including university shared hosting like
    database. This creates every table and seeds:
    - 20 products (10 coffees + 10 teas), each with 2 option groups.
    - A default admin account: username `admin`, password `Admin123!`.
-   - A default customer account: username `jsmith`, password `Admin123!`.
+   - A default customer account: username `dsolanki`, password `Admin123!`.
    - Six backend services tracked by the status monitor.
 
    Via command line:

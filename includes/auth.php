@@ -1,77 +1,120 @@
 <?php
-// starts the session and has all the login-related functions
+// auth.php
+// Starts the session and contains functions related to login and user access.
 
-// don't want to call session_start() twice or php throws a warning
+
+// Start the session only if it has not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// checks if a user is logged in by looking for a user_id in the session
+
+// Check if a user is currently logged in
 function is_logged_in(): bool
 {
     return !empty($_SESSION['user_id']);
 }
 
-// checks if the logged in user is an admin
+
+// Check if the current user has admin access
 function is_admin(): bool
 {
     return is_logged_in() && ($_SESSION['role'] ?? '') === 'admin';
 }
 
-// force someone to log in first, remembers where they were trying to go
+
+// Redirect users to login if they are not logged in
 function require_login(): void
 {
     if (!is_logged_in()) {
+
+        // Save the current page so the user can return after logging in
         $return = urlencode($_SERVER['REQUEST_URI'] ?? '/');
-        header('Location: ' . SITE_BASE_URL . '/login.php?redirect=' . $return);
+
+        header(
+            'Location: ' . SITE_BASE_URL . '/login.php?redirect=' . $return
+        );
+
         exit;
     }
 }
 
-// same idea but for admin only pages
+
+// Redirect users who are not admins
 function require_admin(): void
 {
     if (!is_admin()) {
+
         header('Location: ' . SITE_BASE_URL . '/login.php');
+
         exit;
     }
 }
 
-// checks username/email + password, returns the user row if it worked, null if not
+
+// Try to log a user in using username/email and password
 function attempt_login(mysqli $conn, string $identifier, string $password): ?array
 {
-    // this is a prepared statement so we don't have to worry about SQL injection
+    // Find the user by username or email
     $stmt = $conn->prepare(
         'SELECT id, username, email, password_hash, full_name, role, status
          FROM users WHERE username = ? OR email = ? LIMIT 1'
     );
-    // bind the same $identifier to both placeholders, so they can log in with either username or email
+
+    // Same value is used because users can enter either username or email
     $stmt->bind_param('ss', $identifier, $identifier);
+
     $stmt->execute();
+
     $user = $stmt->get_result()->fetch_assoc();
+
     $stmt->close();
 
-    // this also handles the "no user found" case since $user would be null/false then
+
+    // Check if user exists and password is correct
     if (!$user || !password_verify($password, $user['password_hash'])) {
         return null;
     }
-    // don't let a disabled account log in even if the password is right
+
+
+    // Prevent inactive accounts from logging in
     if ($user['status'] !== 'active') {
         return null;
     }
 
-    // save the user info in the session so is_logged_in()/is_admin() etc work
-    $_SESSION['user_id']   = $user['id'];
-    $_SESSION['username']  = $user['username'];
+
+    // Store user information in the session
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['username'] = $user['username'];
     $_SESSION['full_name'] = $user['full_name'];
-    $_SESSION['role']      = $user['role'];
+    $_SESSION['role'] = $user['role'];
+
+
+    // Move guest cart items into the user's account after login
+    if (!empty($_SESSION['guest_id'])) {
+
+        $merge = $conn->prepare(
+            'UPDATE cart_items 
+             SET user_id = ?, session_id = NULL 
+             WHERE session_id = ?'
+        );
+
+        $merge->bind_param('is', $user['id'], $_SESSION['guest_id']);
+
+        $merge->execute();
+
+        $merge->close();
+    }
+
 
     return $user;
 }
 
-// clears the session and logs the user out
+
+// Log the user out and clear session data
 function logout(): void
 {
     $_SESSION = [];
+
     session_destroy();
 }

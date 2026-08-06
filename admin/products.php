@@ -1,99 +1,153 @@
 <?php
-// admin/products.php - product list w/ search, filters, pagination, edit/delete
-// the actual add/edit form is a separate page, product-edit.php
+// admin/products.php
+// This page displays all products.
+// Admins can search, filter, edit, and delete products from here.
+
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
-// non-admins get sent away
+
+// Only administrators can access this page
 require_admin();
 
-// handle the delete form submission, which is just a POST with a product id
+// Handle the delete request when the Delete button is clicked.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+
     $id = (int) $_POST['delete_id'];
+
     $del = $conn->prepare('DELETE FROM products WHERE id = ?');
     $del->bind_param('i', $id);
     $del->execute();
     $del->close();
+
     header('Location: products.php?deleted=1');
     exit;
 }
 
-$search   = trim($_GET['q'] ?? '');
+// Read the search, filter, and page values from the URL.
+$search = trim($_GET['q'] ?? '');
 $category = $_GET['category'] ?? '';
-$status   = $_GET['status'] ?? '';
-$page     = max(1, (int) ($_GET['page'] ?? 1));
-$perPage  = 10;
+$status = $_GET['status'] ?? '';
+$page = max(1, (int) ($_GET['page'] ?? 1));
 
-// $where, $params and $types all build up together so they stay in sync
+$perPage = 10;
+
+// These variables are used to build the SQL query.
+// As filters are added, the SQL, parameter list,
+// and parameter types all stay in sync.
 $where = [];
 $params = [];
 $types = '';
 
-// only add a search filter if the user actually typed something in the search box
+// Add the search filter only if the user entered something.
 if ($search !== '') {
     $where[] = 'name LIKE ?';
     $params[] = '%' . $search . '%';
     $types .= 's';
 }
-// only allow the category values below, so someone can't put random stuff in the url
+
+// Only allow the supported categories.
 if (in_array($category, ['coffee', 'tea'], true)) {
     $where[] = 'category = ?';
     $params[] = $category;
     $types .= 's';
 }
+
+// Filter products by their visibility.
 if ($status === 'active') {
     $where[] = 'is_active = 1';
 } elseif ($status === 'hidden') {
     $where[] = 'is_active = 0';
 }
 
-$whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+// Build the WHERE part of the SQL query.
+// If there are no filters, this stays empty.
+$whereSql = $where
+    ? ('WHERE ' . implode(' AND ', $where))
+    : '';
 
-// count total products matching the filters, so we can work out total pages
-$countStmt = $conn->prepare("SELECT COUNT(*) AS n FROM products $whereSql");
+// Count how many products match the filters.
+// This is needed for pagination.
+$countStmt = $conn->prepare(
+    "SELECT COUNT(*) AS n FROM products $whereSql"
+);
+
 if ($params) {
     $countStmt->bind_param($types, ...$params);
 }
+
 $countStmt->execute();
+
 $total = (int) $countStmt->get_result()->fetch_assoc()['n'];
+
 $countStmt->close();
 
-// total pages, current page, and the offset for the LIMIT clause
+// Calculate the total number of pages
+// and the starting row for the current page.
 $totalPages = max(1, (int) ceil($total / $perPage));
+
 $page = min($page, $totalPages);
+
 $offset = ($page - 1) * $perPage;
 
+// Load the products for the current page.
 $stmt = $conn->prepare(
-    "SELECT id, name, category, base_price, image, is_active, rating_avg
-     FROM products $whereSql ORDER BY id LIMIT ? OFFSET ?"
+    "SELECT id,
+            name,
+            category,
+            base_price,
+            image,
+            is_active,
+            rating_avg
+     FROM products
+     $whereSql
+     ORDER BY id
+     LIMIT ? OFFSET ?"
 );
+
 $listParams = $params;
 $listParams[] = $perPage;
 $listParams[] = $offset;
+
 $stmt->bind_param($types . 'ii', ...$listParams);
+
 $stmt->execute();
+
 $products = $stmt->get_result();
 
-// makes the prev/next page links, keeps whatever search/filter was already set
-function admin_products_page_url(int $page, string $search, string $category, string $status): string
-{
+// Create the page links for pagination.
+// Existing search and filter values are kept
+// when moving between pages.
+function admin_products_page_url(
+    int $page,
+    string $search,
+    string $category,
+    string $status
+): string {
+
     $qs = ['page' => $page];
+
     if ($search !== '') {
         $qs['q'] = $search;
     }
+
     if ($category !== '') {
         $qs['category'] = $category;
     }
+
     if ($status !== '') {
         $qs['status'] = $status;
     }
+
     return 'products.php?' . http_build_query($qs);
 }
 
 $pageTitle = 'Manage Products | BrewLeaf Admin';
 
 require_once __DIR__ . '/../includes/header.php';
+
 $adminActive = 'products';
+
 require_once __DIR__ . '/../includes/admin-nav.php';
 ?>
 

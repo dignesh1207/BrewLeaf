@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// adds base price + all the selected options together, updates #livePrice
+// adds base price + all the selected options together, updates the live price on the page
 function recalcPrice() {
   var priceEl = document.getElementById('livePrice');
   if (!priceEl) return;
